@@ -1,0 +1,600 @@
+/* =============================================
+   Notebook Blog – Estilos principales
+   ============================================= */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5f0e8;
+  --surface: #fffef5;
+  --border: #d4c9a8;
+  --text: #2c2416;
+  --text-muted: #7a6e58;
+  --shadow: 0 2px 12px rgba(0,0,0,0.10);
+  --line-color: #dde8f5;
+  --radius: 6px;
+  --sidebar-width: 260px;
+  --header-h: 64px;
+}
+
+/* ── Typography ── */
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Palatino Linotype', 'Palatino', Georgia, serif;
+}
+
+/* ── Header ── */
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--header-h);
+  background: #2c2416;
+  color: #f5f0e8;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+}
+
+header .logo {
+  font-size: 1.6rem;
+}
+
+header h1 {
+  font-size: 1.4rem;
+  letter-spacing: 0.04em;
+  font-weight: normal;
+}
+
+header .subtitle {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #c9bba0;
+  font-style: italic;
+}
+
+/* ── Layout ── */
+.layout {
+  display: flex;
+  padding-top: var(--header-h);
+  min-height: 100vh;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: var(--sidebar-width);
+  background: #2c2416;
+  color: #f5f0e8;
+  position: fixed;
+  top: var(--header-h);
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 90;
+}
+
+.sidebar-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #8a7a60;
+  padding: 0 20px 12px;
+  border-bottom: 1px solid #3d3224;
+  margin-bottom: 8px;
+}
+
+.subject-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 20px;
+  background: none;
+  border: none;
+  color: #c9bba0;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border-left: 3px solid transparent;
+}
+
+.subject-btn:hover {
+  background: rgba(255,255,255,0.06);
+  color: #f5f0e8;
+}
+
+.subject-btn.active {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-left-color: var(--accent, #f5f0e8);
+}
+
+.subject-btn .icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.subject-btn .label {
+  flex: 1;
+  line-height: 1.3;
+}
+
+.subject-btn .label small {
+  display: block;
+  font-size: 0.72rem;
+  color: #8a7a60;
+}
+
+.subject-btn.active .label small {
+  color: #c9bba0;
+}
+
+/* ── Main content ── */
+.main {
+  margin-left: var(--sidebar-width);
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 960px;
+}
+
+/* ── Loading / empty states ── */
+.loading, .empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+
+.loading .spinner {
+  width: 40px; height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Subject header ── */
+.subject-header {
+  margin-bottom: 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+}
+
+.subject-header .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.subject-header h2 {
+  font-size: 2rem;
+  margin-bottom: 6px;
+}
+
+.subject-header .meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.subject-header .meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.note-count {
+  margin-left: auto;
+  background: var(--border);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ── Note cards ── */
+.notes-grid {
+  display: grid;
+  gap: 28px;
+}
+
+.note-card {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  /* notebook lines effect */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 27px,
+    var(--line-color) 27px,
+    var(--line-color) 28px
+  );
+  background-position: 0 52px;
+}
+
+.note-card-header {
+  padding: 18px 24px 14px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.7);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.note-number {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.note-card-header .info {
+  flex: 1;
+}
+
+.note-card-header h3 {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.note-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.note-meta span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.note-body {
+  padding: 20px 24px;
+  line-height: 2;           /* matches 28px line height */
+  font-size: 0.97rem;
+  color: var(--text);
+}
+
+/* ── Mind map section ── */
+.mindmap-section {
+  padding: 0 24px 24px;
+}
+
+.mindmap-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: none;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-family: inherit;
+  transition: background 0.2s, color 0.2s;
+  margin-bottom: 0;
+}
+
+.mindmap-toggle:hover {
+  background: rgba(0,0,0,0.03);
+  color: var(--text);
+}
+
+.mindmap-toggle .arrow {
+  margin-left: auto;
+  transition: transform 0.25s;
+  font-style: normal;
+}
+
+.mindmap-toggle.open .arrow {
+  transform: rotate(180deg);
+}
+
+.mindmap-container {
+  display: none;
+  margin-top: 12px;
+  background: rgba(255,255,255,0.6);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 24px 16px;
+  overflow-x: auto;
+}
+
+.mindmap-container.visible {
+  display: block;
+}
+
+/* ── Mind map tree ── */
+.tree {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  padding: 8px 0;
+}
+
+/* Central node */
+.tree-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.tree-root-node {
+  padding: 10px 18px;
+  border-radius: 24px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* connector from root to branches */
+.tree-root-node::after {
+  content: '';
+  position: absolute;
+  right: -28px;
+  top: 50%;
+  width: 28px;
+  height: 2px;
+  background: var(--branch-color, #aaa);
+}
+
+/* Branches column */
+.tree-branches {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-left: 28px;
+  position: relative;
+}
+
+/* vertical line connecting all branches */
+.tree-branches::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 2px;
+  background: var(--branch-color, #aaa);
+}
+
+/* Each branch group */
+.branch {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+
+/* horizontal line from vertical bar to branch node */
+.branch::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 18px;
+  width: 24px;
+  height: 2px;
+  background: var(--branch-color, #aaa);
+}
+
+.branch-node {
+  margin-left: 24px;
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.88rem;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+  position: relative;
+}
+
+/* connector from branch to sub-nodes */
+.branch-node::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background: var(--sub-color, #ccc);
+}
+
+/* sub-nodes column */
+.sub-nodes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.sub-nodes::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 1px;
+  background: var(--sub-color, #ccc);
+}
+
+.sub-node {
+  position: relative;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  border: 1px solid var(--sub-color, #ccc);
+  background: rgba(255,255,255,0.8);
+  white-space: nowrap;
+}
+
+.sub-node::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  width: 20px;
+  height: 1px;
+  background: var(--sub-color, #ccc);
+}
+
+/* ── Welcome screen ── */
+.welcome {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.welcome .notebook-cover {
+  font-size: 5rem;
+  margin-bottom: 20px;
+}
+
+.welcome h2 {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+.welcome p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  max-width: 420px;
+  margin: 0 auto 32px;
+  line-height: 1.7;
+}
+
+.subject-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.pill-btn {
+  padding: 8px 20px;
+  border-radius: 24px;
+  border: 2px solid var(--pill-color, #888);
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--pill-color, #888);
+  transition: background 0.2s, color 0.2s;
+}
+
+.pill-btn:hover {
+  background: var(--pill-color);
+  color: #fff;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  :root { --sidebar-width: 0px; }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+    top: unset;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 8px;
+    gap: 4px;
+  }
+
+  .sidebar-title { display: none; }
+
+  .subject-btn {
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 12px;
+    min-width: 80px;
+    text-align: center;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .subject-btn.active {
+    border-bottom-color: var(--accent, #f5f0e8);
+    border-left-color: transparent;
+  }
+
+  .subject-btn .label small { display: none; }
+
+  .layout {
+    flex-direction: column;
+    padding-top: var(--header-h);
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 20px 16px;
+  }
+
+  .tree-root-node::after,
+  .branch-node::after { display: none; }
+
+  .tree {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .tree-branches { padding-left: 16px; }
+
+  .sub-nodes { padding-left: 16px; }
+}

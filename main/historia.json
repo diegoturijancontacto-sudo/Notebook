@@ -1,0 +1,78 @@
+{
+  "materia": "Historia Universal",
+  "color": "#c0392b",
+  "icono": "📜",
+  "profesor": "Mtra. Ana Rodríguez",
+  "descripcion": "Historia de la humanidad desde la Antigüedad hasta la era contemporánea",
+  "apuntes": [
+    {
+      "id": 1,
+      "titulo": "La Revolución Francesa",
+      "fecha": "2024-02-07",
+      "contenido": "La Revolución Francesa (1789–1799) fue un período de cambio político y social radical en Francia. Puso fin al absolutismo monárquico de Luis XVI y proclamó los principios de Libertad, Igualdad y Fraternidad. Entre sus causas destacan la crisis económica, la desigualdad social y la Ilustración.",
+      "mapa_mental": {
+        "nodo_central": "Revolución Francesa",
+        "ramas": [
+          {
+            "tema": "Causas",
+            "subtemas": ["Crisis económica", "Desigualdad social", "Ideas ilustradas", "Deudas por guerras"]
+          },
+          {
+            "tema": "Etapas",
+            "subtemas": ["Asamblea Nacional", "La Convención", "El Terror", "Directorio"]
+          },
+          {
+            "tema": "Consecuencias",
+            "subtemas": ["Declaración de Derechos", "Abolición del feudalismo", "Expansión napoleónica"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "titulo": "La Segunda Guerra Mundial",
+      "fecha": "2024-02-21",
+      "contenido": "La Segunda Guerra Mundial (1939–1945) fue el conflicto armado más devastador de la historia humana. Involucró a la mayoría de las naciones del mundo en dos alianzas militares opuestas: los Aliados y las Potencias del Eje. Terminó con la rendición de Alemania y Japón, y marcó el inicio de la Guerra Fría.",
+      "mapa_mental": {
+        "nodo_central": "II Guerra Mundial",
+        "ramas": [
+          {
+            "tema": "Causas",
+            "subtemas": ["Tratado de Versalles", "Crisis económica", "Ascenso del nazismo", "Expansionismo japonés"]
+          },
+          {
+            "tema": "Frentes",
+            "subtemas": ["Europa occidental", "Frente oriental", "África del Norte", "Pacífico"]
+          },
+          {
+            "tema": "Consecuencias",
+            "subtemas": ["ONU", "Plan Marshall", "Guerra Fría", "Descolonización"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "titulo": "La Revolución Industrial",
+      "fecha": "2024-03-06",
+      "contenido": "La Revolución Industrial inició en Gran Bretaña a finales del siglo XVIII y se extendió a Europa y América durante el siglo XIX. Transformó la producción artesanal en manufactura fabril, impulsando el uso del carbón, el vapor y la mecanización. Cambió radicalmente la sociedad, la economía y el medioambiente.",
+      "mapa_mental": {
+        "nodo_central": "Rev. Industrial",
+        "ramas": [
+          {
+            "tema": "Inventos clave",
+            "subtemas": ["Máquina de vapor", "Telar mecánico", "Ferrocarril", "Iluminación a gas"]
+          },
+          {
+            "tema": "Impacto social",
+            "subtemas": ["Urbanización", "Clase obrera", "Trabajo infantil", "Sindicalismo"]
+          },
+          {
+            "tema": "Impacto económico",
+            "subtemas": ["Capitalismo industrial", "Comercio global", "Imperialismo"]
+          }
+        ]
+      }
+    }
+  ]
+}

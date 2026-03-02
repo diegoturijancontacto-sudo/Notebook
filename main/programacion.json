@@ -1,0 +1,78 @@
+{
+  "materia": "Programación",
+  "color": "#8e44ad",
+  "icono": "💻",
+  "profesor": "Ing. Sofía Torres",
+  "descripcion": "Fundamentos de programación orientada a objetos con Python y JavaScript",
+  "apuntes": [
+    {
+      "id": 1,
+      "titulo": "Programación Orientada a Objetos",
+      "fecha": "2024-02-09",
+      "contenido": "La POO es un paradigma de programación que organiza el código en objetos, los cuales combinan datos (atributos) y comportamiento (métodos). Sus pilares son encapsulamiento, herencia, polimorfismo y abstracción. Facilita la reutilización de código y el mantenimiento de sistemas complejos.",
+      "mapa_mental": {
+        "nodo_central": "POO",
+        "ramas": [
+          {
+            "tema": "Pilares",
+            "subtemas": ["Encapsulamiento", "Herencia", "Polimorfismo", "Abstracción"]
+          },
+          {
+            "tema": "Clases y Objetos",
+            "subtemas": ["Definición de clase", "Instanciación", "Constructor", "Atributos y métodos"]
+          },
+          {
+            "tema": "Patrones de diseño",
+            "subtemas": ["Singleton", "Factory", "Observer", "Decorador"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "titulo": "Estructuras de Datos",
+      "fecha": "2024-02-23",
+      "contenido": "Las estructuras de datos organizan y almacenan información de manera eficiente. Las más comunes incluyen listas, pilas, colas, árboles y grafos. La elección de la estructura correcta impacta directamente en el rendimiento del algoritmo.",
+      "mapa_mental": {
+        "nodo_central": "Estructuras de Datos",
+        "ramas": [
+          {
+            "tema": "Lineales",
+            "subtemas": ["Array", "Lista enlazada", "Pila (Stack)", "Cola (Queue)"]
+          },
+          {
+            "tema": "No lineales",
+            "subtemas": ["Árbol binario", "Árbol AVL", "Grafo dirigido", "Grafo no dirigido"]
+          },
+          {
+            "tema": "Tablas hash",
+            "subtemas": ["Función hash", "Colisiones", "Encadenamiento", "Direccionamiento abierto"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "titulo": "Algoritmos y Complejidad",
+      "fecha": "2024-03-08",
+      "contenido": "Un algoritmo es un conjunto finito de instrucciones para resolver un problema. La complejidad algorítmica se mide en notación Big-O, que describe el comportamiento del algoritmo en el peor caso. Los algoritmos de ordenamiento y búsqueda son fundamentales en ciencias de la computación.",
+      "mapa_mental": {
+        "nodo_central": "Algoritmos",
+        "ramas": [
+          {
+            "tema": "Ordenamiento",
+            "subtemas": ["Bubble Sort O(n²)", "Merge Sort O(n log n)", "Quick Sort O(n log n)", "Heap Sort O(n log n)"]
+          },
+          {
+            "tema": "Búsqueda",
+            "subtemas": ["Búsqueda lineal O(n)", "Búsqueda binaria O(log n)", "BFS", "DFS"]
+          },
+          {
+            "tema": "Complejidad",
+            "subtemas": ["Notación Big-O", "Mejor caso", "Peor caso", "Caso promedio"]
+          }
+        ]
+      }
+    }
+  ]
+}

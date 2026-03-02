@@ -1,0 +1,78 @@
+{
+  "materia": "Biología",
+  "color": "#27ae60",
+  "icono": "🔬",
+  "profesor": "Dr. Luis Mendoza",
+  "descripcion": "Biología celular y molecular, genética y evolución",
+  "apuntes": [
+    {
+      "id": 1,
+      "titulo": "La Célula y sus Orgánulos",
+      "fecha": "2024-02-08",
+      "contenido": "La célula es la unidad fundamental de la vida. Existen dos tipos principales: las células procariotas (sin núcleo definido, como las bacterias) y las eucariotas (con núcleo membranoso). Los orgánulos como la mitocondria, el ribosoma y el retículo endoplasmático cumplen funciones especializadas.",
+      "mapa_mental": {
+        "nodo_central": "La Célula",
+        "ramas": [
+          {
+            "tema": "Tipos de células",
+            "subtemas": ["Procariota", "Eucariota animal", "Eucariota vegetal"]
+          },
+          {
+            "tema": "Orgánulos",
+            "subtemas": ["Mitocondria", "Ribosomas", "Retículo endoplasmático", "Aparato de Golgi", "Lisosomas"]
+          },
+          {
+            "tema": "Funciones",
+            "subtemas": ["Metabolismo", "Síntesis de proteínas", "Respiración celular", "División celular"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "titulo": "Genética y Herencia",
+      "fecha": "2024-02-22",
+      "contenido": "La genética estudia cómo los rasgos se transmiten de padres a hijos a través de los genes. Gregor Mendel estableció las leyes de segregación y distribución independiente. El ADN, compuesto por nucleótidos, codifica la información hereditaria en secuencias de bases nitrogenadas.",
+      "mapa_mental": {
+        "nodo_central": "Genética",
+        "ramas": [
+          {
+            "tema": "Leyes de Mendel",
+            "subtemas": ["Segregación", "Distribución independiente", "Dominancia"]
+          },
+          {
+            "tema": "ADN y ARN",
+            "subtemas": ["Estructura del ADN", "Replicación", "Transcripción", "Traducción"]
+          },
+          {
+            "tema": "Mutaciones",
+            "subtemas": ["Mutaciones génicas", "Mutaciones cromosómicas", "Factores ambientales"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "titulo": "Evolución y Selección Natural",
+      "fecha": "2024-03-07",
+      "contenido": "La teoría de la evolución por selección natural fue propuesta por Charles Darwin. Establece que los organismos con rasgos favorables para su entorno tienen más probabilidades de sobrevivir y reproducirse, transmitiendo esos rasgos a su descendencia. La evidencia incluye fósiles, anatomía comparada y biología molecular.",
+      "mapa_mental": {
+        "nodo_central": "Evolución",
+        "ramas": [
+          {
+            "tema": "Mecanismos",
+            "subtemas": ["Selección natural", "Mutación", "Deriva genética", "Flujo génico"]
+          },
+          {
+            "tema": "Evidencias",
+            "subtemas": ["Registro fósil", "Anatomía comparada", "Embriología", "Genómica"]
+          },
+          {
+            "tema": "Especiación",
+            "subtemas": ["Aislamiento reproductivo", "Especiación alopátrica", "Especiación simpátrica"]
+          }
+        ]
+      }
+    }
+  ]
+}
