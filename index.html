@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Libreta de Notas</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────────────── -->
+  <header>
+    <span class="logo" aria-hidden="true">📓</span>
+    <h1>Libreta de Notas</h1>
+    <span class="subtitle">Apuntes · Mapas Mentales · Materias</span>
+  </header>
+
+  <!-- ── Layout ─────────────────────────────────────────────────── -->
+  <div class="layout">
+
+    <!-- Sidebar – subject navigation -->
+    <nav class="sidebar" aria-label="Navegación de materias">
+      <p class="sidebar-title">Materias</p>
+      <div id="subject-nav">
+        <!-- Buttons injected by app.js -->
+      </div>
+    </nav>
+
+    <!-- Main content area -->
+    <main class="main" id="main-content" aria-live="polite">
+      <!-- Content injected by app.js -->
+    </main>
+
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

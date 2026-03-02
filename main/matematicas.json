@@ -1,0 +1,78 @@
+{
+  "materia": "Matemáticas",
+  "color": "#4a90d9",
+  "icono": "📐",
+  "profesor": "Dr. Carlos García",
+  "descripcion": "Cálculo diferencial e integral para ingeniería",
+  "apuntes": [
+    {
+      "id": 1,
+      "titulo": "Derivadas e Integrales",
+      "fecha": "2024-02-05",
+      "contenido": "La derivada de una función mide la tasa de cambio instantánea. Si f(x) es una función, su derivada f'(x) se define como el límite del cociente incremental. Las reglas básicas incluyen la regla de la potencia, la regla del producto, la regla del cociente y la regla de la cadena.",
+      "mapa_mental": {
+        "nodo_central": "Cálculo",
+        "ramas": [
+          {
+            "tema": "Derivadas",
+            "subtemas": ["Regla de la cadena", "Regla del producto", "Regla del cociente", "Derivadas implícitas"]
+          },
+          {
+            "tema": "Integrales",
+            "subtemas": ["Integral definida", "Integral indefinida", "Regla de sustitución", "Integración por partes"]
+          },
+          {
+            "tema": "Aplicaciones",
+            "subtemas": ["Máximos y mínimos", "Áreas bajo la curva", "Volúmenes de revolución"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 2,
+      "titulo": "Límites y Continuidad",
+      "fecha": "2024-02-19",
+      "contenido": "Un límite describe el comportamiento de una función a medida que la variable independiente se aproxima a un punto. Se dice que una función es continua en un punto si el límite existe, la función está definida en ese punto, y el límite es igual al valor de la función.",
+      "mapa_mental": {
+        "nodo_central": "Límites",
+        "ramas": [
+          {
+            "tema": "Definición formal",
+            "subtemas": ["Definición épsilon-delta", "Límites laterales", "Límites al infinito"]
+          },
+          {
+            "tema": "Continuidad",
+            "subtemas": ["Continuidad en un punto", "Continuidad en un intervalo", "Tipos de discontinuidad"]
+          },
+          {
+            "tema": "Técnicas de evaluación",
+            "subtemas": ["Factorización", "Racionalización", "Regla de L'Hôpital"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "titulo": "Álgebra Lineal – Matrices",
+      "fecha": "2024-03-04",
+      "contenido": "Una matriz es un arreglo rectangular de números. Las operaciones básicas son suma, resta y multiplicación. El determinante de una matriz cuadrada es un escalar que resume ciertas propiedades de la transformación lineal que representa.",
+      "mapa_mental": {
+        "nodo_central": "Matrices",
+        "ramas": [
+          {
+            "tema": "Operaciones",
+            "subtemas": ["Suma", "Multiplicación", "Transpuesta", "Inversa"]
+          },
+          {
+            "tema": "Determinantes",
+            "subtemas": ["Regla de Sarrus", "Expansión de cofactores", "Propiedades"]
+          },
+          {
+            "tema": "Sistemas de ecuaciones",
+            "subtemas": ["Eliminación gaussiana", "Regla de Cramer", "Método de Gauss-Jordan"]
+          }
+        ]
+      }
+    }
+  ]
+}
