@@ -1,75 +1,362 @@
 {
-  "materia": "Programación",
-  "color": "#8e44ad",
-  "icono": "💻",
-  "profesor": "Ing. Sofía Torres",
-  "descripcion": "Fundamentos de programación orientada a objetos con Python y JavaScript",
+  "materia": "Ciencias Políticas I",
+  "color": "#e63946",
+  "icono": "🏛️",
+  "profesor": "Dr. Alejandro Montiel",
+  "descripcion": "Introducción a la teoría política, el Estado y los sistemas de gobierno",
   "apuntes": [
     {
       "id": 1,
-      "titulo": "Programación Orientada a Objetos",
-      "fecha": "2024-02-09",
-      "contenido": "La POO es un paradigma de programación que organiza el código en objetos, los cuales combinan datos (atributos) y comportamiento (métodos). Sus pilares son encapsulamiento, herencia, polimorfismo y abstracción. Facilita la reutilización de código y el mantenimiento de sistemas complejos.",
+      "titulo": "Definición y Objeto de la Ciencia Política",
+      "fecha": "2024-08-12",
+      "contenido": "La ciencia política es el estudio sistemático del gobierno, la política y el poder. Se centra en el análisis de las estructuras políticas, los procesos de toma de decisiones y el comportamiento de los actores políticos en la sociedad. Su objeto de estudio es el fenómeno del poder y su organización en el Estado.",
       "mapa_mental": {
-        "nodo_central": "POO",
+        "nodo_central": "Ciencia Política",
         "ramas": [
           {
-            "tema": "Pilares",
-            "subtemas": ["Encapsulamiento", "Herencia", "Polimorfismo", "Abstracción"]
+            "tema": "Objeto",
+            "subtemas": ["El Poder", "El Estado", "Políticas Públicas"]
           },
           {
-            "tema": "Clases y Objetos",
-            "subtemas": ["Definición de clase", "Instanciación", "Constructor", "Atributos y métodos"]
-          },
-          {
-            "tema": "Patrones de diseño",
-            "subtemas": ["Singleton", "Factory", "Observer", "Decorador"]
+            "tema": "Métodos",
+            "subtemas": ["Comparativo", "Sistémico", "Conductista"]
           }
         ]
       }
     },
     {
       "id": 2,
-      "titulo": "Estructuras de Datos",
-      "fecha": "2024-02-23",
-      "contenido": "Las estructuras de datos organizan y almacenan información de manera eficiente. Las más comunes incluyen listas, pilas, colas, árboles y grafos. La elección de la estructura correcta impacta directamente en el rendimiento del algoritmo.",
+      "titulo": "El Concepto de Poder",
+      "fecha": "2024-08-15",
+      "contenido": "El poder es la capacidad de un actor para influir en el comportamiento de otros. Según Max Weber, se distingue entre poder (Macht) y autoridad (Herrschaft). La autoridad es el poder legitimado que los ciudadanos aceptan como válido.",
       "mapa_mental": {
-        "nodo_central": "Estructuras de Datos",
+        "nodo_central": "Poder",
         "ramas": [
           {
-            "tema": "Lineales",
-            "subtemas": ["Array", "Lista enlazada", "Pila (Stack)", "Cola (Queue)"]
+            "tema": "Tipos (Weber)",
+            "subtemas": ["Tradicional", "Carismático", "Racional-Legal"]
           },
           {
-            "tema": "No lineales",
-            "subtemas": ["Árbol binario", "Árbol AVL", "Grafo dirigido", "Grafo no dirigido"]
-          },
-          {
-            "tema": "Tablas hash",
-            "subtemas": ["Función hash", "Colisiones", "Encadenamiento", "Direccionamiento abierto"]
+            "tema": "Dimensiones",
+            "subtemas": ["Coerción", "Influencia", "Autoridad"]
           }
         ]
       }
     },
     {
       "id": 3,
-      "titulo": "Algoritmos y Complejidad",
-      "fecha": "2024-03-08",
-      "contenido": "Un algoritmo es un conjunto finito de instrucciones para resolver un problema. La complejidad algorítmica se mide en notación Big-O, que describe el comportamiento del algoritmo en el peor caso. Los algoritmos de ordenamiento y búsqueda son fundamentales en ciencias de la computación.",
+      "titulo": "Teoría del Estado",
+      "fecha": "2024-08-19",
+      "contenido": "El Estado es una organización política que ejerce soberanía sobre un territorio y una población definidos. Posee el monopolio legítimo del uso de la fuerza física. Se compone de tres elementos esenciales: territorio, población y gobierno.",
       "mapa_mental": {
-        "nodo_central": "Algoritmos",
+        "nodo_central": "El Estado",
         "ramas": [
           {
-            "tema": "Ordenamiento",
-            "subtemas": ["Bubble Sort O(n²)", "Merge Sort O(n log n)", "Quick Sort O(n log n)", "Heap Sort O(n log n)"]
+            "tema": "Elementos",
+            "subtemas": ["Población", "Territorio", "Poder Soberano"]
           },
           {
-            "tema": "Búsqueda",
-            "subtemas": ["Búsqueda lineal O(n)", "Búsqueda binaria O(log n)", "BFS", "DFS"]
+            "tema": "Funciones",
+            "subtemas": ["Legislativa", "Ejecutiva", "Judicial"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "titulo": "Pensamiento Político Clásico: Platón y Aristóteles",
+      "fecha": "2024-08-22",
+      "contenido": "Platón propone la 'República' gobernada por filósofos-reyes. Aristóteles, en su obra 'Política', analiza las formas de gobierno y define al hombre como un 'Zoon Politikon' (animal político) que solo se realiza plenamente en la polis.",
+      "mapa_mental": {
+        "nodo_central": "Pensamiento Clásico",
+        "ramas": [
+          {
+            "tema": "Platón",
+            "subtemas": ["Justicia", "Rey Filósofo", "Alegoría de la caverna"]
           },
           {
-            "tema": "Complejidad",
-            "subtemas": ["Notación Big-O", "Mejor caso", "Peor caso", "Caso promedio"]
+            "tema": "Aristóteles",
+            "subtemas": ["Ética y Política", "Clasificación de regímenes", "Bien Común"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "titulo": "Maquiavelo y el Realismo Político",
+      "fecha": "2024-08-26",
+      "contenido": "Nicolás Maquiavelo separa la moral de la política en 'El Príncipe'. Sostiene que el gobernante debe buscar la estabilidad del Estado por encima de consideraciones éticas individuales, introduciendo el concepto de 'razón de Estado'.",
+      "mapa_mental": {
+        "nodo_central": "Realismo",
+        "ramas": [
+          {
+            "tema": "Maquiavelo",
+            "subtemas": ["Virtù y Fortuna", "El fin justifica los medios", "Autonomía de lo político"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "titulo": "El Contractualismo: Hobbes",
+      "fecha": "2024-08-29",
+      "contenido": "Thomas Hobbes propone en 'Leviatán' que en el estado de naturaleza hay una 'guerra de todos contra todos'. Para evitar la muerte violenta, los hombres ceden su libertad a un soberano absoluto mediante un contrato social.",
+      "mapa_mental": {
+        "nodo_central": "Hobbes",
+        "ramas": [
+          {
+            "tema": "Estado de Naturaleza",
+            "subtemas": ["Pesimismo", "Miedo", "Guerra"]
+          },
+          {
+            "tema": "Contrato",
+            "subtemas": ["Soberanía absoluta", "Seguridad", "Orden"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "titulo": "El Liberalismo: Locke",
+      "fecha": "2024-09-02",
+      "contenido": "John Locke es el padre del liberalismo clásico. Defiende que el contrato social debe proteger los derechos naturales: vida, libertad y propiedad. Propone la división de poderes y el derecho a la rebelión contra la tiranía.",
+      "mapa_mental": {
+        "nodo_central": "Liberalismo",
+        "ramas": [
+          {
+            "tema": "Derechos Naturales",
+            "subtemas": ["Vida", "Libertad", "Propiedad"]
+          },
+          {
+            "tema": "Gobierno",
+            "subtemas": ["Consentimiento", "Límites al poder", "Parlamentarismo"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "titulo": "Rousseau y la Voluntad General",
+      "fecha": "2024-09-05",
+      "contenido": "Rousseau critica la civilización y propone que el hombre nace libre. En 'El Contrato Social', plantea que la soberanía reside en el pueblo y se expresa a través de la voluntad general, buscando el interés común.",
+      "mapa_mental": {
+        "nodo_central": "Rousseau",
+        "ramas": [
+          {
+            "tema": "Conceptos",
+            "subtemas": ["Voluntad General", "Soberanía Popular", "Igualdad"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "titulo": "La División de Poderes: Montesquieu",
+      "fecha": "2024-09-09",
+      "contenido": "En 'El espíritu de las leyes', Montesquieu desarrolla la teoría de la separación de poderes para evitar el abuso del mando: Legislativo, Ejecutivo y Judicial deben ser independientes y controlarse entre sí.",
+      "mapa_mental": {
+        "nodo_central": "Montesquieu",
+        "ramas": [
+          {
+            "tema": "Poderes",
+            "subtemas": ["Legislativo", "Ejecutivo", "Judicial"]
+          },
+          {
+            "tema": "Sistema",
+            "subtemas": ["Pesos y contrapesos", "Libertad política"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "titulo": "Ideologías Políticas: Liberalismo y Conservadurismo",
+      "fecha": "2024-09-12",
+      "contenido": "El liberalismo prioriza la libertad individual y el mercado. El conservadurismo enfatiza la tradición, el orden social y la estabilidad institucional ante cambios radicales.",
+      "mapa_mental": {
+        "nodo_central": "Ideologías",
+        "ramas": [
+          {
+            "tema": "Liberalismo",
+            "subtemas": ["Individuo", "Laissez-faire", "Derechos"]
+          },
+          {
+            "tema": "Conservadurismo",
+            "subtemas": ["Tradición", "Religión", "Autoridad"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "titulo": "El Marxismo y la Crítica al Capitalismo",
+      "fecha": "2024-09-16",
+      "contenido": "Karl Marx analiza la historia como una lucha de clases. Sostiene que el Estado es un instrumento de dominación de la burguesía sobre el proletariado y propone la abolición de la propiedad privada.",
+      "mapa_mental": {
+        "nodo_central": "Marxismo",
+        "ramas": [
+          {
+            "tema": "Materialismo",
+            "subtemas": ["Estructura económica", "Superestructura", "Lucha de clases"]
+          },
+          {
+            "tema": "Conceptos",
+            "subtemas": ["Plusvalía", "Alienación", "Revolución"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "titulo": "Regímenes Políticos: Democracia",
+      "fecha": "2024-09-19",
+      "contenido": "La democracia es el gobierno del pueblo. Se caracteriza por elecciones libres, pluripartidismo, respeto a los derechos humanos y el imperio de la ley. Puede ser directa, representativa o deliberativa.",
+      "mapa_mental": {
+        "nodo_central": "Democracia",
+        "ramas": [
+          {
+            "tema": "Requisitos",
+            "subtemas": ["Elecciones", "Competencia", "Participación"]
+          },
+          {
+            "tema": "Tipos",
+            "subtemas": ["Representativa", "Participativa", "Liberal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "titulo": "Regímenes Autoritarios y Totalitarios",
+      "fecha": "2024-09-23",
+      "contenido": "El autoritarismo limita el pluralismo político pero permite cierta libertad social. El totalitarismo busca el control absoluto de la vida pública y privada mediante una ideología única y el terror.",
+      "mapa_mental": {
+        "nodo_central": "No Democracia",
+        "ramas": [
+          {
+            "tema": "Totalitarismo",
+            "subtemas": ["Partido único", "Ideología oficial", "Control total"]
+          },
+          {
+            "tema": "Autoritarismo",
+            "subtemas": ["Pluralismo limitado", "Sin ideología elaborada"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "titulo": "Sistemas de Gobierno: Presidencialismo",
+      "fecha": "2024-09-26",
+      "contenido": "En el presidencialismo, el Jefe de Estado y el Jefe de Gobierno son la misma persona. Existe una separación rígida de poderes y el presidente es elegido directamente por el pueblo.",
+      "mapa_mental": {
+        "nodo_central": "Presidencialismo",
+        "ramas": [
+          {
+            "tema": "Características",
+            "subtemas": ["Mandato fijo", "Elección directa", "Unipersonal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "titulo": "Sistemas de Gobierno: Parlamentarismo",
+      "fecha": "2024-09-30",
+      "contenido": "El ejecutivo emana del legislativo. Hay una distinción entre Jefe de Estado (monarca o presidente) y Jefe de Gobierno (Primer Ministro). El gobierno depende de la confianza del parlamento.",
+      "mapa_mental": {
+        "nodo_central": "Parlamentarismo",
+        "ramas": [
+          {
+            "tema": "Dinámica",
+            "subtemas": ["Voto de censura", "Cuestión de confianza", "Ejecutivo dual"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "titulo": "Partidos Políticos y Sistemas de Partidos",
+      "fecha": "2024-10-03",
+      "contenido": "Los partidos son organizaciones que buscan alcanzar el poder político. Los sistemas pueden ser bipartidistas, multipartidistas o de partido único/hegemónico.",
+      "mapa_mental": {
+        "nodo_central": "Partidos",
+        "ramas": [
+          {
+            "tema": "Funciones",
+            "subtemas": ["Movilización", "Reclutamiento", "Socialización"]
+          },
+          {
+            "tema": "Sistemas",
+            "subtemas": ["Bipartidismo", "Multipartidismo polarizado", "Pluralismo moderado"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "titulo": "Cultura Política y Socialización",
+      "fecha": "2024-10-07",
+      "contenido": "La cultura política son los valores, creencias y actitudes de una sociedad hacia el sistema político. La socialización política es el proceso por el cual se transmiten estas orientaciones a través de la familia, escuela y medios.",
+      "mapa_mental": {
+        "nodo_central": "Cultura",
+        "ramas": [
+          {
+            "tema": "Tipos (Almond/Verba)",
+            "subtemas": ["Parroquial", "Súbdito", "Participante"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "titulo": "Sistemas Electorales",
+      "fecha": "2024-10-10",
+      "contenido": "Son las reglas que transforman votos en escaños. Los principales son el sistema mayoritario (ganador se lleva todo) y el sistema proporcional (reparto según porcentaje de votos).",
+      "mapa_mental": {
+        "nodo_central": "Elecciones",
+        "ramas": [
+          {
+            "tema": "Mayoritario",
+            "subtemas": ["Estabilidad", "Bipartidismo", "Distrito uninominal"]
+          },
+          {
+            "tema": "Proporcional",
+            "subtemas": ["Representatividad", "Fragmentación", "Listas"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "titulo": "Grupos de Presión y Movimientos Sociales",
+      "fecha": "2024-10-14",
+      "contenido": "A diferencia de los partidos, los grupos de presión no buscan gobernar, sino influir en las decisiones públicas desde fuera. Los movimientos sociales buscan el cambio social mediante la acción colectiva.",
+      "mapa_mental": {
+        "nodo_central": "Participación",
+        "ramas": [
+          {
+            "tema": "Grupos de Presión",
+            "subtemas": ["Lobbying", "Intereses económicos", "Sindicatos"]
+          },
+          {
+            "tema": "Movimientos",
+            "subtemas": ["Identidad", "Redes", "Contestación"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "titulo": "Políticas Públicas",
+      "fecha": "2024-10-17",
+      "contenido": "Son el conjunto de acciones y decisiones que el Estado lleva a cabo para solucionar problemas sociales. Incluye etapas como el diagnóstico, diseño, implementación y evaluación.",
+      "mapa_mental": {
+        "nodo_central": "Políticas Públicas",
+        "ramas": [
+          {
+            "tema": "Ciclo",
+            "subtemas": ["Agenda", "Formulación", "Implementación", "Evaluación"]
           }
         ]
       }
