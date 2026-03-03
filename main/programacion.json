@@ -8,7 +8,7 @@
     {
       "id": 1,
       "titulo": "Definición y Objeto de la Ciencia Política",
-      "fecha": "2024-08-12",
+      "fecha": "2026-01-12",
       "contenido": "La ciencia política es el estudio sistemático del gobierno, la política y el poder. Se centra en el análisis de las estructuras políticas, los procesos de toma de decisiones y el comportamiento de los actores políticos en la sociedad. Su objeto de estudio es el fenómeno del poder y su organización en el Estado.",
       "mapa_mental": {
         "nodo_central": "Ciencia Política",
@@ -27,7 +27,7 @@
     {
       "id": 2,
       "titulo": "El Concepto de Poder",
-      "fecha": "2024-08-15",
+      "fecha": "2026-01-15",
       "contenido": "El poder es la capacidad de un actor para influir en el comportamiento de otros. Según Max Weber, se distingue entre poder (Macht) y autoridad (Herrschaft). La autoridad es el poder legitimado que los ciudadanos aceptan como válido.",
       "mapa_mental": {
         "nodo_central": "Poder",
@@ -46,7 +46,7 @@
     {
       "id": 3,
       "titulo": "Teoría del Estado",
-      "fecha": "2024-08-19",
+      "fecha": "2026-01-19",
       "contenido": "El Estado es una organización política que ejerce soberanía sobre un territorio y una población definidos. Posee el monopolio legítimo del uso de la fuerza física. Se compone de tres elementos esenciales: territorio, población y gobierno.",
       "mapa_mental": {
         "nodo_central": "El Estado",
@@ -65,7 +65,7 @@
     {
       "id": 4,
       "titulo": "Pensamiento Político Clásico: Platón y Aristóteles",
-      "fecha": "2024-08-22",
+      "fecha": "2026-01-22",
       "contenido": "Platón propone la 'República' gobernada por filósofos-reyes. Aristóteles, en su obra 'Política', analiza las formas de gobierno y define al hombre como un 'Zoon Politikon' (animal político) que solo se realiza plenamente en la polis.",
       "mapa_mental": {
         "nodo_central": "Pensamiento Clásico",
@@ -84,7 +84,7 @@
     {
       "id": 5,
       "titulo": "Maquiavelo y el Realismo Político",
-      "fecha": "2024-08-26",
+      "fecha": "2026-01-26",
       "contenido": "Nicolás Maquiavelo separa la moral de la política en 'El Príncipe'. Sostiene que el gobernante debe buscar la estabilidad del Estado por encima de consideraciones éticas individuales, introduciendo el concepto de 'razón de Estado'.",
       "mapa_mental": {
         "nodo_central": "Realismo",
@@ -99,7 +99,7 @@
     {
       "id": 6,
       "titulo": "El Contractualismo: Hobbes",
-      "fecha": "2024-08-29",
+      "fecha": "2026-01-29",
       "contenido": "Thomas Hobbes propone en 'Leviatán' que en el estado de naturaleza hay una 'guerra de todos contra todos'. Para evitar la muerte violenta, los hombres ceden su libertad a un soberano absoluto mediante un contrato social.",
       "mapa_mental": {
         "nodo_central": "Hobbes",
@@ -118,7 +118,7 @@
     {
       "id": 7,
       "titulo": "El Liberalismo: Locke",
-      "fecha": "2024-09-02",
+      "fecha": "2026-02-02",
       "contenido": "John Locke es el padre del liberalismo clásico. Defiende que el contrato social debe proteger los derechos naturales: vida, libertad y propiedad. Propone la división de poderes y el derecho a la rebelión contra la tiranía.",
       "mapa_mental": {
         "nodo_central": "Liberalismo",
@@ -137,7 +137,7 @@
     {
       "id": 8,
       "titulo": "Rousseau y la Voluntad General",
-      "fecha": "2024-09-05",
+      "fecha": "2026-02-05",
       "contenido": "Rousseau critica la civilización y propone que el hombre nace libre. En 'El Contrato Social', plantea que la soberanía reside en el pueblo y se expresa a través de la voluntad general, buscando el interés común.",
       "mapa_mental": {
         "nodo_central": "Rousseau",
@@ -152,7 +152,7 @@
     {
       "id": 9,
       "titulo": "La División de Poderes: Montesquieu",
-      "fecha": "2024-09-09",
+      "fecha": "2026-02-09",
       "contenido": "En 'El espíritu de las leyes', Montesquieu desarrolla la teoría de la separación de poderes para evitar el abuso del mando: Legislativo, Ejecutivo y Judicial deben ser independientes y controlarse entre sí.",
       "mapa_mental": {
         "nodo_central": "Montesquieu",
@@ -171,7 +171,7 @@
     {
       "id": 10,
       "titulo": "Ideologías Políticas: Liberalismo y Conservadurismo",
-      "fecha": "2024-09-12",
+      "fecha": "2026-02-12",
       "contenido": "El liberalismo prioriza la libertad individual y el mercado. El conservadurismo enfatiza la tradición, el orden social y la estabilidad institucional ante cambios radicales.",
       "mapa_mental": {
         "nodo_central": "Ideologías",
@@ -190,7 +190,7 @@
     {
       "id": 11,
       "titulo": "El Marxismo y la Crítica al Capitalismo",
-      "fecha": "2024-09-16",
+      "fecha": "2026-02-16",
       "contenido": "Karl Marx analiza la historia como una lucha de clases. Sostiene que el Estado es un instrumento de dominación de la burguesía sobre el proletariado y propone la abolición de la propiedad privada.",
       "mapa_mental": {
         "nodo_central": "Marxismo",
@@ -209,7 +209,7 @@
     {
       "id": 12,
       "titulo": "Regímenes Políticos: Democracia",
-      "fecha": "2024-09-19",
+      "fecha": "2026-02-19",
       "contenido": "La democracia es el gobierno del pueblo. Se caracteriza por elecciones libres, pluripartidismo, respeto a los derechos humanos y el imperio de la ley. Puede ser directa, representativa o deliberativa.",
       "mapa_mental": {
         "nodo_central": "Democracia",
@@ -228,7 +228,7 @@
     {
       "id": 13,
       "titulo": "Regímenes Autoritarios y Totalitarios",
-      "fecha": "2024-09-23",
+      "fecha": "2026-02-23",
       "contenido": "El autoritarismo limita el pluralismo político pero permite cierta libertad social. El totalitarismo busca el control absoluto de la vida pública y privada mediante una ideología única y el terror.",
       "mapa_mental": {
         "nodo_central": "No Democracia",
@@ -247,7 +247,7 @@
     {
       "id": 14,
       "titulo": "Sistemas de Gobierno: Presidencialismo",
-      "fecha": "2024-09-26",
+      "fecha": "2026-02-26",
       "contenido": "En el presidencialismo, el Jefe de Estado y el Jefe de Gobierno son la misma persona. Existe una separación rígida de poderes y el presidente es elegido directamente por el pueblo.",
       "mapa_mental": {
         "nodo_central": "Presidencialismo",
@@ -262,7 +262,7 @@
     {
       "id": 15,
       "titulo": "Sistemas de Gobierno: Parlamentarismo",
-      "fecha": "2024-09-30",
+      "fecha": "2026-02-30",
       "contenido": "El ejecutivo emana del legislativo. Hay una distinción entre Jefe de Estado (monarca o presidente) y Jefe de Gobierno (Primer Ministro). El gobierno depende de la confianza del parlamento.",
       "mapa_mental": {
         "nodo_central": "Parlamentarismo",
@@ -277,7 +277,7 @@
     {
       "id": 16,
       "titulo": "Partidos Políticos y Sistemas de Partidos",
-      "fecha": "2024-10-03",
+      "fecha": "2026-03-03",
       "contenido": "Los partidos son organizaciones que buscan alcanzar el poder político. Los sistemas pueden ser bipartidistas, multipartidistas o de partido único/hegemónico.",
       "mapa_mental": {
         "nodo_central": "Partidos",
@@ -296,7 +296,7 @@
     {
       "id": 17,
       "titulo": "Cultura Política y Socialización",
-      "fecha": "2024-10-07",
+      "fecha": "2026-03-07",
       "contenido": "La cultura política son los valores, creencias y actitudes de una sociedad hacia el sistema político. La socialización política es el proceso por el cual se transmiten estas orientaciones a través de la familia, escuela y medios.",
       "mapa_mental": {
         "nodo_central": "Cultura",
@@ -311,7 +311,7 @@
     {
       "id": 18,
       "titulo": "Sistemas Electorales",
-      "fecha": "2024-10-10",
+      "fecha": "2026-03-10",
       "contenido": "Son las reglas que transforman votos en escaños. Los principales son el sistema mayoritario (ganador se lleva todo) y el sistema proporcional (reparto según porcentaje de votos).",
       "mapa_mental": {
         "nodo_central": "Elecciones",
@@ -330,7 +330,7 @@
     {
       "id": 19,
       "titulo": "Grupos de Presión y Movimientos Sociales",
-      "fecha": "2024-10-14",
+      "fecha": "2026-03-14",
       "contenido": "A diferencia de los partidos, los grupos de presión no buscan gobernar, sino influir en las decisiones públicas desde fuera. Los movimientos sociales buscan el cambio social mediante la acción colectiva.",
       "mapa_mental": {
         "nodo_central": "Participación",
@@ -349,7 +349,7 @@
     {
       "id": 20,
       "titulo": "Políticas Públicas",
-      "fecha": "2024-10-17",
+      "fecha": "2026-03-17",
       "contenido": "Son el conjunto de acciones y decisiones que el Estado lleva a cabo para solucionar problemas sociales. Incluye etapas como el diagnóstico, diseño, implementación y evaluación.",
       "mapa_mental": {
         "nodo_central": "Políticas Públicas",
