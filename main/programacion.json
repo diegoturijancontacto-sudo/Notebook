@@ -1,269 +1,472 @@
 {
-  "materia": "Ciencias Políticas I",
-  "color": "#e63946",
-  "icono": "🏛️",
+  "materia": "Ciencias Políticas y Administración Pública",
+  "color": "#1a5e63",
+  "icono": "🖋️",
   "profesor": "Mtro Díaz Molina José Fernando",
-  "descripcion": "Introducción a la teoría política, el Estado y los sistemas de gobierno",
+  "descripcion": "Estudio integral de la teoría política, el Estado y la administración pública en el contexto mexicano",
   "apuntes": [
     {
       "id": 1,
-      "titulo": "Definición y Objeto de la Ciencia Política",
-      "fecha": "2026-01-12",
-      "contenido": "La ciencia política es el estudio sistemático del gobierno, la política y el poder. Se centra en el análisis de las estructuras políticas, los procesos de toma de decisiones y el comportamiento de los actores políticos en la sociedad. Su objeto de estudio es el fenómeno del poder y su organización en el Estado.",
+      "titulo": "¿Qué es la Ciencia Política?",
+      "fecha": "2024-01-07",
+      "contenido": "Es la disciplina que estudia el poder, el Estado y la organización política de la sociedad. Analiza cómo se adquiere, ejerce y distribuye el mando, así como los procesos e instituciones que rigen la vida pública.",
       "mapa_mental": {
         "nodo_central": "Ciencia Política",
         "ramas": [
           {
-            "tema": "Objeto",
-            "subtemas": ["El Poder", "El Estado", "Políticas Públicas"]
-          },
-          {
-            "tema": "Métodos",
-            "subtemas": ["Comparativo", "Sistémico", "Conductista"]
+            "tema": "Estudio",
+            "subtemas": ["Poder", "Estado", "Sistemas", "Instituciones"]
           }
         ]
       }
     },
     {
       "id": 2,
-      "titulo": "El Concepto de Poder",
-      "fecha": "2026-01-15",
-      "contenido": "El poder es la capacidad de un actor para influir en el comportamiento de otros. Según Max Weber, se distingue entre poder (Macht) y autoridad (Herrschaft). La autoridad es el poder legitimado que los ciudadanos aceptan como válido.",
+      "titulo": "Niveles de Teorización",
+      "fecha": "2024-01-09",
+      "contenido": "Se refiere a las escalas de análisis político: desde la teoría normativa (el deber ser) hasta la teoría empírica y aplicada (análisis de datos y procesos reales).",
       "mapa_mental": {
-        "nodo_central": "Poder",
+        "nodo_central": "Teorización",
         "ramas": [
           {
-            "tema": "Tipos (Weber)",
-            "subtemas": ["Tradicional", "Carismático", "Racional-Legal"]
-          },
-          {
-            "tema": "Dimensiones",
-            "subtemas": ["Coerción", "Influencia", "Autoridad"]
+            "tema": "Escalas",
+            "subtemas": ["Micro-política", "Meso-política", "Macro-política"]
           }
         ]
       }
     },
     {
       "id": 3,
-      "titulo": "Teoría del Estado",
-      "fecha": "2026-01-19",
-      "contenido": "El Estado es una organización política que ejerce soberanía sobre un territorio y una población definidos. Posee el monopolio legítimo del uso de la fuerza física. Se compone de tres elementos esenciales: territorio, población y gobierno.",
+      "titulo": "Concepto de Res Pública en Roma y Grecia",
+      "fecha": "2024-01-11",
+      "contenido": "En Grecia, la 'Polis' era el centro de la vida colectiva. En Roma, la 'Res Pública' (cosa pública) sentó las bases de la propiedad común y la administración de lo que pertenece a todos los ciudadanos.",
       "mapa_mental": {
-        "nodo_central": "El Estado",
+        "nodo_central": "Origen Clásico",
         "ramas": [
           {
-            "tema": "Elementos",
-            "subtemas": ["Población", "Territorio", "Poder Soberano"]
+            "tema": "Grecia",
+            "subtemas": ["Polis", "Zoon Politikon"]
           },
           {
-            "tema": "Funciones",
-            "subtemas": ["Legislativa", "Ejecutiva", "Judicial"]
+            "tema": "Roma",
+            "subtemas": ["Res Pública", "Derecho Romano"]
           }
         ]
       }
     },
     {
       "id": 4,
-      "titulo": "Pensamiento Político Clásico: Platón y Aristóteles",
-      "fecha": "2026-01-22",
-      "contenido": "Platón propone la 'República' gobernada por filósofos-reyes. Aristóteles, en su obra 'Política', analiza las formas de gobierno y define al hombre como un 'Zoon Politikon' (animal político) que solo se realiza plenamente en la polis.",
+      "titulo": "¿Qué es el Estado?",
+      "fecha": "2024-01-14",
+      "contenido": "Estructura de dominación que ejerce el monopolio de la violencia legítima en un territorio determinado. Se discute su origen contractual versus su origen histórico.",
       "mapa_mental": {
-        "nodo_central": "Pensamiento Clásico",
+        "nodo_central": "El Estado",
         "ramas": [
           {
-            "tema": "Platón",
-            "subtemas": ["Justicia", "Rey Filósofo", "Alegoría de la caverna"]
-          },
-          {
-            "tema": "Aristóteles",
-            "subtemas": ["Ética y Política", "Clasificación de regímenes", "Bien Común"]
+            "tema": "Definición",
+            "subtemas": ["Soberanía", "Gobierno", "Territorio"]
           }
         ]
       }
     },
     {
       "id": 5,
-      "titulo": "Maquiavelo y el Realismo Político",
-      "fecha": "2026-01-26",
-      "contenido": "Nicolás Maquiavelo separa la moral de la política en 'El Príncipe'. Sostiene que el gobernante debe buscar la estabilidad del Estado por encima de consideraciones éticas individuales, introduciendo el concepto de 'razón de Estado'.",
+      "titulo": "Política de Estado vs Política de Gobierno",
+      "fecha": "2024-01-16",
+      "contenido": "La Política de Estado es de largo plazo y trasciende administraciones (ej. seguridad nacional). La Política de Gobierno responde a la agenda inmediata del partido en el poder.",
       "mapa_mental": {
-        "nodo_central": "Realismo",
+        "nodo_central": "Políticas",
         "ramas": [
           {
-            "tema": "Maquiavelo",
-            "subtemas": ["Virtù y Fortuna", "El fin justifica los medios", "Autonomía de lo político"]
+            "tema": "Estado",
+            "subtemas": ["Permanencia", "Consenso", "Largo Plazo"]
+          },
+          {
+            "tema": "Gobierno",
+            "subtemas": ["Coyuntural", "Partidista", "Temporal"]
           }
         ]
       }
     },
     {
       "id": 6,
-      "titulo": "El Contractualismo: Hobbes",
-      "fecha": "2026-01-29",
-      "contenido": "Thomas Hobbes propone en 'Leviatán' que en el estado de naturaleza hay una 'guerra de todos contra todos'. Para evitar la muerte violenta, los hombres ceden su libertad a un soberano absoluto mediante un contrato social.",
+      "titulo": "La Administración Pública (AP)",
+      "fecha": "2024-01-18",
+      "contenido": "Brazo ejecutor del Estado encargado de gestionar los recursos y servicios para satisfacer las necesidades ciudadanas. Es la política en acción.",
       "mapa_mental": {
-        "nodo_central": "Hobbes",
+        "nodo_central": "Adm. Pública",
         "ramas": [
           {
-            "tema": "Estado de Naturaleza",
-            "subtemas": ["Pesimismo", "Miedo", "Guerra"]
-          },
-          {
-            "tema": "Contrato",
-            "subtemas": ["Soberanía absoluta", "Seguridad", "Orden"]
+            "tema": "Función",
+            "subtemas": ["Gestión", "Ejecución", "Servicio"]
           }
         ]
       }
     },
     {
       "id": 7,
-      "titulo": "El Liberalismo: Locke",
-      "fecha": "2026-02-02",
-      "contenido": "John Locke es el padre del liberalismo clásico. Defiende que el contrato social debe proteger los derechos naturales: vida, libertad y propiedad. Propone la división de poderes y el derecho a la rebelión contra la tiranía.",
+      "titulo": "Áreas de Estudio de la Teoría Pública",
+      "fecha": "2024-01-21",
+      "contenido": "Incluye el estudio de la burocracia, la gestión de recursos humanos, presupuesto público, derecho administrativo y evaluación de resultados.",
       "mapa_mental": {
-        "nodo_central": "Liberalismo",
+        "nodo_central": "Teoría Pública",
         "ramas": [
           {
-            "tema": "Derechos Naturales",
-            "subtemas": ["Vida", "Libertad", "Propiedad"]
-          },
-          {
-            "tema": "Gobierno",
-            "subtemas": ["Consentimiento", "Límites al poder", "Parlamentarismo"]
+            "tema": "Enfoques",
+            "subtemas": ["Jurídico", "Organizacional", "Económico"]
           }
         ]
       }
     },
     {
       "id": 8,
-      "titulo": "Rousseau y la Voluntad General",
-      "fecha": "2026-02-05",
-      "contenido": "Rousseau critica la civilización y propone que el hombre nace libre. En 'El Contrato Social', plantea que la soberanía reside en el pueblo y se expresa a través de la voluntad general, buscando el interés común.",
+      "titulo": "La Lista Tipo de la UNESCO",
+      "fecha": "2024-01-23",
+      "contenido": "Clasificación estándar de las ramas de la Ciencia Política que incluye: Teoría Política, Instituciones, Grupos/Partidos/Opinión Pública y Relaciones Internacionales.",
       "mapa_mental": {
-        "nodo_central": "Rousseau",
+        "nodo_central": "UNESCO",
         "ramas": [
           {
-            "tema": "Conceptos",
-            "subtemas": ["Voluntad General", "Soberanía Popular", "Igualdad"]
+            "tema": "Categorías",
+            "subtemas": ["Teoría", "Instituciones", "Partidos", "Relaciones Int."]
           }
         ]
       }
     },
     {
       "id": 9,
-      "titulo": "La División de Poderes: Montesquieu",
-      "fecha": "2026-02-09",
-      "contenido": "En 'El espíritu de las leyes', Montesquieu desarrolla la teoría de la separación de poderes para evitar el abuso del mando: Legislativo, Ejecutivo y Judicial deben ser independientes y controlarse entre sí.",
+      "titulo": "Autores Contemporáneos en Ciencia Política",
+      "fecha": "2024-01-25",
+      "contenido": "Estudio de pensadores modernos como Sartori (partidos), Dahl (poliarquía), Bobbio (democracia) y Huntington (orden político).",
       "mapa_mental": {
-        "nodo_central": "Montesquieu",
+        "nodo_central": "Autores",
         "ramas": [
           {
-            "tema": "Poderes",
-            "subtemas": ["Legislativo", "Ejecutivo", "Judicial"]
-          },
-          {
-            "tema": "Sistema",
-            "subtemas": ["Pesos y contrapesos", "Libertad política"]
+            "tema": "Exponentes",
+            "subtemas": ["G. Sartori", "R. Dahl", "N. Bobbio"]
           }
         ]
       }
     },
     {
       "id": 10,
-      "titulo": "Ideologías Políticas: Liberalismo y Conservadurismo",
-      "fecha": "2026-02-12",
-      "contenido": "El liberalismo prioriza la libertad individual y el mercado. El conservadurismo enfatiza la tradición, el orden social y la estabilidad institucional ante cambios radicales.",
+      "titulo": "Teoría Política (Exposición)",
+      "fecha": "2024-01-28",
+      "contenido": "Análisis de las grandes ideas que han dado forma a los sistemas políticos. Diferencia entre la historia de las ideas y el análisis de conceptos.",
       "mapa_mental": {
-        "nodo_central": "Ideologías",
+        "nodo_central": "T. Política",
         "ramas": [
           {
-            "tema": "Liberalismo",
-            "subtemas": ["Individuo", "Laissez-faire", "Derechos"]
-          },
-          {
-            "tema": "Conservadurismo",
-            "subtemas": ["Tradición", "Religión", "Autoridad"]
+            "tema": "Contenido",
+            "subtemas": ["Ideologías", "Poder", "Legitimidad"]
           }
         ]
       }
     },
     {
       "id": 11,
-      "titulo": "El Marxismo y la Crítica al Capitalismo",
-      "fecha": "2026-02-16",
-      "contenido": "Karl Marx analiza la historia como una lucha de clases. Sostiene que el Estado es un instrumento de dominación de la burguesía sobre el proletariado y propone la abolición de la propiedad privada.",
+      "titulo": "Instituciones Políticas",
+      "fecha": "2024-01-30",
+      "contenido": "Estudio de las reglas del juego: constituciones, sistemas electorales, parlamentos y presidencias. Cómo las estructuras moldean el comportamiento.",
       "mapa_mental": {
-        "nodo_central": "Marxismo",
+        "nodo_central": "Instituciones",
         "ramas": [
           {
-            "tema": "Materialismo",
-            "subtemas": ["Estructura económica", "Superestructura", "Lucha de clases"]
-          },
-          {
-            "tema": "Conceptos",
-            "subtemas": ["Plusvalía", "Alienación", "Revolución"]
+            "tema": "Estructuras",
+            "subtemas": ["Congreso", "Cortes", "Órganos Autónomos"]
           }
         ]
       }
     },
     {
       "id": 12,
-      "titulo": "Regímenes Políticos: Democracia",
-      "fecha": "2026-02-19",
-      "contenido": "La democracia es el gobierno del pueblo. Se caracteriza por elecciones libres, pluripartidismo, respeto a los derechos humanos y el imperio de la ley. Puede ser directa, representativa o deliberativa.",
+      "titulo": "Partidos y Grupos Políticos",
+      "fecha": "2024-02-01",
+      "contenido": "Análisis de los canales de representación. Los partidos buscan el poder; los grupos de presión (interés) buscan influir en él.",
       "mapa_mental": {
-        "nodo_central": "Democracia",
+        "nodo_central": "Representación",
         "ramas": [
           {
-            "tema": "Requisitos",
-            "subtemas": ["Elecciones", "Competencia", "Participación"]
-          },
-          {
             "tema": "Tipos",
-            "subtemas": ["Representativa", "Participativa", "Liberal"]
+            "subtemas": ["Partidos", "Grupos de interés", "Lobbies"]
           }
         ]
       }
     },
     {
       "id": 13,
-      "titulo": "Regímenes Autoritarios y Totalitarios",
-      "fecha": "2026-02-23",
-      "contenido": "El autoritarismo limita el pluralismo político pero permite cierta libertad social. El totalitarismo busca el control absoluto de la vida pública y privada mediante una ideología única y el terror.",
+      "titulo": "Relaciones Internacionales (Expo)",
+      "fecha": "2024-02-04",
+      "contenido": "Estudio de las interacciones entre Estados, organismos internacionales y actores transnacionales en el sistema global.",
       "mapa_mental": {
-        "nodo_central": "No Democracia",
+        "nodo_central": "Rel. Internac.",
         "ramas": [
           {
-            "tema": "Totalitarismo",
-            "subtemas": ["Partido único", "Ideología oficial", "Control total"]
-          },
-          {
-            "tema": "Autoritarismo",
-            "subtemas": ["Pluralismo limitado", "Sin ideología elaborada"]
+            "tema": "Actores",
+            "subtemas": ["Estados", "ONGs", "ONU", "Empresas"]
           }
         ]
       }
     },
     {
       "id": 14,
-      "titulo": "Sistemas de Gobierno: Presidencialismo",
-      "fecha": "2026-02-26",
-      "contenido": "En el presidencialismo, el Jefe de Estado y el Jefe de Gobierno son la misma persona. Existe una separación rígida de poderes y el presidente es elegido directamente por el pueblo.",
+      "titulo": "El Poder: Naturaleza y Características",
+      "fecha": "2024-02-06",
+      "contenido": "El poder como relación social. Sus características incluyen la bilateralidad, la coacción y la búsqueda de legitimidad.",
       "mapa_mental": {
-        "nodo_central": "Presidencialismo",
+        "nodo_central": "Naturaleza Poder",
         "ramas": [
           {
-            "tema": "Características",
-            "subtemas": ["Mandato fijo", "Elección directa", "Unipersonal"]
+            "tema": "Rasgos",
+            "subtemas": ["Relacional", "Asimétrico", "Dinámico"]
           }
         ]
       }
     },
     {
       "id": 15,
-      "titulo": "Sistemas de Gobierno: Parlamentarismo",
-      "fecha": "2026-02-30",
-      "contenido": "El ejecutivo emana del legislativo. Hay una distinción entre Jefe de Estado (monarca o presidente) y Jefe de Gobierno (Primer Ministro). El gobierno depende de la confianza del parlamento.",
+      "titulo": "Elementos de la Noción del Poder",
+      "fecha": "2024-02-08",
+      "contenido": "Desglose del concepto: voluntad, obediencia, mando y la justificación del poder (soberanía).",
+      "mapa_mental": {
+        "nodo_central": "Noción Poder",
+        "ramas": [
+          {
+            "tema": "Componentes",
+            "subtemas": ["Sujeto", "Objeto", "Medios"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "titulo": "Origen Básico del Poder",
+      "fecha": "2024-02-11",
+      "contenido": "Teorías sobre de dónde emana el mando: origen divino, fuerza bruta o el contrato social (consenso).",
+      "mapa_mental": {
+        "nodo_central": "Origen Poder",
+        "ramas": [
+          {
+            "tema": "Teorías",
+            "subtemas": ["Teocrática", "Contractual", "Histórica"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "titulo": "Pensamiento Antiguo y Filosofía",
+      "fecha": "2024-02-13",
+      "contenido": "Revisión de la justicia, la virtud y la mejor forma de gobierno según los sofistas, Sócrates y los cínicos.",
+      "mapa_mental": {
+        "nodo_central": "F. Antigua",
+        "ramas": [
+          {
+            "tema": "Temas",
+            "subtemas": ["Ética", "Justicia", "Ley"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "titulo": "1er Municipio en México (Villa Rica de la Vera Cruz)",
+      "fecha": "2024-02-15",
+      "contenido": "Importancia histórica del ayuntamiento fundado por Cortés. Marca el inicio de la estructura administrativa municipal en el continente.",
+      "mapa_mental": {
+        "nodo_central": "Municipio 1",
+        "ramas": [
+          {
+            "tema": "Hito",
+            "subtemas": ["Veracruz", "Cabildo", "1519"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "titulo": "Edad Media y Renacimiento (Expo)",
+      "fecha": "2024-02-18",
+      "contenido": "Transición del pensamiento teocéntrico (San Agustín/Santo Tomás) al antropocéntrico de Maquiavelo.",
+      "mapa_mental": {
+        "nodo_central": "E. Media-Ren.",
+        "ramas": [
+          {
+            "tema": "Cambios",
+            "subtemas": ["Fe vs Razón", "Surgimiento del Estado"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "titulo": "Administración Pública y Ciencias Políticas",
+      "fecha": "2024-02-20",
+      "contenido": "La AP es la ciencia política aplicada. Estudio de la dicotomía política-administración: quien decide vs quien ejecuta.",
+      "mapa_mental": {
+        "nodo_central": "AP y CP",
+        "ramas": [
+          {
+            "tema": "Vínculo",
+            "subtemas": ["Decisión", "Acción", "Gestión"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "titulo": "Regiones de Desarrollo en México y Puebla",
+      "fecha": "2024-02-22",
+      "contenido": "División administrativa y económica para planear el desarrollo. Puebla cuenta con 32 regiones socioeconómicas para focalizar la inversión pública.",
+      "mapa_mental": {
+        "nodo_central": "Regiones",
+        "ramas": [
+          {
+            "tema": "Puebla",
+            "subtemas": ["Socioeconómicas", "Municipios", "Planeación"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "titulo": "Ley Orgánica de la APF",
+      "fecha": "2024-02-25",
+      "contenido": "Marco jurídico que rige a la Administración Pública Federal. Establece la organización de secretarías, departamentos y organismos.",
+      "mapa_mental": {
+        "nodo_central": "LOAPF",
+        "ramas": [
+          {
+            "tema": "Organización",
+            "subtemas": ["Centralizada", "Paraestatal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "titulo": "Artículos Constitucionales Clave (49 y 29)",
+      "fecha": "2024-02-27",
+      "contenido": "Art. 49: División de poderes. Art. 29: Suspensión de garantías individuales en casos de emergencia.",
+      "mapa_mental": {
+        "nodo_central": "Constitución",
+        "ramas": [
+          {
+            "tema": "Artículos",
+            "subtemas": ["Poderes (49)", "Emergencia (29)"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "titulo": "Artículos del Poder Legislativo (50-70)",
+      "fecha": "2024-03-01",
+      "contenido": "Estudio de la conformación de las cámaras, requisitos para ser diputado/senador y el proceso de creación de leyes.",
+      "mapa_mental": {
+        "nodo_central": "Legislativo",
+        "ramas": [
+          {
+            "tema": "Estructura",
+            "subtemas": ["Diputados", "Senadores", "Iniciativas"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "titulo": "Estado de Derecho",
+      "fecha": "2024-03-04",
+      "contenido": "Principio en el que todos, incluidos los gobernantes, están sujetos a la ley. Requiere seguridad jurídica y división de poderes.",
+      "mapa_mental": {
+        "nodo_central": "E. Derecho",
+        "ramas": [
+          {
+            "tema": "Pilares",
+            "subtemas": ["Legalidad", "Garantías", "Justicia"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "titulo": "Elementos de la AP",
+      "fecha": "2024-03-06",
+      "contenido": "Componentes de la administración: el órgano, el servidor público, el presupuesto, el procedimiento y el acto administrativo.",
+      "mapa_mental": {
+        "nodo_central": "Elementos AP",
+        "ramas": [
+          {
+            "tema": "Partes",
+            "subtemas": ["Humano", "Material", "Normativo"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "titulo": "Normas Morales",
+      "fecha": "2024-03-08",
+      "contenido": "Reglas de conducta basadas en la ética y la conciencia individual. Son unilaterales e incoercibles.",
+      "mapa_mental": {
+        "nodo_central": "N. Morales",
+        "ramas": [
+          {
+            "tema": "Rasgos",
+            "subtemas": ["Conciencia", "Internas", "Autónomas"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "titulo": "Normas Jurídicas",
+      "fecha": "2024-03-11",
+      "contenido": "Reglas dictadas por el Estado. Son bilaterales, heterónomas y, lo más importante, coercibles (se pueden aplicar por la fuerza).",
+      "mapa_mental": {
+        "nodo_central": "N. Jurídicas",
+        "ramas": [
+          {
+            "tema": "Rasgos",
+            "subtemas": ["Ley", "Coacción", "Externa"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "titulo": "Normas Sociales (Trato Social)",
+      "fecha": "2024-03-13",
+      "contenido": "Convencionalismos sociales: decoro, cortesía y protocolo. Su sanción es el rechazo o la exclusión del grupo.",
+      "mapa_mental": {
+        "nodo_central": "N. Sociales",
+        "ramas": [
+          {
+            "tema": "Rasgos",
+            "subtemas": ["Etiqueta", "Colectivas", "Sanción social"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "titulo": "Relación entre Normas y Estabilidad Política",
+      "fecha": "2024-03-15",
+      "contenido": "Cómo el cumplimiento de los distintos órdenes normativos permite la convivencia pacífica y el funcionamiento del Estado.",
+      "mapa_mental": {
+        "nodo_central": "Estabilidad",
+        "ramas": [
+          {
+            "tema": "Orden",
+            "subtemas": ["Convivencia", "Paz Social", "Legalidad"]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+una distinción entre Jefe de Estado (monarca o presidente) y Jefe de Gobierno (Primer Ministro). El gobierno depende de la confianza del parlamento.",
       "mapa_mental": {
         "nodo_central": "Parlamentarismo",
         "ramas": [
