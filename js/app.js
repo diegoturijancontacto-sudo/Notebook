@@ -100,6 +100,9 @@ function selectSubject(index) {
       btn.querySelector('.arrow').textContent = isOpen ? '▲' : '▼';
     });
   });
+
+  // Bind signature events after render
+  bindSignatureEvents(container);
 }
 
 // ── Rendering ──────────────────────────────────────────────────────────────
@@ -134,7 +137,7 @@ function renderSubject(subject) {
   const palette = PALETTES[subject.color] || { branch: '#555', sub: '#aaa' };
 
   const notesHtml = subject.apuntes
-    .map((note, i) => renderNote(note, i + 1, subject.color, palette))
+    .map((note, i) => renderNote(note, i + 1, subject.color, palette, subject.materia))
     .join('');
 
   return `
@@ -152,9 +155,10 @@ function renderSubject(subject) {
     <div class="notes-grid">${notesHtml}</div>`;
 }
 
-function renderNote(note, num, color, palette) {
+function renderNote(note, num, color, palette, subjectName) {
   const dateStr = formatDate(note.fecha);
   const mapHtml = renderMindMap(note.mapa_mental, color, palette);
+  const sigHtml = renderSignatureSection(subjectName, note.id);
 
   return `
     <article class="note-card">
@@ -176,6 +180,7 @@ function renderNote(note, num, color, palette) {
         </button>
         <div class="mindmap-container">${mapHtml}</div>
       </div>
+      ${sigHtml}
     </article>`;
 }
 
@@ -224,4 +229,154 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
+}
+
+// ── Signatures ─────────────────────────────────────────────────────────────
+function sigStorageKey(subjectName, noteId) {
+  return `nb_sig_${encodeURIComponent(subjectName)}_${noteId}`;
+}
+
+function renderSignatureSection(subjectName, noteId) {
+  const existing = localStorage.getItem(sigStorageKey(subjectName, noteId));
+  const displayHtml = existing
+    ? `<img class="sig-image" src="${existing}" alt="Firma guardada" />`
+    : '<p class="sig-empty">Sin firma registrada</p>';
+  const deleteBtn = existing
+    ? `<button class="sig-btn sig-delete" aria-label="Borrar firma">🗑️ Borrar</button>`
+    : '';
+
+  return `
+    <div class="signature-section" data-subject="${escapeHtml(subjectName)}" data-note-id="${noteId}">
+      <div class="signature-header">✍️ Firma de comprobante</div>
+      <div class="signature-display">${displayHtml}</div>
+      <div class="signature-actions">
+        <button class="sig-btn sig-open-pad">${existing ? '✏️ Editar firma' : '✍️ Agregar firma'}</button>
+        ${deleteBtn}
+      </div>
+      <div class="signature-pad-area">
+        <canvas class="sig-canvas" width="500" height="160" aria-label="Área de firma"></canvas>
+        <div class="sig-pad-actions">
+          <button class="sig-btn sig-save">💾 Guardar firma</button>
+          <button class="sig-btn sig-clear-pad">🧹 Limpiar</button>
+          <button class="sig-btn sig-cancel">✖ Cancelar</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+function bindSignatureEvents(container) {
+  container.querySelectorAll('.signature-section').forEach(section => {
+    const subjectName = section.dataset.subject;
+    const noteId = section.dataset.noteId;
+    const padArea = section.querySelector('.signature-pad-area');
+    const canvas = section.querySelector('.sig-canvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let lastX = 0;
+    let lastY = 0;
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const src = e.touches ? e.touches[0] : e;
+      return {
+        x: (src.clientX - rect.left) * scaleX,
+        y: (src.clientY - rect.top) * scaleY
+      };
+    }
+
+    function startDraw(e) {
+      e.preventDefault();
+      drawing = true;
+      const pos = getPos(e);
+      lastX = pos.x;
+      lastY = pos.y;
+    }
+
+    function draw(e) {
+      if (!drawing) return;
+      e.preventDefault();
+      const pos = getPos(e);
+      ctx.beginPath();
+      ctx.moveTo(lastX, lastY);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.strokeStyle = '#1a1a2e';
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      lastX = pos.x;
+      lastY = pos.y;
+    }
+
+    function endDraw() { drawing = false; }
+
+    canvas.addEventListener('mousedown', startDraw);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', endDraw);
+    canvas.addEventListener('mouseleave', endDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove', draw, { passive: false });
+    canvas.addEventListener('touchend', endDraw);
+
+    section.querySelector('.sig-open-pad').addEventListener('click', () => {
+      padArea.classList.add('open');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    section.querySelector('.sig-clear-pad').addEventListener('click', () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    });
+
+    section.querySelector('.sig-cancel').addEventListener('click', () => {
+      padArea.classList.remove('open');
+    });
+
+    section.querySelector('.sig-save').addEventListener('click', () => {
+      // Composite signature onto a white background before saving as JPEG
+      const composite = document.createElement('canvas');
+      composite.width = canvas.width;
+      composite.height = canvas.height;
+      const cCtx = composite.getContext('2d');
+      cCtx.fillStyle = '#ffffff';
+      cCtx.fillRect(0, 0, composite.width, composite.height);
+      cCtx.drawImage(canvas, 0, 0);
+      const dataUrl = composite.toDataURL('image/jpeg', 0.7);
+      if (!dataUrl.startsWith('data:image/')) return;
+      localStorage.setItem(sigStorageKey(subjectName, noteId), dataUrl);
+      padArea.classList.remove('open');
+
+      // Update the displayed signature
+      const display = section.querySelector('.signature-display');
+      display.innerHTML = `<img class="sig-image" src="${dataUrl}" alt="Firma guardada" />`;
+
+      // Update open-pad button label
+      section.querySelector('.sig-open-pad').textContent = '✏️ Editar firma';
+
+      // Ensure the delete button exists and has a handler
+      const actions = section.querySelector('.signature-actions');
+      if (!actions.querySelector('.sig-delete')) {
+        const delBtn = document.createElement('button');
+        delBtn.className = 'sig-btn sig-delete';
+        delBtn.setAttribute('aria-label', 'Borrar firma');
+        delBtn.textContent = '🗑️ Borrar';
+        delBtn.addEventListener('click', handleDelete);
+        actions.appendChild(delBtn);
+      }
+    });
+
+    function handleDelete() {
+      localStorage.removeItem(sigStorageKey(subjectName, noteId));
+      section.querySelector('.signature-display').innerHTML =
+        '<p class="sig-empty">Sin firma registrada</p>';
+      section.querySelector('.sig-open-pad').textContent = '✍️ Agregar firma';
+      const delBtn = section.querySelector('.sig-delete');
+      if (delBtn) delBtn.remove();
+      padArea.classList.remove('open');
+    }
+
+    const existingDelBtn = section.querySelector('.sig-delete');
+    if (existingDelBtn) existingDelBtn.addEventListener('click', handleDelete);
+  });
 }

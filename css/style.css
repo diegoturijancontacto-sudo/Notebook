@@ -538,6 +538,126 @@ header .subtitle {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
+/* ── Signature section ── */
+.signature-section {
+  border-top: 1px dashed var(--border);
+  padding: 16px 24px 20px;
+  background: rgba(255,255,255,0.5);
+}
+
+.signature-header {
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.signature-display {
+  min-height: 48px;
+  margin-bottom: 10px;
+}
+
+.sig-image {
+  display: block;
+  max-width: 100%;
+  max-height: 120px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  padding: 4px;
+}
+
+.sig-empty {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.signature-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+.sig-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.83rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sig-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.sig-open-pad {
+  border-color: #4a90d9;
+  color: #4a90d9;
+}
+
+.sig-open-pad:hover {
+  background: #4a90d9;
+  color: #fff;
+}
+
+.sig-delete {
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+.sig-delete:hover {
+  background: #c0392b;
+  color: #fff;
+}
+
+.sig-save {
+  border-color: #27ae60;
+  color: #27ae60;
+}
+
+.sig-save:hover {
+  background: #27ae60;
+  color: #fff;
+}
+
+/* Signature pad area (hidden until opened) */
+.signature-pad-area {
+  display: none;
+  margin-top: 12px;
+}
+
+.signature-pad-area.open {
+  display: block;
+}
+
+.sig-canvas {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: 160px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.sig-pad-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 /* ── Responsive ── */
 @media (max-width: 768px) {
   :root { --sidebar-width: 0px; }
