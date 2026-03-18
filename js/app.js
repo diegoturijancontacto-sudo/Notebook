@@ -23,11 +23,21 @@ const PALETTES = {
 let subjects = [];     // loaded subject objects
 let activeIndex = -1;  // currently displayed subject index
 
+// ── Signature modal state ──────────────────────────────────────────────────
+let sigModal = null;
+let modalCanvas = null;
+let modalCtx = null;
+let modalDrawing = false;
+let modalLastX = 0;
+let modalLastY = 0;
+let modalOnSave = null; // callback when save is confirmed
+
 // ── Bootstrap ─────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', init);
 
 async function init() {
   renderLoadingState();
+  initSignatureModal();
   try {
     subjects = await loadAllSubjects();
     buildSidebar();
@@ -253,14 +263,6 @@ function renderSignatureSection(subjectName, noteId) {
         <button class="sig-btn sig-open-pad">${existing ? '✏️ Editar firma' : '✍️ Agregar firma'}</button>
         ${deleteBtn}
       </div>
-      <div class="signature-pad-area">
-        <canvas class="sig-canvas" width="500" height="160" aria-label="Área de firma"></canvas>
-        <div class="sig-pad-actions">
-          <button class="sig-btn sig-save">💾 Guardar firma</button>
-          <button class="sig-btn sig-clear-pad">🧹 Limpiar</button>
-          <button class="sig-btn sig-cancel">✖ Cancelar</button>
-        </div>
-      </div>
     </div>`;
 }
 
@@ -268,115 +270,160 @@ function bindSignatureEvents(container) {
   container.querySelectorAll('.signature-section').forEach(section => {
     const subjectName = section.dataset.subject;
     const noteId = section.dataset.noteId;
-    const padArea = section.querySelector('.signature-pad-area');
-    const canvas = section.querySelector('.sig-canvas');
-    const ctx = canvas.getContext('2d');
-    let drawing = false;
-    let lastX = 0;
-    let lastY = 0;
-
-    function getPos(e) {
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const src = e.touches ? e.touches[0] : e;
-      return {
-        x: (src.clientX - rect.left) * scaleX,
-        y: (src.clientY - rect.top) * scaleY
-      };
-    }
-
-    function startDraw(e) {
-      e.preventDefault();
-      drawing = true;
-      const pos = getPos(e);
-      lastX = pos.x;
-      lastY = pos.y;
-    }
-
-    function draw(e) {
-      if (!drawing) return;
-      e.preventDefault();
-      const pos = getPos(e);
-      ctx.beginPath();
-      ctx.moveTo(lastX, lastY);
-      ctx.lineTo(pos.x, pos.y);
-      ctx.strokeStyle = '#1a1a2e';
-      ctx.lineWidth = 2;
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-      ctx.stroke();
-      lastX = pos.x;
-      lastY = pos.y;
-    }
-
-    function endDraw() { drawing = false; }
-
-    canvas.addEventListener('mousedown', startDraw);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', endDraw);
-    canvas.addEventListener('mouseleave', endDraw);
-    canvas.addEventListener('touchstart', startDraw, { passive: false });
-    canvas.addEventListener('touchmove', draw, { passive: false });
-    canvas.addEventListener('touchend', endDraw);
 
     section.querySelector('.sig-open-pad').addEventListener('click', () => {
-      padArea.classList.add('open');
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      openSignatureModal(subjectName, noteId, section);
     });
-
-    section.querySelector('.sig-clear-pad').addEventListener('click', () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    });
-
-    section.querySelector('.sig-cancel').addEventListener('click', () => {
-      padArea.classList.remove('open');
-    });
-
-    section.querySelector('.sig-save').addEventListener('click', () => {
-      // Composite signature onto a white background before saving as JPEG
-      const composite = document.createElement('canvas');
-      composite.width = canvas.width;
-      composite.height = canvas.height;
-      const cCtx = composite.getContext('2d');
-      cCtx.fillStyle = '#ffffff';
-      cCtx.fillRect(0, 0, composite.width, composite.height);
-      cCtx.drawImage(canvas, 0, 0);
-      const dataUrl = composite.toDataURL('image/jpeg', 0.7);
-      if (!dataUrl.startsWith('data:image/')) return;
-      localStorage.setItem(sigStorageKey(subjectName, noteId), dataUrl);
-      padArea.classList.remove('open');
-
-      // Update the displayed signature
-      const display = section.querySelector('.signature-display');
-      display.innerHTML = `<img class="sig-image" src="${dataUrl}" alt="Firma guardada" />`;
-
-      // Update open-pad button label
-      section.querySelector('.sig-open-pad').textContent = '✏️ Editar firma';
-
-      // Ensure the delete button exists and has a handler
-      const actions = section.querySelector('.signature-actions');
-      if (!actions.querySelector('.sig-delete')) {
-        const delBtn = document.createElement('button');
-        delBtn.className = 'sig-btn sig-delete';
-        delBtn.setAttribute('aria-label', 'Borrar firma');
-        delBtn.textContent = '🗑️ Borrar';
-        delBtn.addEventListener('click', handleDelete);
-        actions.appendChild(delBtn);
-      }
-    });
-
-    function handleDelete() {
-      localStorage.removeItem(sigStorageKey(subjectName, noteId));
-      section.querySelector('.signature-display').innerHTML =
-        '<p class="sig-empty">Sin firma registrada</p>';
-      section.querySelector('.sig-open-pad').textContent = '✍️ Agregar firma';
-      const delBtn = section.querySelector('.sig-delete');
-      if (delBtn) delBtn.remove();
-      padArea.classList.remove('open');
-    }
 
     const existingDelBtn = section.querySelector('.sig-delete');
-    if (existingDelBtn) existingDelBtn.addEventListener('click', handleDelete);
+    if (existingDelBtn) {
+      existingDelBtn.addEventListener('click', () => handleDeleteSignature(section, subjectName, noteId));
+    }
   });
+}
+
+function handleDeleteSignature(section, subjectName, noteId) {
+  localStorage.removeItem(sigStorageKey(subjectName, noteId));
+  section.querySelector('.signature-display').innerHTML =
+    '<p class="sig-empty">Sin firma registrada</p>';
+  section.querySelector('.sig-open-pad').textContent = '✍️ Agregar firma';
+  const delBtn = section.querySelector('.sig-delete');
+  if (delBtn) delBtn.remove();
+}
+
+// ── Fullscreen signature modal ─────────────────────────────────────────────
+function initSignatureModal() {
+  sigModal = document.createElement('div');
+  sigModal.className = 'sig-modal';
+  sigModal.setAttribute('role', 'dialog');
+  sigModal.setAttribute('aria-modal', 'true');
+  sigModal.setAttribute('aria-label', 'Área de firma');
+  sigModal.innerHTML = `
+    <div class="sig-modal-header">
+      <span class="sig-modal-title">✍️ Firma de comprobante</span>
+      <button class="sig-modal-close" aria-label="Cerrar">✖ Cerrar</button>
+    </div>
+    <div class="sig-modal-hint">Dibuja tu firma en el área de abajo</div>
+    <div class="sig-modal-canvas-wrap">
+      <canvas aria-label="Área de firma"></canvas>
+    </div>
+    <div class="sig-modal-actions">
+      <button class="sig-btn sig-delete" id="sig-modal-clear">🧹 Limpiar</button>
+      <button class="sig-btn sig-save" id="sig-modal-save">💾 Guardar firma</button>
+    </div>`;
+  document.body.appendChild(sigModal);
+
+  modalCanvas = sigModal.querySelector('canvas');
+  modalCtx = modalCanvas.getContext('2d');
+
+  function getPos(e) {
+    const rect = modalCanvas.getBoundingClientRect();
+    const scaleX = modalCanvas.width / rect.width;
+    const scaleY = modalCanvas.height / rect.height;
+    const src = e.touches ? e.touches[0] : e;
+    return {
+      x: (src.clientX - rect.left) * scaleX,
+      y: (src.clientY - rect.top) * scaleY
+    };
+  }
+
+  function startDraw(e) {
+    e.preventDefault();
+    modalDrawing = true;
+    const pos = getPos(e);
+    modalLastX = pos.x;
+    modalLastY = pos.y;
+  }
+
+  function draw(e) {
+    if (!modalDrawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    modalCtx.beginPath();
+    modalCtx.moveTo(modalLastX, modalLastY);
+    modalCtx.lineTo(pos.x, pos.y);
+    modalCtx.strokeStyle = '#1a1a2e';
+    modalCtx.lineWidth = 2.5;
+    modalCtx.lineCap = 'round';
+    modalCtx.lineJoin = 'round';
+    modalCtx.stroke();
+    modalLastX = pos.x;
+    modalLastY = pos.y;
+  }
+
+  function endDraw() { modalDrawing = false; }
+
+  modalCanvas.addEventListener('mousedown', startDraw);
+  modalCanvas.addEventListener('mousemove', draw);
+  modalCanvas.addEventListener('mouseup', endDraw);
+  modalCanvas.addEventListener('mouseleave', endDraw);
+  modalCanvas.addEventListener('touchstart', startDraw, { passive: false });
+  modalCanvas.addEventListener('touchmove', draw, { passive: false });
+  modalCanvas.addEventListener('touchend', endDraw);
+
+  // Block all touch-scroll events inside the modal so the page never moves
+  sigModal.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+  sigModal.querySelector('.sig-modal-close').addEventListener('click', closeSignatureModal);
+
+  document.getElementById('sig-modal-clear').addEventListener('click', () => {
+    modalCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+  });
+
+  document.getElementById('sig-modal-save').addEventListener('click', () => {
+    const composite = document.createElement('canvas');
+    composite.width = modalCanvas.width;
+    composite.height = modalCanvas.height;
+    const cCtx = composite.getContext('2d');
+    cCtx.fillStyle = '#ffffff';
+    cCtx.fillRect(0, 0, composite.width, composite.height);
+    cCtx.drawImage(modalCanvas, 0, 0);
+    const dataUrl = composite.toDataURL('image/jpeg', 0.7);
+    if (!dataUrl.startsWith('data:image/')) return;
+    if (modalOnSave) modalOnSave(dataUrl);
+    closeSignatureModal();
+  });
+}
+
+function openSignatureModal(subjectName, noteId, section) {
+  sigModal.classList.add('open');
+  document.body.classList.add('no-scroll');
+
+  // Size the canvas to fill the wrap after the modal is visible
+  requestAnimationFrame(() => {
+    const wrap = sigModal.querySelector('.sig-modal-canvas-wrap');
+    const rect = wrap.getBoundingClientRect();
+    modalCanvas.width = Math.round(rect.width);
+    modalCanvas.height = Math.round(rect.height);
+    modalCtx.clearRect(0, 0, modalCanvas.width, modalCanvas.height);
+  });
+
+  modalOnSave = (dataUrl) => {
+    localStorage.setItem(sigStorageKey(subjectName, noteId), dataUrl);
+
+    // Update the displayed signature thumbnail
+    const display = section.querySelector('.signature-display');
+    display.innerHTML = `<img class="sig-image" src="${dataUrl}" alt="Firma guardada" />`;
+
+    // Update open-pad button label
+    section.querySelector('.sig-open-pad').textContent = '✏️ Editar firma';
+
+    // Ensure the delete button exists and has a handler
+    const actions = section.querySelector('.signature-actions');
+    if (!actions.querySelector('.sig-delete')) {
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sig-btn sig-delete';
+      delBtn.setAttribute('aria-label', 'Borrar firma');
+      delBtn.textContent = '🗑️ Borrar';
+      delBtn.addEventListener('click', () => handleDeleteSignature(section, subjectName, noteId));
+      actions.appendChild(delBtn);
+    }
+  };
+}
+
+function closeSignatureModal() {
+  sigModal.classList.remove('open');
+  document.body.classList.remove('no-scroll');
+  modalOnSave = null;
+  modalDrawing = false;
 }
