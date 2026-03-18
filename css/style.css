@@ -16,9 +16,9 @@
   --text-muted: #7a6e58;
   --shadow: 0 2px 12px rgba(0,0,0,0.10);
   --line-color: #dde8f5;
-  --radius: 6px;
-  --sidebar-width: 260px;
-  --header-h: 64px;
+  --radius: 8px;
+  --sidebar-width: 240px;
+  --header-h: 56px;
 }
 
 /* ── Typography ── */
@@ -27,6 +27,12 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body.no-scroll {
+  overflow: hidden;
+  touch-action: none;
 }
 
 h1, h2, h3, h4 {
@@ -42,25 +48,25 @@ header {
   color: #f5f0e8;
   display: flex;
   align-items: center;
-  padding: 0 24px;
-  gap: 16px;
+  padding: 0 20px;
+  gap: 12px;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(0,0,0,0.35);
 }
 
 header .logo {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
 }
 
 header h1 {
-  font-size: 1.4rem;
-  letter-spacing: 0.04em;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
   font-weight: normal;
 }
 
 header .subtitle {
   margin-left: auto;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #c9bba0;
   font-style: italic;
 }
@@ -541,12 +547,12 @@ header .subtitle {
 /* ── Signature section ── */
 .signature-section {
   border-top: 1px dashed var(--border);
-  padding: 16px 24px 20px;
+  padding: 14px 20px 18px;
   background: rgba(255,255,255,0.5);
 }
 
 .signature-header {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: bold;
   letter-spacing: 0.05em;
   color: var(--text-muted);
@@ -583,15 +589,16 @@ header .subtitle {
 }
 
 .sig-btn {
-  padding: 6px 14px;
+  padding: 8px 16px;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text);
-  font-size: 0.83rem;
+  font-size: 0.85rem;
   font-family: inherit;
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
+  min-height: 40px;
 }
 
 .sig-btn:hover {
@@ -629,38 +636,108 @@ header .subtitle {
   color: #fff;
 }
 
-/* Signature pad area (hidden until opened) */
-.signature-pad-area {
+/* ── Signature fullscreen modal ── */
+.sig-modal {
   display: none;
-  margin-top: 12px;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: #fafaf8;
+  flex-direction: column;
+  overflow: hidden;
 }
 
-.signature-pad-area.open {
-  display: block;
+.sig-modal.open {
+  display: flex;
 }
 
-.sig-canvas {
+.sig-modal-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  background: #2c2416;
+  color: #f5f0e8;
+  gap: 12px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.sig-modal-title {
+  font-size: 1rem;
+  font-family: 'Palatino Linotype', 'Palatino', Georgia, serif;
+  font-weight: bold;
+  flex: 1;
+  letter-spacing: 0.02em;
+}
+
+.sig-modal-close {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #f5f0e8;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 36px;
+}
+
+.sig-modal-hint {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding: 8px 16px 4px;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+.sig-modal-canvas-wrap {
+  flex: 1;
+  padding: 12px 16px;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sig-modal-canvas-wrap canvas {
   display: block;
   width: 100%;
-  max-width: 500px;
-  height: 160px;
-  border: 2px solid var(--border);
-  border-radius: var(--radius);
+  height: 100%;
+  flex: 1;
   background: #fff;
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
   cursor: crosshair;
   touch-action: none;
 }
 
-.sig-pad-actions {
+.sig-modal-actions {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.sig-modal-actions .sig-btn {
+  flex: 1;
+  padding: 12px 8px;
+  font-size: 0.9rem;
+  text-align: center;
+  min-height: 44px;
 }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
-  :root { --sidebar-width: 0px; }
+  :root {
+    --sidebar-width: 0px;
+    --header-h: 50px;
+  }
+
+  header .subtitle { display: none; }
+
+  header h1 { font-size: 1.1rem; }
 
   .sidebar {
     width: 100%;
@@ -671,22 +748,24 @@ header .subtitle {
     flex-direction: row;
     overflow-x: auto;
     overflow-y: hidden;
-    padding: 8px;
+    padding: 6px 8px;
     gap: 4px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .sidebar-title { display: none; }
 
   .subject-btn {
     flex-direction: column;
-    gap: 4px;
+    gap: 3px;
     padding: 8px 12px;
-    min-width: 80px;
+    min-width: 72px;
     text-align: center;
     border-left: none;
     border-bottom: 3px solid transparent;
     border-radius: 6px;
     white-space: nowrap;
+    font-size: 0.85rem;
   }
 
   .subject-btn.active {
@@ -703,8 +782,23 @@ header .subtitle {
 
   .main {
     margin-left: 0;
-    padding: 20px 16px;
+    padding: 16px 12px;
   }
+
+  .subject-header h2 { font-size: 1.5rem; }
+
+  .note-card-header { padding: 14px 16px 12px; }
+
+  .note-body {
+    padding: 14px 16px;
+    font-size: 0.93rem;
+  }
+
+  .mindmap-section { padding: 0 16px 16px; }
+
+  .signature-section { padding: 12px 16px 16px; }
+
+  .sig-btn { min-height: 44px; font-size: 0.9rem; }
 
   .tree-root-node::after,
   .branch-node::after { display: none; }
@@ -717,4 +811,10 @@ header .subtitle {
   .tree-branches { padding-left: 16px; }
 
   .sub-nodes { padding-left: 16px; }
+
+  .welcome { padding: 40px 16px; }
+
+  .welcome .notebook-cover { font-size: 4rem; }
+
+  .welcome h2 { font-size: 1.5rem; }
 }
