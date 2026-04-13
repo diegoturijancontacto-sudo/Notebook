@@ -1,75 +1,460 @@
 {
-  "materia": "Historia Universal",
-  "color": "#c0392b",
-  "icono": "📜",
-  "profesor": "Mtra. Ana Rodríguez",
-  "descripcion": "Historia de la humanidad desde la Antigüedad hasta la era contemporánea",
+  "materia": "Principios Básicos de Economía",
+  "color": "#2a9d8f",
+  "icono": "📈",
+  "profesor": "Maritza Rodríguez Valdez",
+  "descripcion": "Análisis de la política económica contemporánea y relaciones internacionales en América Latina",
   "apuntes": [
     {
       "id": 1,
-      "titulo": "La Revolución Francesa",
-      "fecha": "2024-02-07",
-      "contenido": "La Revolución Francesa (1789–1799) fue un período de cambio político y social radical en Francia. Puso fin al absolutismo monárquico de Luis XVI y proclamó los principios de Libertad, Igualdad y Fraternidad. Entre sus causas destacan la crisis económica, la desigualdad social y la Ilustración.",
+      "titulo": "Cumbre del Estado de las Américas",
+      "fecha": "2024-01-07",
+      "contenido": "Análisis de los acuerdos comerciales y de cooperación alcanzados en la Cumbre. Se discute el impacto de la integración regional en el crecimiento del PIB de los países miembros y la reducción de aranceles.",
       "mapa_mental": {
-        "nodo_central": "Revolución Francesa",
+        "nodo_central": "Cumbre Américas",
         "ramas": [
           {
-            "tema": "Causas",
-            "subtemas": ["Crisis económica", "Desigualdad social", "Ideas ilustradas", "Deudas por guerras"]
-          },
-          {
-            "tema": "Etapas",
-            "subtemas": ["Asamblea Nacional", "La Convención", "El Terror", "Directorio"]
-          },
-          {
-            "tema": "Consecuencias",
-            "subtemas": ["Declaración de Derechos", "Abolición del feudalismo", "Expansión napoleónica"]
+            "tema": "Economía",
+            "subtemas": ["Tratados", "Inversión Extranjera", "Migración"]
           }
         ]
       }
     },
     {
       "id": 2,
-      "titulo": "La Segunda Guerra Mundial",
-      "fecha": "2024-02-21",
-      "contenido": "La Segunda Guerra Mundial (1939–1945) fue el conflicto armado más devastador de la historia humana. Involucró a la mayoría de las naciones del mundo en dos alianzas militares opuestas: los Aliados y las Potencias del Eje. Terminó con la rendición de Alemania y Japón, y marcó el inicio de la Guerra Fría.",
+      "titulo": "Reunión con Jefe del Comando Sur EEUU",
+      "fecha": "2024-01-09",
+      "contenido": "Implicaciones económicas de la cooperación en seguridad. El vínculo entre estabilidad política y confianza de los mercados internacionales según la agenda de seguridad regional.",
       "mapa_mental": {
-        "nodo_central": "II Guerra Mundial",
+        "nodo_central": "Seguridad y Economía",
         "ramas": [
           {
-            "tema": "Causas",
-            "subtemas": ["Tratado de Versalles", "Crisis económica", "Ascenso del nazismo", "Expansionismo japonés"]
-          },
-          {
-            "tema": "Frentes",
-            "subtemas": ["Europa occidental", "Frente oriental", "África del Norte", "Pacífico"]
-          },
-          {
-            "tema": "Consecuencias",
-            "subtemas": ["ONU", "Plan Marshall", "Guerra Fría", "Descolonización"]
+            "tema": "Ejes",
+            "subtemas": ["Comando Sur", "Ayuda Militar", "Costos de Defensa"]
           }
         ]
       }
     },
     {
       "id": 3,
-      "titulo": "La Revolución Industrial",
-      "fecha": "2024-03-06",
-      "contenido": "La Revolución Industrial inició en Gran Bretaña a finales del siglo XVIII y se extendió a Europa y América durante el siglo XIX. Transformó la producción artesanal en manufactura fabril, impulsando el uso del carbón, el vapor y la mecanización. Cambió radicalmente la sociedad, la economía y el medioambiente.",
+      "titulo": "Daniel Noboa y el Referéndum en Ecuador",
+      "fecha": "2024-01-11",
+      "contenido": "Análisis del documento de 4 preguntas del referéndum. Impacto de las reformas estructurales en la dolarización y la inversión privada en el sector energético ecuatoriano.",
       "mapa_mental": {
-        "nodo_central": "Rev. Industrial",
+        "nodo_central": "Referéndum Ecuador",
         "ramas": [
           {
-            "tema": "Inventos clave",
-            "subtemas": ["Máquina de vapor", "Telar mecánico", "Ferrocarril", "Iluminación a gas"]
+            "tema": "Preguntas",
+            "subtemas": ["Seguridad", "Empleo", "Justicia", "Arbitraje"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "titulo": "Política Económica de José Antonio Kast",
+      "fecha": "2024-01-14",
+      "contenido": "Estudio del modelo de libre mercado radical propuesto en Chile: reducción del gasto público, baja de impuestos a corporaciones y privatización de sectores estratégicos.",
+      "mapa_mental": {
+        "nodo_central": "Modelo Kast",
+        "ramas": [
+          {
+            "tema": "Pilares",
+            "subtemas": ["Menor Estado", "Libre Competencia", "Orden Fiscal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "titulo": "Reforma Laboral de Javier Milei: Consecuencias",
+      "fecha": "2024-01-16",
+      "contenido": "Análisis de la desregulación del mercado laboral en Argentina. Flexibilización de indemnizaciones, periodos de prueba y su impacto en la tasa de empleo y formalidad económica.",
+      "mapa_mental": {
+        "nodo_central": "Reforma Milei",
+        "ramas": [
+          {
+            "tema": "Efectos",
+            "subtemas": ["Inflación", "Flexibilidad", "Sindicatos"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "titulo": "Geopolítica: Indulto a Juan Orlando Hernández",
+      "fecha": "2024-01-18",
+      "contenido": "Análisis de la decisión de Donald Trump respecto al expresidente de Honduras. Repercusiones en las relaciones diplomáticas y la ayuda económica condicionada (Plan Alianza para la Prosperidad).",
+      "mapa_mental": {
+        "nodo_central": "JOH y Trump",
+        "ramas": [
+          {
+            "tema": "Impacto",
+            "subtemas": ["Narcopolítica", "Extradición", "Lobbying"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "titulo": "Vínculo Trump y Nasry Asfura",
+      "fecha": "2024-01-21",
+      "contenido": "Relación política con líderes conservadores en Centroamérica. El papel de las remesas y la política migratoria como herramienta de presión económica.",
+      "mapa_mental": {
+        "nodo_central": "N. Asfura",
+        "ramas": [
+          {
+            "tema": "Contexto",
+            "subtemas": ["Honduras", "Partido Nacional", "Alianza Republicana"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "titulo": "Economía de Luiz Inácio Lula da Silva",
+      "fecha": "2024-01-23",
+      "contenido": "El retorno del desarrollismo en Brasil. Políticas de redistribución del ingreso, fortalecimiento de Petrobras y el papel de Brasil en el Brics.",
+      "mapa_mental": {
+        "nodo_central": "Lula III",
+        "ramas": [
+          {
+            "tema": "Agenda",
+            "subtemas": ["Bolsa Familia", "PAC", "Amazonía"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "titulo": "AMLO y la Ayuda Económica a Cuba",
+      "fecha": "2024-01-25",
+      "contenido": "Análisis de la petición de México para levantar el embargo comercial. Importancia de la venta de petróleo y el intercambio de servicios médicos en la balanza comercial regional.",
+      "mapa_mental": {
+        "nodo_central": "México-Cuba",
+        "ramas": [
+          {
+            "tema": "Petición",
+            "subtemas": ["Embargo", "Soberanía", "Cooperación Sur-Sur"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "titulo": "Conferencia Regional de América Latina y el Caribe",
+      "fecha": "2024-01-28",
+      "contenido": "Debates sobre seguridad alimentaria, cambio climático y deuda externa. El papel de la CEPAL en la planificación económica regional.",
+      "mapa_mental": {
+        "nodo_central": "Conferencia Regional",
+        "ramas": [
+          {
+            "tema": "Tópicos",
+            "subtemas": ["Sostenibilidad", "Deuda", "Desigualdad"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "titulo": "Política Económica de Paz Pereira",
+      "fecha": "2024-01-30",
+      "contenido": "Estudio de caso sobre modelos de gestión local y regional. Enfoque en microeconomía y fomento a pequeñas empresas.",
+      "mapa_mental": {
+        "nodo_central": "Paz Pereira",
+        "ramas": [
+          {
+            "tema": "Propuesta",
+            "subtemas": ["Incentivos", "Gobernanza", "Economía Social"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "titulo": "Lula da Silva y la CELAC",
+      "fecha": "2024-02-01",
+      "contenido": "Liderazgo de Brasil en la Comunidad de Estados Latinoamericanos y Caribeños. Propuestas de una moneda común regional y bloque de negociación frente a la UE.",
+      "mapa_mental": {
+        "nodo_central": "CELAC",
+        "ramas": [
+          {
+            "tema": "Objetivos",
+            "subtemas": ["Moneda Única", "Autonomía", "Comercio"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "titulo": "Microeconomía: Oferta y Demanda",
+      "fecha": "2024-02-04",
+      "contenido": "Conceptos fundamentales aplicados a los mercados de materias primas en Latam. Cómo los precios del cobre o petróleo afectan las monedas locales.",
+      "mapa_mental": {
+        "nodo_central": "Mercados",
+        "ramas": [
+          {
+            "tema": "Conceptos",
+            "subtemas": ["Precio", "Cantidad", "Equilibrio"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "titulo": "Inflación y Política Monetaria",
+      "fecha": "2024-02-06",
+      "contenido": "Estudio de las tasas de interés de los Bancos Centrales en la región. El caso de la hiperinflación frente a metas de inflación controladas.",
+      "mapa_mental": {
+        "nodo_central": "Moneda",
+        "ramas": [
+          {
+            "tema": "Herramientas",
+            "subtemas": ["Tasa de Interés", "Reserva", "Emisión"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "titulo": "PIB y Crecimiento Económico",
+      "fecha": "2024-02-08",
+      "contenido": "Diferencia entre crecimiento y desarrollo. Análisis de los indicadores de bienestar más allá de la producción bruta.",
+      "mapa_mental": {
+        "nodo_central": "Producción",
+        "ramas": [
+          {
+            "tema": "Indicadores",
+            "subtemas": ["PIB Real", "PIB Nominal", "PIB Per Cápita"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "titulo": "Escuelas de Pensamiento Económico",
+      "fecha": "2024-02-11",
+      "contenido": "Del Keynesianismo al Neoliberalismo. Cómo estas teorías influyen en los discursos de líderes como Milei, Lula y AMLO.",
+      "mapa_mental": {
+        "nodo_central": "Teoría",
+        "ramas": [
+          {
+            "tema": "Clásicos",
+            "subtemas": ["Smith", "Ricardo", "Marx"]
           },
           {
-            "tema": "Impacto social",
-            "subtemas": ["Urbanización", "Clase obrera", "Trabajo infantil", "Sindicalismo"]
-          },
+            "tema": "Modernos",
+            "subtemas": ["Keynes", "Friedman"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "titulo": "Comercio Exterior y Balanza de Pagos",
+      "fecha": "2024-02-13",
+      "contenido": "Importaciones vs Exportaciones en el contexto de la CELAC. El déficit comercial y su financiamiento externo.",
+      "mapa_mental": {
+        "nodo_central": "Balanza",
+        "ramas": [
           {
-            "tema": "Impacto económico",
-            "subtemas": ["Capitalismo industrial", "Comercio global", "Imperialismo"]
+            "tema": "Cuentas",
+            "subtemas": ["Corriente", "Capital", "Financiera"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "titulo": "Economía Digital y Criptomonedas",
+      "fecha": "2024-02-15",
+      "contenido": "El caso de El Salvador y el Bitcoin frente al modelo de moneda digital propuesto por Brasil.",
+      "mapa_mental": {
+        "nodo_central": "Fintech",
+        "ramas": [
+          {
+            "tema": "Nuevos Medios",
+            "subtemas": ["Blockchain", "Pagos Digitales", "Regulación"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "titulo": "Desempleo y Mercado de Trabajo",
+      "fecha": "2024-02-18",
+      "contenido": "Análisis comparativo de las tasas de desempleo en la región y el fenómeno de la economía informal.",
+      "mapa_mental": {
+        "nodo_central": "Empleo",
+        "ramas": [
+          {
+            "tema": "Tipos",
+            "subtemas": ["Friccional", "Estructural", "Cíclico"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "titulo": "Gasto Público y Deuda",
+      "fecha": "2024-02-20",
+      "contenido": "Cómo se financian los gobiernos latinoamericanos. El papel del FMI y el Banco Mundial en las políticas de ajuste.",
+      "mapa_mental": {
+        "nodo_central": "Finanzas Públicas",
+        "ramas": [
+          {
+            "tema": "Estado",
+            "subtemas": ["Impuestos", "Subsidios", "Bonos"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "titulo": "Desigualdad y Coeficiente de Gini",
+      "fecha": "2024-02-22",
+      "contenido": "Medición de la brecha entre ricos y pobres. Análisis del impacto de las políticas sociales de Lula y AMLO en estos índices.",
+      "mapa_mental": {
+        "nodo_central": "Pobreza",
+        "ramas": [
+          {
+            "tema": "Medición",
+            "subtemas": ["Curva de Lorenz", "Gini", "IDH"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "titulo": "Sectores de la Economía",
+      "fecha": "2024-02-25",
+      "contenido": "Análisis del sector primario (extractivismo), secundario y terciario. La dependencia del sector servicios en las economías modernas.",
+      "mapa_mental": {
+        "nodo_central": "Sectores",
+        "ramas": [
+          {
+            "tema": "Clasificación",
+            "subtemas": ["Primario", "Secundario", "Terciario", "Cuaternario"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "titulo": "Globalización Económica",
+      "fecha": "2024-02-27",
+      "contenido": "Ventajas y desventajas de un mundo interconectado. El impacto de las guerras comerciales (EEUU vs China) en América Latina.",
+      "mapa_mental": {
+        "nodo_central": "Globalización",
+        "ramas": [
+          {
+            "tema": "Efectos",
+            "subtemas": ["Estandarización", "Mercados", "Cultura"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "titulo": "Monopolios y Oligopolios",
+      "fecha": "2024-03-01",
+      "contenido": "Fallas del mercado y la necesidad de leyes antimonopolio. El poder de las multinacionales en sectores como tecnología y alimentos.",
+      "mapa_mental": {
+        "nodo_central": "Competencia",
+        "ramas": [
+          {
+            "tema": "Estructuras",
+            "subtemas": ["Competencia Perfecta", "Oligopolio", "Monopolio"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "titulo": "Recursos Naturales y Medio Ambiente",
+      "fecha": "2024-03-04",
+      "contenido": "La 'Maldición de los Recursos'. Cómo la abundancia de materias primas puede frenar la industrialización (Enfermedad Holandesa).",
+      "mapa_mental": {
+        "nodo_central": "Sustentabilidad",
+        "ramas": [
+          {
+            "tema": "Ambiente",
+            "subtemas": ["Externalidades", "Bienes Públicos", "Renovables"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "titulo": "Sistemas Económicos Comparados",
+      "fecha": "2024-03-06",
+      "contenido": "Capitalismo vs Socialismo vs Economía Mixta. Análisis de los matices en las políticas de la región.",
+      "mapa_mental": {
+        "nodo_central": "Sistemas",
+        "ramas": [
+          {
+            "tema": "Modelos",
+            "subtemas": ["Mercado", "Centralizado", "Mixto"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "titulo": "Integración Económica Regional",
+      "fecha": "2024-03-08",
+      "contenido": "Del Mercosur y la Alianza del Pacífico a la CELAC. Niveles de integración: de zona de libre comercio a unión económica.",
+      "mapa_mental": {
+        "nodo_central": "Integración",
+        "ramas": [
+          {
+            "tema": "Bloques",
+            "subtemas": ["Unión Aduanera", "Mercado Común", "Unión Económica"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "titulo": "Política Fiscal: El Presupuesto",
+      "fecha": "2024-03-11",
+      "contenido": "Cómo se elabora el presupuesto nacional. Prioridades en salud, educación y defensa.",
+      "mapa_mental": {
+        "nodo_central": "Fiscalidad",
+        "ramas": [
+          {
+            "tema": "Hacienda",
+            "subtemas": ["Ingresos", "Egresos", "Déficit"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 29,
+      "titulo": "Remesas y Migración",
+      "fecha": "2024-03-13",
+      "contenido": "Importancia de las remesas para las economías de México y Centroamérica. El capital humano como factor de producción.",
+      "mapa_mental": {
+        "nodo_central": "Remesas",
+        "ramas": [
+          {
+            "tema": "Flujos",
+            "subtemas": ["Capital Humano", "Consumo", "Dependencia"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 30,
+      "titulo": "Prospectiva Económica 2024-2025",
+      "fecha": "2024-03-15",
+      "contenido": "Tendencias para el próximo año. El impacto de las elecciones en EEUU en la política económica de Latinoamérica.",
+      "mapa_mental": {
+        "nodo_central": "Futuro",
+        "ramas": [
+          {
+            "tema": "Tendencias",
+            "subtemas": ["Nearshoring", "Energías Limpias", "Crecimiento"]
           }
         ]
       }
