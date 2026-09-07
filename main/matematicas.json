@@ -1,75 +1,124 @@
 {
-  "materia": "Matemáticas",
-  "color": "#4a90d9",
-  "icono": "📐",
-  "profesor": "Dr. Carlos García",
-  "descripcion": "Cálculo diferencial e integral para ingeniería",
+  "materia": "Génesis de la Teoría de la Administración Pública",
+  "color": "#2980b9",
+  "icono": "🏛️",
+  "profesor": "Dr. José Fernando Díaz Molina",
+  "descripcion": "Estudio de las formas de gobierno, conceptos jurídico-administrativos fundamentales y documentos normativos del sector público mexicano.",
   "apuntes": [
     {
       "id": 1,
-      "titulo": "Derivadas e Integrales",
-      "fecha": "2024-02-05",
-      "contenido": "La derivada de una función mide la tasa de cambio instantánea. Si f(x) es una función, su derivada f'(x) se define como el límite del cociente incremental. Las reglas básicas incluyen la regla de la potencia, la regla del producto, la regla del cociente y la regla de la cadena.",
+      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 1)",
+      "fecha": "2026-09-07",
+      "contenido": "Definiciones fundamentales del marco jurídico, político y administrativo mexicano, centrado en la estructura del Estado, la división de poderes y los conceptos de soberanía y competencia.\n\n• Artículo 41: Establece que el pueblo ejerce su soberanía por medio de los Poderes de la Unión y de los Estados, en los términos de sus respectivas Constituciones. Regula también las características y financiamiento de los partidos políticos como entidades de interés público.\n• Artículo 25: Define la rectoría del desarrollo nacional por parte del Estado para garantizar que este sea integral y sustentable, fortaleciendo la Soberanía de la Nación y su régimen democrático mediante el uso óptimo de recursos.\n• Artículo 26: Regula el Sistema de Planeación Democrática del desarrollo nacional, el cual otorga solidez, dinamismo, competitividad, permanencia y equidad al crecimiento de la economía.\n• Artículo 108 CPEUM: Define qué se entiende por servidor público para efectos de responsabilidades administrativas, abarcando a toda persona que desempeñe un empleo, cargo o comisión en el servicio público.\n• Estado: Comunidad política organizada que habita un territorio determinado, dotada de un poder soberano que se gobierna a través de instituciones y un marco jurídico propio.\n• Gobierno: Conjunto de órganos e instituciones encargados de administrar el poder político, formular y ejecutar las directrices de la voluntad estatal y dirigir la administración pública.\n• Territorio: Espacio geográfico, terrestre, aéreo y marítimo en el cual un Estado ejerce su soberanía y jurisdicción de manera exclusiva.",
       "mapa_mental": {
-        "nodo_central": "Cálculo",
+        "nodo_central": "Glosario P1: Estado y Constitución",
         "ramas": [
           {
-            "tema": "Derivadas",
-            "subtemas": ["Regla de la cadena", "Regla del producto", "Regla del cociente", "Derivadas implícitas"]
+            "tema": "Artículos Constitucionales",
+            "subtemas": ["Artículo 41", "Artículo 25", "Artículo 26", "Artículo 108 CPEUM"]
           },
           {
-            "tema": "Integrales",
-            "subtemas": ["Integral definida", "Integral indefinida", "Regla de sustitución", "Integración por partes"]
-          },
-          {
-            "tema": "Aplicaciones",
-            "subtemas": ["Máximos y mínimos", "Áreas bajo la curva", "Volúmenes de revolución"]
+            "tema": "Elementos del Estado",
+            "subtemas": ["Estado", "Gobierno", "Territorio"]
           }
         ]
       }
     },
     {
       "id": 2,
-      "titulo": "Límites y Continuidad",
-      "fecha": "2024-02-19",
-      "contenido": "Un límite describe el comportamiento de una función a medida que la variable independiente se aproxima a un punto. Se dice que una función es continua en un punto si el límite existe, la función está definida en ese punto, y el límite es igual al valor de la función.",
+      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 2)",
+      "fecha": "2026-09-07",
+      "contenido": "Conceptos operativos y normativos relacionados con la función pública, la legislación secundaria y los instrumentos de la administración y el derecho parlamentario.\n\n• Ley secundaria: Normativa expedida por el Poder Legislativo que desarrolla, detalla y reglamenta los principios generales establecidos en la Constitución Política, sin rebasarlos ni contradecirlos.\n• Atribución: Facultad, poder o potestad jurídica conferida por la ley a un órgano del Estado para actuar en la consecución de los fines públicos.\n• Competencia: Límite y medida de la atribución; la aptitud legal específica que tiene un órgano o autoridad para ejercer sus funciones en razón de materia, grado, territorio o tiempo.\n• Servidor público: Persona física que presta sus servicios en los órganos del Estado a cambio de un salario, sujeta a un régimen especial de responsabilidades políticas, penales, civiles y administrativas.\n• Función: Conjunto de tareas, actividades y cometidos homogéneos que realiza el Estado a través de sus órganos para satisfacer las necesidades de la colectividad.",
       "mapa_mental": {
-        "nodo_central": "Límites",
+        "nodo_central": "Glosario P2: Facultades y Función Pública",
         "ramas": [
           {
-            "tema": "Definición formal",
-            "subtemas": ["Definición épsilon-delta", "Límites laterales", "Límites al infinito"]
+            "tema": "Marco Normativo",
+            "subtemas": ["Ley secundaria", "Atribución", "Competencia"]
           },
           {
-            "tema": "Continuidad",
-            "subtemas": ["Continuidad en un punto", "Continuidad en un intervalo", "Tipos de discontinuidad"]
-          },
-          {
-            "tema": "Técnicas de evaluación",
-            "subtemas": ["Factorización", "Racionalización", "Regla de L'Hôpital"]
+            "tema": "Ejercicio del Poder",
+            "subtemas": ["Servidor público", "Función"]
           }
         ]
       }
     },
     {
       "id": 3,
-      "titulo": "Álgebra Lineal – Matrices",
-      "fecha": "2024-03-04",
-      "contenido": "Una matriz es un arreglo rectangular de números. Las operaciones básicas son suma, resta y multiplicación. El determinante de una matriz cuadrada es un escalar que resume ciertas propiedades de la transformación lineal que representa.",
+      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 3)",
+      "fecha": "2026-09-07",
+      "contenido": "Glosario de instrumentos jurídicos, actos de autoridad y documentos administrativos de gestión y procedimiento.\n\n• Dictamen: Documento técnico-jurídico emitido por comisiones legislativas o peritos que contiene el análisis, discusión, evaluación y propuesta de resolución sobre una iniciativa o asunto sometido a su estudio.\n• Decreto: Disposición de carácter general o particular emitida por el Poder Ejecutivo (o en su caso Legislativo) que crea situaciones jurídicas concretas o modifica el ordenamiento legal existente, con fuerza de ley obligatoria.\n• Oficio: Comunicación escrita de carácter oficial que se utiliza entre autoridades, dependencias gubernamentales, instituciones y particulares para realizar trámites, solicitudes o notificaciones.\n• Iniciativa: Propuesta o proyecto de ley o decreto presentado formalmente ante el Poder Legislativo por las autoridades o ciudadanos facultados para ello, con el fin de iniciar el proceso de creación normativa.\n• Acuerdo: Resolución tomada por la mayoría o por unanimidad de los miembros de un cuerpo colegiado (como un cabildo, consejo o tribunal), o disposición de carácter administrativo emitida por una autoridad competente para normar asuntos internos o específicos.",
       "mapa_mental": {
-        "nodo_central": "Matrices",
+        "nodo_central": "Glosario P3: Instrumentos y Actos",
         "ramas": [
           {
-            "tema": "Operaciones",
-            "subtemas": ["Suma", "Multiplicación", "Transpuesta", "Inversa"]
+            "tema": "Resoluciones y Normas",
+            "subtemas": ["Dictamen", "Decreto", "Acuerdo"]
           },
           {
-            "tema": "Determinantes",
-            "subtemas": ["Regla de Sarrus", "Expansión de cofactores", "Propiedades"]
+            "tema": "Gestión y Trámite",
+            "subtemas": ["Oficio", "Iniciativa"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "titulo": "Tarea 2: Formas de Gobierno",
+      "fecha": "2026-09-07",
+      "contenido": "Las formas de gobierno clasifican la manera en que se estructura el poder político, la relación entre los poderes públicos y los mecanismos mediante los cuales se ejerce la soberanía.\n\n1. Monarquía: Forma de gobierno en la que la jefatura del Estado recae sobre una persona (monarca, rey, emperador), cuyo cargo es vitalicio y generalmente de carácter hereditario. Se divide en absoluta (donde el monarca concentra todos los poderes) y parlamentaria o constitucional (donde el monarca reina pero no gobierna, estando sujeto a una constitución).\n2. República: Forma de gobierno basada en el principio de soberanía popular, donde la máxima autoridad es elegida por los ciudadanos o sus representantes por un periodo determinado. Sus características principales son la división de poderes, la temporalidad de los cargos y la rendición de cuentas.\n3. Democracia: Sistema de organización política en el que la titularidad del poder reside en el conjunto de la sociedad. Puede ser directa (ejercida directamente por los ciudadanos) o representativa (donde los ciudadanos eligen a representantes para legislar y gobernar).\n4. Autocracia / Dictadura: Sistema de gobierno en el que una sola persona o un grupo reducido concentra el poder de manera absoluta, sin restricciones constitucionales ni mecanismos efectivos de control o participación ciudadana.",
+      "mapa_mental": {
+        "nodo_central": "Formas de Gobierno",
+        "ramas": [
+          {
+            "tema": "Monarquía",
+            "subtemas": ["Absoluta", "Parlamentaria / Constitucional"]
           },
           {
-            "tema": "Sistemas de ecuaciones",
-            "subtemas": ["Eliminación gaussiana", "Regla de Cramer", "Método de Gauss-Jordan"]
+            "tema": "República",
+            "subtemas": ["Presidencialista", "Parlamentaria", "Semipresidencialista"]
+          },
+          {
+            "tema": "Sistemas Democráticos",
+            "subtemas": ["Democracia directa", "Democracia representativa"]
+          },
+          {
+            "tema": "Concentración de Poder",
+            "subtemas": ["Autocracia", "Dictadura", "Totalitarismo"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "titulo": "Tarea 4: Ejemplos Prácticos (Dictamen, Acuerdo, Desacuerdo, Decreto y Oficio)",
+      "fecha": "2026-09-07",
+      "contenido": "Ejemplos prácticos y redactados que ilustran los diferentes tipos de documentos e instrumentos jurídicos-administrativos utilizados en la gestión pública:\n\n1. Dictamen:\n'La Comisión de Gobernación y Puntos Constitucionales emite dictamen favorable respecto a la iniciativa de ley que reforma el artículo 115 municipal, por considerar que fortalece la autonomía de los ayuntamientos y mejora la gestión de los servicios públicos básicos.'\n\n2. Acuerdo:\n'El Cabildo del Ayuntamiento Constitucional aprueba por unanimidad el acuerdo económico mediante el cual se autoriza la creación del comité municipal de participación ciudadana para el ejercicio fiscal en curso.'\n\n3. Desacuerdo:\n'La Secretaría de Finanzas manifiesta su desacuerdo institucional ante la propuesta de reducción presupuestal presentada por la comisión de vigilancia, argumentando que compromete la operatividad de los programas sociales prioritarios.'\n\n4. Decreto:\n'El Presidente de los Estados Unidos Mexicanos expide el Decreto por el cual se reforman diversas disposiciones del Reglamento Interior de la Administración Pública Federal, publicado en el Diario Oficial de la Federación.'\n\n5. Oficio:\n'Asunto: Solicitud de información presupuestal. Ciudadano Director de Administración: Por medio del presente, y con fundamento en el artículo 8 constitucional, se solicita la entrega del informe trimestral de ejercicio del gasto antes del próximo viernes. Atentamente, El Director General de Planeación.'",
+      "mapa_mental": {
+        "nodo_central": "Ejemplos Administrativos",
+        "ramas": [
+          {
+            "tema": "Resoluciones Técnicas",
+            "subtemas": ["Dictamen", "Acuerdo", "Desacuerdo"]
+          },
+          {
+            "tema": "Norma y Comunicación",
+            "subtemas": ["Decreto", "Oficio"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "titulo": "Tarea 5: Enlace a un Oficio del Gobierno",
+      "fecha": "2026-09-07",
+      "contenido": "Enlace oficial a documentos y oficios emitidos por la administración pública mexicana, como ejemplo de normatividad y comunicación institucional.\n\n• Enlace de referencia gubernamental: [Diario Oficial de la Federación (DOF)](https://www.dof.gob.mx) o consulta directa de oficios circulares en la plataforma de la Secretaría de la Función Pública y portales de transparencia gubernamental.",
+      "mapa_mental": {
+        "nodo_central": "Documentos Oficiales",
+        "ramas": [
+          {
+            "tema": "Fuentes de Consulta",
+            "subtemas": ["Diario Oficial de la Federación", "Portales de Transparencia", "Oficios Circulares"]
           }
         ]
       }
