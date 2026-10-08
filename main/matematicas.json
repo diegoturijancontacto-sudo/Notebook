@@ -1,124 +1,627 @@
 {
-  "materia": "Génesis de la Teoría de la Administración Pública",
-  "color": "#2980b9",
+  "materia": "Ciencias Políticas I",
+  "color": "#e63946",
   "icono": "🏛️",
-  "profesor": "Dr. José Fernando Díaz Molina",
-  "descripcion": "Estudio de las formas de gobierno, conceptos jurídico-administrativos fundamentales y documentos normativos del sector público mexicano.",
+  "profesor": "Dr. Alejandro Montiel",
+  "descripcion": "Introducción a la teoría política, el Estado y los sistemas de gobierno",
   "apuntes": [
     {
       "id": 1,
-      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 1)",
-      "fecha": "2026-09-07",
-      "contenido": "Definiciones fundamentales del marco jurídico, político y administrativo mexicano, centrado en la estructura del Estado, la división de poderes y los conceptos de soberanía y competencia.\n\n• Artículo 41: Establece que el pueblo ejerce su soberanía por medio de los Poderes de la Unión y de los Estados, en los términos de sus respectivas Constituciones. Regula también las características y financiamiento de los partidos políticos como entidades de interés público.\n• Artículo 25: Define la rectoría del desarrollo nacional por parte del Estado para garantizar que este sea integral y sustentable, fortaleciendo la Soberanía de la Nación y su régimen democrático mediante el uso óptimo de recursos.\n• Artículo 26: Regula el Sistema de Planeación Democrática del desarrollo nacional, el cual otorga solidez, dinamismo, competitividad, permanencia y equidad al crecimiento de la economía.\n• Artículo 108 CPEUM: Define qué se entiende por servidor público para efectos de responsabilidades administrativas, abarcando a toda persona que desempeñe un empleo, cargo o comisión en el servicio público.\n• Estado: Comunidad política organizada que habita un territorio determinado, dotada de un poder soberano que se gobierna a través de instituciones y un marco jurídico propio.\n• Gobierno: Conjunto de órganos e instituciones encargados de administrar el poder político, formular y ejecutar las directrices de la voluntad estatal y dirigir la administración pública.\n• Territorio: Espacio geográfico, terrestre, aéreo y marítimo en el cual un Estado ejerce su soberanía y jurisdicción de manera exclusiva.",
+      "titulo": "Definición y Objeto de la Ciencia Política",
+      "fecha": "2024-08-12",
+      "contenido": "La ciencia política es el estudio sistemático del gobierno, la política y el poder. Se centra en el análisis de las estructuras políticas, los procesos de toma de decisiones y el comportamiento de los actores políticos en la sociedad. Su objeto de estudio es el fenómeno del poder y su organización en el Estado.",
       "mapa_mental": {
-        "nodo_central": "Glosario P1: Estado y Constitución",
+        "nodo_central": "Ciencia Política",
         "ramas": [
           {
-            "tema": "Artículos Constitucionales",
-            "subtemas": ["Artículo 41", "Artículo 25", "Artículo 26", "Artículo 108 CPEUM"]
+            "tema": "Objeto",
+            "subtemas": ["El Poder", "El Estado", "Políticas Públicas"]
           },
           {
-            "tema": "Elementos del Estado",
-            "subtemas": ["Estado", "Gobierno", "Territorio"]
+            "tema": "Métodos",
+            "subtemas": ["Comparativo", "Sistémico", "Conductista"]
           }
         ]
       }
     },
     {
       "id": 2,
-      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 2)",
-      "fecha": "2026-09-07",
-      "contenido": "Conceptos operativos y normativos relacionados con la función pública, la legislación secundaria y los instrumentos de la administración y el derecho parlamentario.\n\n• Ley secundaria: Normativa expedida por el Poder Legislativo que desarrolla, detalla y reglamenta los principios generales establecidos en la Constitución Política, sin rebasarlos ni contradecirlos.\n• Atribución: Facultad, poder o potestad jurídica conferida por la ley a un órgano del Estado para actuar en la consecución de los fines públicos.\n• Competencia: Límite y medida de la atribución; la aptitud legal específica que tiene un órgano o autoridad para ejercer sus funciones en razón de materia, grado, territorio o tiempo.\n• Servidor público: Persona física que presta sus servicios en los órganos del Estado a cambio de un salario, sujeta a un régimen especial de responsabilidades políticas, penales, civiles y administrativas.\n• Función: Conjunto de tareas, actividades y cometidos homogéneos que realiza el Estado a través de sus órganos para satisfacer las necesidades de la colectividad.",
+      "titulo": "El Concepto de Poder",
+      "fecha": "2024-08-15",
+      "contenido": "El poder es la capacidad de un actor para influir en el comportamiento de otros. Según Max Weber, se distingue entre poder (Macht) y autoridad (Herrschaft). La autoridad es el poder legitimado que los ciudadanos aceptan como válido.",
       "mapa_mental": {
-        "nodo_central": "Glosario P2: Facultades y Función Pública",
+        "nodo_central": "Poder",
         "ramas": [
           {
-            "tema": "Marco Normativo",
-            "subtemas": ["Ley secundaria", "Atribución", "Competencia"]
+            "tema": "Tipos (Weber)",
+            "subtemas": ["Tradicional", "Carismático", "Racional-Legal"]
           },
           {
-            "tema": "Ejercicio del Poder",
-            "subtemas": ["Servidor público", "Función"]
+            "tema": "Dimensiones",
+            "subtemas": ["Coerción", "Influencia", "Autoridad"]
           }
         ]
       }
     },
     {
       "id": 3,
-      "titulo": "Tarea 1: Glosario de Términos Político-Administrativos (Parte 3)",
-      "fecha": "2026-09-07",
-      "contenido": "Glosario de instrumentos jurídicos, actos de autoridad y documentos administrativos de gestión y procedimiento.\n\n• Dictamen: Documento técnico-jurídico emitido por comisiones legislativas o peritos que contiene el análisis, discusión, evaluación y propuesta de resolución sobre una iniciativa o asunto sometido a su estudio.\n• Decreto: Disposición de carácter general o particular emitida por el Poder Ejecutivo (o en su caso Legislativo) que crea situaciones jurídicas concretas o modifica el ordenamiento legal existente, con fuerza de ley obligatoria.\n• Oficio: Comunicación escrita de carácter oficial que se utiliza entre autoridades, dependencias gubernamentales, instituciones y particulares para realizar trámites, solicitudes o notificaciones.\n• Iniciativa: Propuesta o proyecto de ley o decreto presentado formalmente ante el Poder Legislativo por las autoridades o ciudadanos facultados para ello, con el fin de iniciar el proceso de creación normativa.\n• Acuerdo: Resolución tomada por la mayoría o por unanimidad de los miembros de un cuerpo colegiado (como un cabildo, consejo o tribunal), o disposición de carácter administrativo emitida por una autoridad competente para normar asuntos internos o específicos.",
+      "titulo": "Teoría del Estado",
+      "fecha": "2024-08-19",
+      "contenido": "El Estado es una organización política que ejerce soberanía sobre un territorio y una población definidos. Posee el monopolio legítimo del uso de la fuerza física. Se compone de tres elementos esenciales: territorio, población y gobierno.",
       "mapa_mental": {
-        "nodo_central": "Glosario P3: Instrumentos y Actos",
+        "nodo_central": "El Estado",
         "ramas": [
           {
-            "tema": "Resoluciones y Normas",
-            "subtemas": ["Dictamen", "Decreto", "Acuerdo"]
+            "tema": "Elementos",
+            "subtemas": ["Población", "Territorio", "Poder Soberano"]
           },
           {
-            "tema": "Gestión y Trámite",
-            "subtemas": ["Oficio", "Iniciativa"]
+            "tema": "Funciones",
+            "subtemas": ["Legislativa", "Ejecutiva", "Judicial"]
           }
         ]
       }
     },
     {
       "id": 4,
-      "titulo": "Tarea 2: Formas de Gobierno",
-      "fecha": "2026-09-07",
-      "contenido": "Las formas de gobierno clasifican la manera en que se estructura el poder político, la relación entre los poderes públicos y los mecanismos mediante los cuales se ejerce la soberanía.\n\n1. Monarquía: Forma de gobierno en la que la jefatura del Estado recae sobre una persona (monarca, rey, emperador), cuyo cargo es vitalicio y generalmente de carácter hereditario. Se divide en absoluta (donde el monarca concentra todos los poderes) y parlamentaria o constitucional (donde el monarca reina pero no gobierna, estando sujeto a una constitución).\n2. República: Forma de gobierno basada en el principio de soberanía popular, donde la máxima autoridad es elegida por los ciudadanos o sus representantes por un periodo determinado. Sus características principales son la división de poderes, la temporalidad de los cargos y la rendición de cuentas.\n3. Democracia: Sistema de organización política en el que la titularidad del poder reside en el conjunto de la sociedad. Puede ser directa (ejercida directamente por los ciudadanos) o representativa (donde los ciudadanos eligen a representantes para legislar y gobernar).\n4. Autocracia / Dictadura: Sistema de gobierno en el que una sola persona o un grupo reducido concentra el poder de manera absoluta, sin restricciones constitucionales ni mecanismos efectivos de control o participación ciudadana.",
+      "titulo": "Pensamiento Político Clásico: Platón y Aristóteles",
+      "fecha": "2024-08-22",
+      "contenido": "Platón propone la 'República' gobernada por filósofos-reyes. Aristóteles, en su obra 'Política', analiza las formas de gobierno y define al hombre como un 'Zoon Politikon' (animal político) que solo se realiza plenamente en la polis.",
       "mapa_mental": {
-        "nodo_central": "Formas de Gobierno",
+        "nodo_central": "Pensamiento Clásico",
         "ramas": [
           {
-            "tema": "Monarquía",
-            "subtemas": ["Absoluta", "Parlamentaria / Constitucional"]
+            "tema": "Platón",
+            "subtemas": ["Justicia", "Rey Filósofo", "Alegoría de la caverna"]
           },
           {
-            "tema": "República",
-            "subtemas": ["Presidencialista", "Parlamentaria", "Semipresidencialista"]
-          },
-          {
-            "tema": "Sistemas Democráticos",
-            "subtemas": ["Democracia directa", "Democracia representativa"]
-          },
-          {
-            "tema": "Concentración de Poder",
-            "subtemas": ["Autocracia", "Dictadura", "Totalitarismo"]
+            "tema": "Aristóteles",
+            "subtemas": ["Ética y Política", "Clasificación de regímenes", "Bien Común"]
           }
         ]
       }
     },
     {
       "id": 5,
-      "titulo": "Tarea 4: Ejemplos Prácticos (Dictamen, Acuerdo, Desacuerdo, Decreto y Oficio)",
-      "fecha": "2026-09-07",
-      "contenido": "Ejemplos prácticos y redactados que ilustran los diferentes tipos de documentos e instrumentos jurídicos-administrativos utilizados en la gestión pública:\n\n1. Dictamen:\n'La Comisión de Gobernación y Puntos Constitucionales emite dictamen favorable respecto a la iniciativa de ley que reforma el artículo 115 municipal, por considerar que fortalece la autonomía de los ayuntamientos y mejora la gestión de los servicios públicos básicos.'\n\n2. Acuerdo:\n'El Cabildo del Ayuntamiento Constitucional aprueba por unanimidad el acuerdo económico mediante el cual se autoriza la creación del comité municipal de participación ciudadana para el ejercicio fiscal en curso.'\n\n3. Desacuerdo:\n'La Secretaría de Finanzas manifiesta su desacuerdo institucional ante la propuesta de reducción presupuestal presentada por la comisión de vigilancia, argumentando que compromete la operatividad de los programas sociales prioritarios.'\n\n4. Decreto:\n'El Presidente de los Estados Unidos Mexicanos expide el Decreto por el cual se reforman diversas disposiciones del Reglamento Interior de la Administración Pública Federal, publicado en el Diario Oficial de la Federación.'\n\n5. Oficio:\n'Asunto: Solicitud de información presupuestal. Ciudadano Director de Administración: Por medio del presente, y con fundamento en el artículo 8 constitucional, se solicita la entrega del informe trimestral de ejercicio del gasto antes del próximo viernes. Atentamente, El Director General de Planeación.'",
+      "titulo": "Maquiavelo y el Realismo Político",
+      "fecha": "2024-08-26",
+      "contenido": "Nicolás Maquiavelo separa la moral de la política en 'El Príncipe'. Sostiene que el gobernante debe buscar la estabilidad del Estado por encima de consideraciones éticas individuales, introduciendo el concepto de 'razón de Estado'.",
       "mapa_mental": {
-        "nodo_central": "Ejemplos Administrativos",
+        "nodo_central": "Realismo",
         "ramas": [
           {
-            "tema": "Resoluciones Técnicas",
-            "subtemas": ["Dictamen", "Acuerdo", "Desacuerdo"]
-          },
-          {
-            "tema": "Norma y Comunicación",
-            "subtemas": ["Decreto", "Oficio"]
+            "tema": "Maquiavelo",
+            "subtemas": ["Virtù y Fortuna", "El fin justifica los medios", "Autonomía de lo político"]
           }
         ]
       }
     },
     {
       "id": 6,
-      "titulo": "Tarea 5: Enlace a un Oficio del Gobierno",
-      "fecha": "2026-09-07",
-      "contenido": "Enlace oficial a documentos y oficios emitidos por la administración pública mexicana, como ejemplo de normatividad y comunicación institucional.\n\n• Enlace de referencia gubernamental: [Diario Oficial de la Federación (DOF)](https://www.dof.gob.mx) o consulta directa de oficios circulares en la plataforma de la Secretaría de la Función Pública y portales de transparencia gubernamental.",
+      "titulo": "El Contractualismo: Hobbes",
+      "fecha": "2024-08-29",
+      "contenido": "Thomas Hobbes propone en 'Leviatán' que en el estado de naturaleza hay una 'guerra de todos contra todos'. Para evitar la muerte violenta, los hombres ceden su libertad a un soberano absoluto mediante un contrato social.",
       "mapa_mental": {
-        "nodo_central": "Documentos Oficiales",
+        "nodo_central": "Hobbes",
         "ramas": [
           {
-            "tema": "Fuentes de Consulta",
-            "subtemas": ["Diario Oficial de la Federación", "Portales de Transparencia", "Oficios Circulares"]
+            "tema": "Estado de Naturaleza",
+            "subtemas": ["Pesimismo", "Miedo", "Guerra"]
+          },
+          {
+            "tema": "Contrato",
+            "subtemas": ["Soberanía absoluta", "Seguridad", "Orden"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "titulo": "El Liberalismo: Locke",
+      "fecha": "202unt4-09-02",
+      "conad Generaltenido": "John Locke es el padre del liberalismo clásico. Defiende que el contrato social debe proteger los derechos naturales: vida, libertad y propiedad. Propone la división de poderes y el derecho a la rebelión contra la tiranía.",
+      "mapa_mental": {
+        "nodo_central": "Liberalismo",
+        "ramas": [
+          {
+            "tema": "Derechos Naturales",
+            "subtemas": ["Vida", "Libertad", "Propiedad"]
+          },
+          {
+            "tema": "Gobierno",
+            "subtemas": ["Consentimiento", "Límites al poder", "Parlamentarismo"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "titulo": "Rousseau y la Vol",
+      "fecha": "2024-09-05",
+      "contenido": "Rousseau critica la civilización y propone que el hombre nace libre. En 'El Contrato Social', plantea que la soberanía reside en el pueblo y se expresa a través de la voluntad general, buscando el interés común.",
+      "mapa_mental": {
+        "nodo_central": "Rousseau",
+        "ramas": [
+          {
+            "tema": "Conceptos",
+            "subtemas": ["Voluntad General", "Soberanía Popular", "Igualdad"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "titulo": "La División de Poderes: Montesquieu",
+      "fecha": "2024-09-09",
+      "contenido": "En 'El espíritu de las leyes', Montesquieu desarrolla la teoría de la separación de poderes para evitar el abuso del mando: Legislativo, Ejecutivo y Judicial deben ser independientes y controlarse entre sí.",
+      "mapa_mental": {
+        "nodo_central": "Montesquieu",
+        "ramas": [
+          {
+            "tema": "Poderes",
+            "subtemas": ["Legislativo", "Ejecutivo", "Judicial"]
+          },
+          {
+            "tema": "Sistema",
+            "subtemas": ["Pesos y contrapesos", "Libertad política"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "titulo": "Ideologías Políticas: Liberalismo y Conservadurismo",
+      "fecha": "2024-09-12",
+      "contenido": "El liberalismo prioriza la libertad individual y el mercado. El conservadurismo enfatiza la tradición, el orden social y la estabilidad institucional ante cambios radicales.",
+      "mapa_mental": {
+        "nodo_central": "Ideologías",
+        "ramas": [
+          {
+            "tema": "Liberalismo",
+            "subtemas": ["Individuo", "Laissez-faire", "Derechos"]
+          },
+          {
+            "tema": "Conservadurismo",
+            "subtemas": ["Tradición", "Religión", "Autoridad"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 11,
+      "titulo": "El Marxismo y la Crítica al Capitalismo",
+      "fecha": "2024-09-16",
+      "contenido": "Karl Marx analiza la historia como una lucha de clases. Sostiene que el Estado es un instrumento de dominación de la burguesía sobre el proletariado y propone la abolición de la propiedad privada.",
+      "mapa_mental": {
+        "nodo_central": "Marxismo",
+        "ramas": [
+          {
+            "tema": "Materialismo",
+            "subtemas": ["Estructura económica", "Superestructura", "Lucha de clases"]
+          },
+          {
+            "tema": "Conceptos",
+            "subtemas": ["Plusvalía", "Alienación", "Revolución"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 12,
+      "titulo": "Regímenes Políticos: Democracia",
+      "fecha": "2024-09-19",
+      "contenido": "La democracia es el gobierno del pueblo. Se caracteriza por elecciones libres, pluripartidismo, respeto a los derechos humanos y el imperio de la ley. Puede ser directa, representativa o deliberativa.",
+      "mapa_mental": {
+        "nodo_central": "Democracia",
+        "ramas": [
+          {
+            "tema": "Requisitos",
+            "subtemas": ["Elecciones", "Competencia", "Participación"]
+          },
+          {
+            "tema": "Tipos",
+            "subtemas": ["Representativa", "Participativa", "Liberal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "titulo": "Regímenes Autoritarios y Totalitarios",
+      "fecha": "2024-09-23",
+      "contenido": "El autoritarismo limita el pluralismo político pero permite cierta libertad social. El totalitarismo busca el control absoluto de la vida pública y privada mediante una ideología única y el terror.",
+      "mapa_mental": {
+        "nodo_central": "No Democracia",
+        "ramas": [
+          {
+            "tema": "Totalitarismo",
+            "subtemas": ["Partido único", "Ideología oficial", "Control total"]
+          },
+          {
+            "tema": "Autoritarismo",
+            "subtemas": ["Pluralismo limitado", "Sin ideología elaborada"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 14,
+      "titulo": "Sistemas de Gobierno: Presidencialismo",
+      "fecha": "2024-09-26",
+      "contenido": "En el presidencialismo, el Jefe de Estado y el Jefe de Gobierno son la misma persona. Existe una separación rígida de poderes y el presidente es elegido directamente por el pueblo.",
+      "mapa_mental": {
+        "nodo_central": "Presidencialismo",
+        "ramas": [
+          {
+            "tema": "Características",
+            "subtemas": ["Mandato fijo", "Elección directa", "Unipersonal"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "titulo": "Sistemas de Gobierno: Parlamentarismo",
+      "fecha": "2024-09-30",
+      "contenido": "El ejecutivo emana del legislativo. Hay una distinción entre Jefe de Estado (monarca o presidente) y Jefe de Gobierno (Primer Ministro). El gobierno depende de la confianza del parlamento.",
+      "mapa_mental": {
+        "nodo_central": "Parlamentarismo",
+        "ramas": [
+          {
+            "tema": "Dinámica",
+            "subtemas": ["Voto de censura", "Cuestión de confianza", "Ejecutivo dual"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 16,
+      "titulo": "Partidos Políticos y Sistemas de Partidos",
+      "fecha": "2024-10-03",
+      "contenido": "Los partidos son organizaciones que buscan alcanzar el poder político. Los sistemas pueden ser bipartidistas, multipartidistas o de partido único/hegemónico.",
+      "mapa_mental": {
+        "nodo_central": "Partidos",
+        "ramas": [
+          {
+            "tema": "Funciones",
+            "subtemas": ["Movilización", "Reclutamiento", "Socialización"]
+          },
+          {
+            "tema": "Sistemas",
+            "subtemas": ["Bipartidismo", "Multipartidismo polarizado", "Pluralismo moderado"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "titulo": "Cultura Política y Socialización",
+      "fecha": "2024-10-07",
+      "contenido": "La cultura política son los valores, creencias y actitudes de una sociedad hacia el sistema político. La socialización política es el proceso por el cual se transmiten estas orientaciones a través de la familia, escuela y medios.",
+      "mapa_mental": {
+        "nodo_central": "Cultura",
+        "ramas": [
+          {
+            "tema": "Tipos (Almond/Verba)",
+            "subtemas": ["Parroquial", "Súbdito", "Participante"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 18,
+      "titulo": "Sistemas Electorales",
+      "fecha": "2024-10-10",
+      "contenido": "Son las reglas que transforman votos en escaños. Los principales son el sistema mayoritario (ganador se lleva todo) y el sistema proporcional (reparto según porcentaje de votos).",
+      "mapa_mental": {
+        "nodo_central": "Elecciones",
+        "ramas": [
+          {
+            "tema": "Mayoritario",
+            "subtemas": ["Estabilidad", "Bipartidismo", "Distrito uninominal"]
+          },
+          {
+            "tema": "Proporcional",
+            "subtemas": ["Representatividad", "Fragmentación", "Listas"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 19,
+      "titulo": "Grupos de Presión y Movimientos Sociales",
+      "fecha": "2024-10-14",
+      "contenido": "A diferencia de los partidos, los grupos de presión no buscan gobernar, sino influir en las decisiones públicas desde fuera. Los movimientos sociales buscan el cambio social mediante la acción colectiva.",
+      "mapa_mental": {
+        "nodo_central": "Participación",
+        "ramas": [
+          {
+            "tema": "Grupos de Presión",
+            "subtemas": ["Lobbying", "Intereses económicos", "Sindicatos"]
+          },
+          {
+            "tema": "Movimientos",
+            "subtemas": ["Identidad", "Redes", "Contestación"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 20,
+      "titulo": "Políticas Públicas",
+      "fecha": "2024-10-17",
+      "contenido": "Son el conjunto de acciones y decisiones que el Estado lleva a cabo para solucionar problemas sociales. Incluye etapas como el diagnóstico, diseño, implementación y evaluación.",
+      "mapa_mental": {
+        "nodo_central": "Políticas Públicas",
+        "ramas": [
+          {
+            "tema": "Ciclo",
+            "subtemas": ["Agenda", "Formulación", "Implementación", "Evaluación"]
+          }
+        ]
+      }
+    },
+    {
+      "id": 21,
+      "titulo": "Cuadro Comparativo de Nivel y Enfoque Político",
+      "fecha": "2024-10-21",
+      "contenido": "Existen tres niveles de acción política que se distinguen por su alcance, sus actores y su naturaleza decisional. Las Políticas del Estado son acciones de gobierno para alcanzar macro objetivos de interés nacional; en su diseño y ejecución intervienen las funciones legislativas y ejecutivas del Gobierno Federal; son decisiones unilaterales de gobierno; y ejemplos son la política exterior, la política fiscal, la política económica o la política monetaria. Las Políticas del Gobierno son acciones de gobierno encaminadas a atender los males públicos que afectan a la sociedad en su conjunto; en su diseño y ejecución interviene el ejecutivo de los tres órdenes de gobierno; son decisiones unilaterales de gobierno; y ejemplos son los programas de gobierno con un sello distintivo de la administración en turno. Las Políticas Públicas son acciones de gobierno orientadas a la atención eficaz, eficiente y legítima de problemas públicos; en su diseño interviene el ejecutivo de los tres órdenes de gobierno y la ciudadanía; son decisiones consensuadas con la ciudadanía; y ejemplos son el Programa Seguro Popular de México o Prosoli de República Dominicana.",
+      "mapa_mental": {
+        "nodo_central": "Niveles y Enfoques Políticos",
+        "ramas": [
+          {
+            "tema": "Políticas del Estado",
+            "subtemas": [
+              "Macro objetivos de interés nacional",
+              "Intervienen funciones legislativas y ejecutivas del Gobierno Federal",
+              "Decisiones unilaterales de gobierno",
+              "Ejemplos: política exterior, fiscal, económica, monetaria"
+            ]
+          },
+          {
+            "tema": "Políticas del Gobierno",
+            "subtemas": [
+              "Atienden males públicos que afectan a la sociedad en su conjunto",
+              "Interviene el ejecutivo de los tres órdenes de gobierno",
+              "Decisiones unilaterales de gobierno",
+              "Ejemplos: programas de gobierno con sello distintivo de la administración en turno"
+            ]
+          },
+          {
+            "tema": "Políticas Públicas",
+            "subtemas": [
+              "Atención eficaz, eficiente y legítima de problemas públicos",
+              "Interviene el ejecutivo de los tres órdenes de gobierno y la ciudadanía",
+              "Decisiones consensuadas con la ciudadanía",
+              "Ejemplos: Seguro Popular de México, Prosoli de República Dominicana"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "titulo": "Ejemplos Aplicados por Categoría",
+      "fecha": "2024-10-21",
+      "contenido": "Se presentan ejemplos concretos para cada categoría de política. En Políticas del Estado: (1) Educación pública, mantener y garantizar el derecho a la educación mediante instituciones y normas que trascienden distintos gobiernos; (2) Política exterior, mantener relaciones diplomáticas y principios internacionales de México de forma independiente del gobierno que esté en el poder. En Políticas del Gobierno: (1) Programas de apoyo económico, un gobierno establece determinados programas sociales como parte de su proyecto de administración; (2) Estrategias de infraestructura, un gobierno decide impulsar determinadas carreteras, obras públicas o proyectos durante su periodo. En Políticas Públicas: (1) Becas educativas, otorga apoyos económicos para que estudiantes puedan continuar sus estudios; (2) Pensión para adultos, proporcionar apoyo económico para atender las necesidades de este grupo de población.",
+      "mapa_mental": {
+        "nodo_central": "Ejemplos por Categoría",
+        "ramas": [
+          {
+            "tema": "Políticas del Estado",
+            "subtemas": [
+              "Educación pública: derecho a la educación mediante instituciones y normas que trascienden gobiernos",
+              "Política exterior: relaciones diplomáticas y principios internacionales independientes del gobierno en turno"
+            ]
+          },
+          {
+            "tema": "Políticas del Gobierno",
+            "subtemas": [
+              "Programas de apoyo económico: programas sociales como parte del proyecto de administración",
+              "Estrategias de infraestructura: carreteras, obras públicas o proyectos durante su periodo"
+            ]
+          },
+          {
+            "tema": "Políticas Públicas",
+            "subtemas": [
+              "Becas educativas: apoyos económicos para continuar estudios",
+              "Pensión para adultos: apoyo económico para necesidades de este grupo de población"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 23,
+      "titulo": "Concepto y Ciclo de Vida de las Políticas Públicas",
+      "fecha": "2024-10-24",
+      "contenido": "Las Políticas Públicas son acciones de gobierno con objetivos de interés público que surgen de decisiones sustentadas en un proceso de diagnóstico y análisis de factibilidad, para la atención de problemas públicos específicos. Su ciclo de vida comprende cuatro etapas fundamentales: (1) Etapa de Gestación y Análisis de Agendas, (2) Diseño o Formulación, (3) Implementación o Ejecución, y (4) Evaluación de Impacto.",
+      "mapa_mental": {
+        "nodo_central": "Ciclo de Vida de las Políticas Públicas",
+        "ramas": [
+          {
+            "tema": "Definición",
+            "subtemas": [
+              "Acciones de gobierno con objetivos de interés público",
+              "Surgen de decisiones sustentadas en diagnóstico y análisis de factibilidad",
+              "Atienden problemas públicos específicos"
+            ]
+          },
+          {
+            "tema": "Etapas del Ciclo",
+            "subtemas": [
+              "Gestación y Análisis de Agendas",
+              "Diseño o Formulación",
+              "Implementación o Ejecución",
+              "Evaluación de Impacto"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 24,
+      "titulo": "Etapa 1: Gestación y Análisis de Agendas",
+      "fecha": "2024-10-24",
+      "contenido": "En un gobierno se detecta la existencia de una demanda social que puede convertirse en un asunto público. Se distinguen tres tipos de agenda: Agenda Pública, que son los temas que la ciudadanía y grupos sociales buscan que sean atendidos; Agenda de Gobierno, que son las prioridades que el gobierno establece y planea materializar; y Agenda Política, que son los temas que alcanzan prioridad en el debate político.",
+      "mapa_mental": {
+        "nodo_central": "Gestación y Análisis de Agendas",
+        "ramas": [
+          {
+            "tema": "Punto de partida",
+            "subtemas": [
+              "Detección de una demanda social",
+              "Posible conversión en asunto público"
+            ]
+          },
+          {
+            "tema": "Tipos de Agenda",
+            "subtemas": [
+              "Agenda Pública: temas que la ciudadanía y grupos sociales buscan que sean atendidos",
+              "Agenda de Gobierno: prioridades que el gobierno establece y planea materializar",
+              "Agenda Política: temas que alcanzan prioridad en el debate político"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 25,
+      "titulo": "Etapa 2: Diseño o Formulación",
+      "fecha": "2024-10-24",
+      "contenido": "Se analiza el problema y se buscan soluciones creativas y viables. Se propone una metodología estructurada en 5 pasos: Paso 1 Análisis del problema; Paso 2 Análisis de la solución; Paso 3 Análisis de factibilidad; Paso 4 Recomendación de política pública; Paso 5 Plan de acción.",
+      "mapa_mental": {
+        "nodo_central": "Diseño o Formulación",
+        "ramas": [
+          {
+            "tema": "Objetivo",
+            "subtemas": [
+              "Analizar el problema",
+              "Buscar soluciones creativas y viables"
+            ]
+          },
+          {
+            "tema": "Metodología (5 pasos)",
+            "subtemas": [
+              "Paso 1: Análisis del problema",
+              "Paso 2: Análisis de la solución",
+              "Paso 3: Análisis de factibilidad",
+              "Paso 4: Recomendación de política pública",
+              "Paso 5: Plan de acción"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 26,
+      "titulo": "Etapa 3: Implementación o Ejecución",
+      "fecha": "2024-10-24",
+      "contenido": "Se pone en marcha el plan. Incluye presupuesto, creación legal, formación del equipo y comunicación. Puede ejecutarseiv mediante tres vías: Directa, mediante el aparato burocrático; Indirecta, mediante organizaciones no gubernamentales o empresas privadas; y Mixta, colaboración pública-prada.",
+      "mapa_mental": {
+        "nodo_central": "Implementación o Ejecución",
+        "ramas": [
+          {
+            "tema": "Elementos que incluye",
+            "subtemas": [
+              "Presupuesto",
+              "Creación legal",
+              "Formación del equipo",
+              "Comunicación"
+            ]
+          },
+          {
+            "tema": "Vías de ejecución",
+            "subtemas": [
+              "Directa: mediante el aparato burocrático",
+              "Indirecta: mediante ONG o empresas privadas",
+              "Mixta: colaboración pública-privada"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 27,
+      "titulo": "Etapa 4: Evaluación de Impacto",
+      "fecha": "2024-10-24",
+      "contenido": "Se valoran los efectos de la política. Puede realizarse en distintas fases: Ex-ante, antes de la decisión; Concomitante, durante la ejecución (ajustes en tiempo real); y Ex-post, al finalizar, para medir resultados reales.",
+      "mapa_mental": {
+        "nodo_central": "Evaluación de Impacto",
+        "ramas": [
+          {
+            "tema": "Propósito",
+            "subtemas": ["Valorar los efectos de la política"]
+          },
+          {
+            "tema": "Fases",
+            "subtemas": [
+              "Ex-ante: antes de la decisión",
+              "Concomitante: durante la ejecución (ajustes en tiempo real)",
+              "Ex-post: al finalizar, para medir resultados reales"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 28,
+      "titulo": "¿Qué hace un especialista en Políticas Públicas?",
+      "fecha": "2024-10-24",
+      "contenido": "Su tarea central es el análisis de política pública: asesorar a los decisores con información rigurosa, relevante y orientada a la solución de problemas públicos. Integran conocimientos de distintas disciplinas, ya que ninguna disciplina por sí sola resuelve la complejidad de los problemas públicos.",
+      "mapa_mental": {
+        "nodo_central": "Especialista en Políticas Públicas",
+        "ramas": [
+          {
+            "tema": "Tarea central",
+            "subtemas": [
+              "Análisis de política pública",
+              "Asesorar a los decisores con información rigurosa y relevante",
+              "Orientación a la solución de problemas públicos"
+            ]
+          },
+          {
+            "tema": "Enfoque disciplinario",
+            "subtemas": [
+              "Integración de conocimientos de distintas disciplinas",
+              "Ninguna disciplina por sí sola resuelve la complejidad de losas problemas públicos"
+            ]
+          }
+        ]
+      }
+   ": },
+    {
+      "id": 29,
+ [
+      "titulo": "Análisis del              Problema " Público",
+      "fecha":Deb "2024-10-24",
+      "contenido": "Es la etapa más crítica del diseño. Un problema público se define como una situación que afecta a muchas personas, genera insatisfacción ciudadana y se reconoce políticamente como tal. Para que un problema social se convierta en público debe transitar por las tres agendas (pública, política, de gobierno), aprovechando ventanas de oportunidades (crisis, desastres, presión social, liderazgo). El proceso de análisis del problema incluye: Entender y cuantificar el problema; Identificar causas para generar principales variables; Seleccionar las causas para generar alternativas; Documentar hallazgos de forma rigurosa.",
+      "mapa_mental": {
+        "nodo_central": "Análisis del Problema Público",
+        "ramas": [
+          {
+            "tema": "Definición",
+            "subtemas": [
+              "Situación que afecta a muchas personas",
+              "Genera insatisfacción ciudadana",
+              "Se reconoce políticamente como tal",
+              "Es la etapa más crítica del diseño"
+            ]
+          },
+          {
+            "tema": "Transición a problema público",
+            "subteme transitar por las tres agendas: pública, política y de gobierno",
+              "Aprovechar ventanas de oportunidades: crisis, desastres, presión social, liderazgo"
+            ]
+          },
+          {
+            "tema": "Proceso de análisis",
+            "subtemas": [
+              "Entender y cuantificar el problema",
+              "Identificar causas para generar principales variables",
+              "Seleccionar las causas para generar alternativas",
+              "Documentar hallazgos de forma rigurosa"
+            ]
           }
         ]
       }
