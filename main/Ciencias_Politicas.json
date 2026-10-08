@@ -360,6 +360,76 @@
           }
         ]
       }
+    },
+    {
+      "id": 21,
+      "titulo": "Cuadro Comparativo de Nivel y Enfoque Político",
+      "fecha": "2024-10-21",
+      "contenido": "Existen tres niveles de acción política que se distinguen por su alcance, sus actores y su naturaleza decisional. Las Políticas del Estado son acciones de gobierno para alcanzar macro objetivos de interés nacional; en su diseño y ejecución intervienen las funciones legislativas y ejecutivas del Gobierno Federal; son decisiones unilaterales de gobierno; y ejemplos son la política exterior, la política fiscal, la política económica o la política monetaria. Las Políticas del Gobierno son acciones de gobierno encaminadas a atender los males públicos que afectan a la sociedad en su conjunto; en su diseño y ejecución interviene el ejecutivo de los tres órdenes de gobierno; son decisiones unilaterales de gobierno; y ejemplos son los programas de gobierno con un sello distintivo de la administración en turno. Las Políticas Públicas son acciones de gobierno orientadas a la atención eficaz, eficiente y legítima de problemas públicos; en su diseño interviene el ejecutivo de los tres órdenes de gobierno y la ciudadanía; son decisiones consensuadas con la ciudadanía; y ejemplos son el Programa Seguro Popular de México o Prosoli de República Dominicana.",
+      "mapa_mental": {
+        "nodo_central": "Niveles y Enfoques Políticos",
+        "ramas": [
+          {
+            "tema": "Políticas del Estado",
+            "subtemas": [
+              "Macro objetivos de interés nacional",
+              "Intervienen funciones legislativas y ejecutivas del Gobierno Federal",
+              "Decisiones unilaterales de gobierno",
+              "Ejemplos: política exterior, fiscal, económica, monetaria"
+            ]
+          },
+          {
+            "tema": "Políticas del Gobierno",
+            "subtemas": [
+              "Atienden males públicos que afectan a la sociedad en su conjunto",
+              "Interviene el ejecutivo de los tres órdenes de gobierno",
+              "Decisiones unilaterales de gobierno",
+              "Ejemplos: programas de gobierno con sello distintivo de la administración en turno"
+            ]
+          },
+          {
+            "tema": "Políticas Públicas",
+            "subtemas": [
+              "Atención eficaz, eficiente y legítima de problemas públicos",
+              "Interviene el ejecutivo de los tres órdenes de gobierno y la ciudadanía",
+              "Decisiones consensuadas con la ciudadanía",
+              "Ejemplos: Seguro Popular de México, Prosoli de República Dominicana"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 22,
+      "titulo": "Ejemplos Aplicados por Categoría",
+      "fecha": "2024-10-21",
+      "contenido": "Se presentan ejemplos concretos para cada categoría de política. En Políticas del Estado: (1) Educación pública, mantener y garantizar el derecho a la educación mediante instituciones y normas que trascienden distintos gobiernos; (2) Política exterior, mantener relaciones diplomáticas y principios internacionales de México de forma independiente del gobierno que esté en el poder. En Políticas del Gobierno: (1) Programas de apoyo económico, un gobierno establece determinados programas sociales como parte de su proyecto de administración; (2) Estrategias de infraestructura, un gobierno decide impulsar determinadas carreteras, obras públicas o proyectos durante su periodo. En Políticas Públicas: (1) Becas educativas, otorga apoyos económicos para que estudiantes puedan continuar sus estudios; (2) Pensión para adultos, proporcionar apoyo económico para atender las necesidades de este grupo de población.",
+      "mapa_mental": {
+        "nodo_central": "Ejemplos por Categoría",
+        "ramas": [
+          {
+            "tema": "Políticas del Estado",
+            "subtemas": [
+              "Educación pública: derecho a la educación mediante instituciones y normas que trascienden gobiernos",
+              "Política exterior: relaciones diplomáticas y principios internacionales independientes del gobierno en turno"
+            ]
+          },
+          {
+            "tema": "Políticas del Gobierno",
+            "subtemas": [
+              "Programas de apoyo económico: programas sociales como parte del proyecto de administración",
+              "Estrategias de infraestructura: carreteras, obras públicas o proyectos durante su periodo"
+            ]
+          },
+          {
+            "tema": "Políticas Públicas",
+            "subtemas": [
+              "Becas educativas: apoyos económicos para continuar estudios",
+              "Pensión para adultos: apoyo económico para necesidades de este grupo de población"
+            ]
+          }
+        ]
+      }
     }
   ]
 }
