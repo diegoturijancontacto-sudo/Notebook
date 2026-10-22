@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de e.Firma Moderna</title>
+    <!-- Tailwind CSS para diseño responsivo y moderno -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Encabezado Institucional -->
+    <header class="bg-indigo-700 text-white shadow-md">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-shield-halved text-2xl"></i>
+                <span class="font-bold text-lg tracking-wide">Gobierno Digital / e.Firma Cloud</span>
+            </div>
+            <div class="text-xs bg-indigo-800 px-3 py-1 rounded-full text-indigo-200">
+                Seguridad Criptográfica Nativa (Web Crypto)
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenedor Principal del Asistente -->
+    <main class="flex-grow max-w-3xl w-full mx-auto px-4 py-8">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-slate-100">
+            
+            <!-- Barra de Progreso -->
+            <div class="mb-8">
+                <div class="flex justify-between text-xs font-semibold text-slate-500 mb-2">
+                    <span id="step-label-1" class="text-indigo-600">1. Identificación</span>
+                    <span id="step-label-2" class="">2. Criptografía Web</span>
+                    <span id="step-label-3" class="">3. Constancia Digital</span>
+                </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div id="progress-bar" class="bg-indigo-600 h-full w-1/3 transition-all duration-300"></div>
+                </div>
+            </div>
+
+            <!-- Notificaciones Personalizadas (Sin alert) -->
+            <div id="notification" class="hidden mb-6 p-4 rounded-xl text-sm flex items-center space-x-3 transition-all">
+                <i id="notif-icon" class="fa-solid fa-circle-info text-lg"></i>
+                <span id="notif-text">Mensaje del sistema</span>
+            </div>
+
+            <!-- PASO 1: Identificación -->
+            <div id="step-1" class="space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Verificación de Identidad</h2>
+                    <p class="text-sm text-slate-500 mt-1">Ingrese sus datos oficiales para validar su registro en el padrón de ciudadanos.</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">CURP / Identificador Fiscal</label>
+                        <input type="text" id="curp-input" value="ABCD900101HDFR01" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono text-sm" placeholder="Ingrese su CURP">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-1">Correo Electrónico de Notificación</label>
+                        <input type="email" id="email-input" value="ciudadano@ejemplo.gob.mx" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm" placeholder="correo@dominio.com">
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end">
+                    <button onclick="nextStep(2)" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-md shadow-indigo-100 flex items-center space-x-2 cursor-pointer">
+                        <span>Continuar</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 2: Generación Criptográfica Web -->
+            <div id="step-2" class="hidden space-y-6">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Generación de Llaves Criptográficas</h2>
+                    <p class="text-sm text-slate-500 mt-1">El navegador generará un par de llaves seguras (RSA-2048) sin descargar software externo ni utilizar Java.</p>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-5 flex items-start space-x-4">
+                    <div class="bg-indigo-600 text-white p-3 rounded-lg mt-0.5">
+                        <i class="fa-solid fa-microchip text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-indigo-900 text-sm">Estándar WebCrypto Nativo</h4>
+                        <p class="text-xs text-indigo-700 mt-1">La llave privada se mantiene protegida en el almacenamiento seguro de su navegador o dispositivo actual.</p>
+                    </div>
+                </div>
+
+                <div id="crypto-status" class="text-center py-6">
+                    <div class="inline-block p-4 bg-slate-100 rounded-full text-slate-400 mb-3" id="spinner-box">
+                        <i class="fa-solid fa-lock text-3xl animate-pulse text-indigo-600"></i>
+                    </div>
+                    <p id="crypto-msg" class="text-sm font-medium text-slate-600">Listo para generar par criptográfico...</p>
+                </div>
+
+                <div class="pt-4 flex justify-between">
+                    <button onclick="nextStep(1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-6 py-3 rounded-xl transition-all cursor-pointer">
+                        Atrás
+                    </button>
+                    <button id="btn-generate" onclick="generateKeys()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-md shadow-emerald-100 flex items-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-key text-xs"></i>
+                        <span>Generar e.Firma Ahora</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- PASO 3: Constancia y Éxito -->
+            <div id="step-3" class="hidden space-y-6 text-center">
+                <div class="inline-flex p-4 bg-emerald-100 text-emerald-600 rounded-full mb-2">
+                    <i class="fa-solid fa-check text-3xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">¡e.Firma Generada con Éxito!</h2>
+                    <p class="text-sm text-slate-500 mt-1">Su certificado digital se encuentra activo y vinculado de forma segura en la nube.</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-left max-w-md mx-auto space-y-2 text-xs font-mono">
+                    <div class="flex justify-between"><span class="text-slate-400">ID de Certificado:</span> <span class="text-slate-700">CERT-8942-MX-2026</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Algoritmo:</span> <span class="text-slate-700">SHA-256 with RSA</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">Validez:</span> <span class="text-emerald-600 font-bold">2026 - 2030</span></div>
+                </div>
+
+                <div class="pt-4 flex justify-center space-x-4">
+                    <button onclick="showNotification('Certificado respaldado de forma segura.', 'success')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-3 rounded-xl transition-all shadow-md flex items-center space-x-2 cursor-pointer">
+                        <i class="fa-solid fa-download text-xs"></i>
+                        <span>Descargar Resguardo</span>
+                    </button>
+                    <button onclick="resetApp()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-6 py-3 rounded-xl transition-all cursor-pointer">
+                        Reiniciar Simulación
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="text-center py-6 text-xs text-slate-400">
+        Simulador de Gobierno Digital &bull; Arquitectura basada en Web API Abiertas
+    </footer>
+
+    <!-- Lógica de la Aplicación -->
+    <script>
+        function showNotification(message, type = 'info') {
+            const notif = document.getElementById('notification');
+            const notifText = document.getElementById('notif-text');
+            const notifIcon = document.getElementById('notif-icon');
+            
+            notifText.innerText = message;
+            notif.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-red-50', 'text-red-800', 'bg-indigo-50', 'text-indigo-800');
+            
+            if (type === 'success') {
+                notif.classList.add('bg-emerald-50', 'text-emerald-800', 'border', 'border-emerald-200');
+                notifIcon.className = 'fa-solid fa-circle-check text-lg text-emerald-600';
+            } else {
+                notif.classList.add('bg-indigo-50', 'text-indigo-800', 'border', 'border-indigo-200');
+                notifIcon.className = 'fa-solid fa-circle-info text-lg text-indigo-600';
+            }
+            
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 4000);
+        }
+
+        function nextStep(step) {
+            document.getElementById('step-1').classList.add('hidden');
+            document.getElementById('step-2').classList.add('hidden');
+            document.getElementById('step-3').classList.add('hidden');
+            
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+            
+            // Actualizar barra de progreso
+            const bar = document.getElementById('progress-bar');
+            if (step === 1) {
+                bar.style.width = '33%';
+                document.getElementById('step-label-1').className = 'text-indigo-600 font-bold';
+                document.getElementById('step-label-2').className = '';
+                document.getElementById('step-label-3').className = '';
+            } else if (step === 2) {
+                bar.style.width = '66%';
+                document.getElementById('step-label-1').className = 'text-slate-400';
+                document.getElementById('step-label-2').className = 'text-indigo-600 font-bold';
+                document.getElementById('step-label-3').className = '';
+            } else if (step === 3) {
+                bar.style.width = '100%';
+                document.getElementById('step-label-1').className = 'text-slate-400';
+                document.getElementById('step-label-2').className = 'text-slate-400';
+                document.getElementById('step-label-3').className = 'text-indigo-600 font-bold';
+            }
+        }
+
+        async function generateKeys() {
+            const btn = document.getElementById('btn-generate');
+            const msg = document.getElementById('crypto-msg');
+            btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
+            
+            msg.innerText = "Conectando con el módulo criptográfico del navegador...";
+            
+            try {
+                // Simulación real usando Web Crypto API nativa del navegador
+                await window.crypto.subtle.generateKey(
+                    {
+                        name: "RSASSA-PKCS1-v1_5",
+                        modulusLength: 2048,
+                        publicExponent: new Uint8Array([1, 0, 1]),
+                        hash: "SHA-256",
+                    },
+                    true,
+                    ["sign", "verify"]
+                );
+                
+                setTimeout(() => {
+                    msg.innerText = "Llaves generadas de forma segura y encriptadas.";
+                    setTimeout(() => {
+                        nextStep(3);
+                        showNotification('Certificado emitido digitalmente sin software de escritorio.', 'success');
+                    }, 1000);
+                }, 1500);
+
+            } catch (err) {
+                msg.innerText = "Error en la generación criptográfica.";
+                showNotification('Ocurrió un error en el entorno criptográfico.', 'error');
+                btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function resetApp() {
+            const btn = document.getElementById('btn-generate');
+            btn.disabled = false;
+            btn.classList.remove('opacity-50', 'cursor-not-allowed');
+            document.getElementById('crypto-msg').innerText = "Listo para generar par criptográfico...";
+            nextStep(1);
+        }
+    </script>
+</body>
+</html>
