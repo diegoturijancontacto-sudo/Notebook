@@ -103,21 +103,26 @@
 <body class="h-screen w-screen flex flex-col">
 
     <header class="safe-top bg-white/95 backdrop-blur-md border-b border-stone-200 sm:px-4 pb-2 sm:py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-3 z-20 shadow-sm">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2.5 flex-1 sm:flex-initial min-w-0">
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
                 <div class="w-9 h-9 rounded-full border-[5px] border-[#005eb8]"></div>
                 <div class="absolute w-11 h-3.5 bg-[#e4002b] rounded-sm flex items-center justify-center shadow-xs">
                     <span class="text-[9px] font-extrabold text-white tracking-widest">RUTA</span>
                 </div>
             </div>
-            <div>
-                <h1 class="text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-900 leading-tight">
-                    <span class="sm:hidden">RUTA Puebla</span>
-                    <span class="hidden sm:inline">Red Urbana de Transporte Articulado</span>
-                </h1>
-                <p class="hidden sm:block text-xs text-stone-500 font-medium">
-                    Diagrama Esquemático Estilo Harry Beck · Troncales y Red Alimentadora
-                </p>
+            <div class="relative flex-1 sm:w-72 md:w-80 min-w-0" id="search-wrap">
+                <div class="relative flex items-center">
+                    <svg class="w-4 h-4 text-stone-400 absolute left-3 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2.3" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5"/>
+                    </svg>
+                    <input id="station-search" type="search" autocomplete="off" placeholder="Buscar parada o alimentadora…"
+                        class="w-full h-10 pl-9 pr-8 rounded-full bg-stone-100/90 border border-stone-200 text-xs sm:text-sm font-semibold text-stone-900 placeholder:text-stone-400 focus:outline-none focus:bg-white focus:border-stone-900 transition" />
+                    <button id="search-clear" type="button" onclick="clearSearch()" aria-label="Limpiar búsqueda"
+                        class="hidden absolute right-2 w-6 h-6 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-200/70 flex items-center justify-center cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div id="search-results" class="hidden absolute left-0 right-0 mt-1.5 max-h-72 overflow-y-auto bg-white/98 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl divide-y divide-stone-100 z-40"></div>
             </div>
         </div>
 
@@ -1311,6 +1316,96 @@
         function closeStationCard() {
             document.getElementById('station-card').classList.add('hidden');
         }
+
+        // ================= BUSCADOR DE PARADAS =================
+        const searchInput = document.getElementById('station-search');
+        const searchResults = document.getElementById('search-results');
+        const searchClear = document.getElementById('search-clear');
+
+        const normalizeText = (s) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        function renderSearchResults(q) {
+            const query = normalizeText(q.trim());
+            searchClear.classList.toggle('hidden', q.length === 0);
+            if (!query) {
+                searchResults.classList.add('hidden');
+                searchResults.innerHTML = '';
+                return;
+            }
+
+            const matches = STATIONS.filter(st => {
+                const hay = [st.name, st.rawName, ...(st.feeders || []).map(f => f.name)].filter(Boolean).join(' ');
+                return normalizeText(hay).includes(query);
+            }).slice(0, 12);
+
+            searchResults.innerHTML = '';
+            if (!matches.length) {
+                const empty = document.createElement('div');
+                empty.className = 'px-3.5 py-3 text-xs font-medium text-stone-500';
+                empty.textContent = 'Sin paradas coincidentes';
+                searchResults.appendChild(empty);
+                searchResults.classList.remove('hidden');
+                return;
+            }
+
+            matches.forEach(st => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-full px-3.5 py-2.5 text-left hover:bg-stone-100 active:bg-stone-200 flex items-center justify-between gap-2 transition cursor-pointer';
+
+                const left = document.createElement('div');
+                left.className = 'min-w-0';
+                const title = document.createElement('div');
+                title.className = 'text-xs font-extrabold text-stone-900 truncate';
+                title.textContent = st.name;
+                const sub = document.createElement('div');
+                sub.className = 'text-[10.5px] text-stone-500 truncate';
+                sub.textContent = st.isFeederNode ? 'Nodo / Terminal alimentadora' : (st.type === 'interchange' ? 'Correspondencia troncal' : 'Estación troncal');
+                left.append(title, sub);
+
+                const dots = document.createElement('div');
+                dots.className = 'flex items-center gap-1 shrink-0';
+                st.lines.forEach(lineId => {
+                    const pill = document.createElement('span');
+                    pill.className = 'px-1.5 py-0.5 rounded text-[10px] font-extrabold text-white';
+                    pill.style.backgroundColor = LINE_CONFIG[lineId].color;
+                    pill.textContent = lineId;
+                    dots.appendChild(pill);
+                });
+
+                btn.append(left, dots);
+                btn.addEventListener('click', () => selectSearchStation(st));
+                searchResults.appendChild(btn);
+            });
+
+            searchResults.classList.remove('hidden');
+        }
+
+        function selectSearchStation(st) {
+            if (st.isFeederNode && !showFeeders) toggleFeeders();
+            if (currentFilter !== 'all' && !st.lines.includes(currentFilter)) filterLine('all');
+            searchInput.value = st.name;
+            searchClear.classList.remove('hidden');
+            searchResults.classList.add('hidden');
+            searchInput.blur();
+            focusStation(st);
+            openStationCard(st);
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            searchClear.classList.add('hidden');
+            searchResults.classList.add('hidden');
+            searchInput.focus();
+        }
+
+        searchInput.addEventListener('input', (e) => renderSearchResults(e.target.value));
+        searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) renderSearchResults(searchInput.value); });
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('search-wrap').contains(e.target)) {
+                searchResults.classList.add('hidden');
+            }
+        });
 
         // ================= PAN & ZOOM =================
         const svg = document.getElementById('beck-svg');
