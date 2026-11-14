@@ -6,17 +6,15 @@
     <meta name="theme-color" content="#ffffff">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>RUTA Puebla — Mapa Esquemático Estilo Henry Beck</title>
-    <!-- Tailwind CSS para interfaz limpia y responsiva -->
+    <title>RUTA Puebla — Mapa Esquemático con Alimentadoras</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuente geométrica clásica inspirada en Johnston Sans / Gill Sans de Beck -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f4f3ef; /* Tono papel cartográfico clásico */
+            background-color: #f4f3ef;
             color: #18181b;
             overflow: hidden;
             user-select: none;
@@ -33,7 +31,6 @@
         #line-filters::-webkit-scrollbar { display: none; }
         .safe-top { padding-top: max(0.5rem, env(safe-area-inset-top)); padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
 
-        /* Patrón de cuadrícula sutil tipo plano técnico */
         .map-canvas-bg {
             background-color: #faf9f5;
             background-image: 
@@ -42,20 +39,22 @@
             background-size: 40px 40px;
         }
 
-        /* Transiciones suaves para resaltar líneas y estaciones */
         .route-group {
-            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .station-node {
             cursor: pointer;
-            transition: transform 0.2s ease, opacity 0.35s ease;
+            transition: transform 0.2s ease, opacity 0.3s ease;
         }
 
         @media (hover: hover) {
             .station-node:hover .station-tick,
             .station-node:hover .station-interchange {
                 stroke-width: 6px;
+            }
+            .station-node:hover .feeder-dot {
+                r: 5.5;
             }
         }
 
@@ -73,13 +72,24 @@
             fill: #09090b;
         }
 
+        .feeder-label {
+            font-size: 9.5px;
+            font-weight: 700;
+            fill: #374151;
+            letter-spacing: -0.01em;
+            pointer-events: none;
+        }
+
         .terminal-badge {
-            font-size: 12px;
+            font-size: 11.5px;
             font-weight: 800;
             letter-spacing: 0.03em;
         }
 
-        /* Estilo personalizado para barras de desplazamiento */
+        .feeder-line {
+            opacity: 0.92;
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -92,10 +102,8 @@
 </head>
 <body class="h-screen w-screen flex flex-col">
 
-    <!-- Barra Superior Estilo Señalética Metropolitana -->
     <header class="safe-top bg-white/95 backdrop-blur-md border-b border-stone-200 sm:px-4 pb-2 sm:py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-3 z-20 shadow-sm">
         <div class="flex items-center gap-3">
-            <!-- Emblema Circular Inspirado en Roundel de Londres / RUTA -->
             <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
                 <div class="w-9 h-9 rounded-full border-[5px] border-[#005eb8]"></div>
                 <div class="absolute w-11 h-3.5 bg-[#e4002b] rounded-sm flex items-center justify-center shadow-xs">
@@ -108,12 +116,11 @@
                     <span class="hidden sm:inline">Red Urbana de Transporte Articulado</span>
                 </h1>
                 <p class="hidden sm:block text-xs text-stone-500 font-medium">
-                    Diagrama Esquemático Topológico · Puebla (Líneas 1, 2, 3 y 4)
+                    Diagrama Esquemático Estilo Harry Beck · Troncales y Red Alimentadora
                 </p>
             </div>
         </div>
 
-        <!-- Filtros Interactivos por Línea -->
         <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full sm:w-auto" id="line-filters">
             <button onclick="filterLine('all')" data-line="all" class="filter-btn active px-3.5 py-2 rounded-full text-xs font-bold bg-stone-900 text-white shadow-xs transition cursor-pointer shrink-0">
                 Todas
@@ -130,58 +137,42 @@
             <button onclick="filterLine('L4')" data-line="L4" class="filter-btn px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-700 border border-stone-300 hover:border-[#6d2077] flex items-center gap-1.5 transition cursor-pointer shrink-0">
                 <span class="w-2.5 h-2.5 rounded-full bg-[#6d2077]"></span> Línea 4
             </button>
+            <button onclick="toggleFeeders()" id="btn-feeders" class="px-3.5 py-2 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 flex items-center gap-1.5 transition cursor-pointer shrink-0">
+                <span class="w-3 h-0.5 bg-amber-800 inline-block"></span> Alimentadoras: ON
+            </button>
         </div>
     </header>
 
-    <!-- Lienzo Principal Interactivo (Pan & Zoom) -->
     <main class="relative flex-1 w-full h-full overflow-hidden map-canvas-bg" id="map-viewport">
         
-        <!-- SVG Esquemático (Generado dinámicamente con precisión geométrica de 45°/90°) -->
-        <svg id="beck-svg" class="w-full h-full touch-none cursor-grab active:cursor-grabbing" viewBox="0 0 1750 1320" xmlns="http://www.w3.org/2000/svg">
+        <svg id="beck-svg" class="w-full h-full touch-none cursor-grab active:cursor-grabbing" viewBox="0 0 1920 1480" xmlns="http://www.w3.org/2000/svg">
             <defs>
-                <!-- Sombra suave para etiquetas terminales y cuadro de leyenda -->
                 <filter id="badge-shadow" x="-10%" y="-10%" width="120%" height="120%">
                     <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.14"/>
                 </filter>
-                <!-- Patrón rayado para tramos integradores/ramales -->
-                <pattern id="branch-stripe" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-                    <line x1="0" y1="0" x2="0" y2="8" stroke="#ffffff" stroke-width="2.5" opacity="0.45" />
-                </pattern>
             </defs>
 
-            <!-- Grupo transformable para Zoom y Arrastre -->
             <g id="map-world">
-                <!-- Capa 0: Elementos Geográficos Esquemáticos (Río Atoyac / Río San Francisco muy estilizados al estilo Támesis de Beck) -->
-                <g id="geographic-layer" opacity="0.55">
-                    <rect x="745" y="330" width="205" height="225" rx="16" fill="#fef3c7" opacity="0.35" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6 4"/>
-                    <text x="848" y="548" text-anchor="middle" fill="#b45309" font-size="10" font-weight="800" letter-spacing="1.5">CENTRO HISTÓRICO</text>
+                <!-- Referencias geográficas esquemáticas muy sutiles -->
+                <g id="geographic-layer" opacity="0.6">
+                    <rect x="745" y="340" width="205" height="230" rx="16" fill="#fef3c7" opacity="0.4" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <text x="848" y="558" text-anchor="middle" fill="#b45309" font-size="10" font-weight="800" letter-spacing="1.5">CENTRO HISTÓRICO</text>
                 </g>
 
-                <!-- Capa 1: Trazos de las Líneas (Octolineales: 0°, 45°, 90°) -->
+                <!-- Capas ordenadas de abajo hacia arriba -->
+                <g id="feeder-lines-layer"></g>
                 <g id="lines-layer"></g>
-
-                <!-- Capa 2: Conectores de Correspondencia / Transbordo -->
                 <g id="interchange-connectors-layer"></g>
-
-                <!-- Capa 3: Nodos de Estaciones (Ticks y Círculos de Transbordo) -->
                 <g id="stations-layer"></g>
-
-                <!-- Capa 4: Etiquetas de Estaciones y Terminales -->
                 <g id="labels-layer"></g>
-
-                <!-- Capa 5: marcador de ubicación del usuario -->
                 <g id="user-layer"></g>
             </g>
         </svg>
 
-        <!-- Controles Flotantes de Zoom y Centrado -->
+        <!-- Controles de zoom y ubicación -->
         <div class="absolute top-3 right-3 md:top-auto md:bottom-5 md:right-5 flex flex-col gap-1 bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-lg border border-stone-200 z-10" style="margin-right: env(safe-area-inset-right)">
-            <button onclick="zoomMap(1.25)" title="Acercar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">
-                +
-            </button>
-            <button onclick="zoomMap(0.8)" title="Alejar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">
-                −
-            </button>
+            <button onclick="zoomMap(1.25)" title="Acercar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">+</button>
+            <button onclick="zoomMap(0.8)" title="Alejar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">−</button>
             <div class="h-px bg-stone-200 mx-1"></div>
             <button onclick="locateMe()" title="Mi estación más cercana" class="w-11 h-11 rounded-xl flex items-center justify-center text-[#2563eb] hover:bg-blue-50 active:bg-blue-100 transition cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path stroke-linecap="round" d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="8"/></svg>
@@ -193,33 +184,43 @@
             </button>
         </div>
 
-
-        <!-- Leyenda plegable (HTML, legible en móvil) -->
+        <!-- Leyenda -->
         <div id="legend-wrap" class="absolute top-3 left-3 z-10" style="margin-left: env(safe-area-inset-left)">
             <button onclick="toggleLegend()" class="h-10 px-3.5 rounded-full bg-white/95 backdrop-blur-md border border-stone-200 shadow-md text-xs font-extrabold text-stone-800 flex items-center gap-1.5 cursor-pointer">
                 <span class="flex gap-0.5"><i class="w-1.5 h-3.5 rounded-sm bg-[#0072ce]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#d50032]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#009639]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#6d2077]"></i></span>
                 Leyenda
             </button>
-            <div id="legend-panel" class="hidden mt-2 w-[min(21rem,calc(100vw-6rem))] max-h-[60dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl p-3">
-                <div class="space-y-2.5">
-                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#0072ce] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 1 · Troncal Oriente - Poniente</div><div class="text-[11px] text-stone-500">Tlaxcalancingo — Chachapa · 38 estaciones ($7.50 MXN)</div></div></div>
-                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#d50032] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 2 · Troncal 11 Norte - Sur</div><div class="text-[11px] text-stone-500">Diagonal Poniente — Margaritas · 30 estaciones ($7.50 MXN)</div></div></div>
-                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#009639] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 3 · Valsequillo — CAPU / Alpha</div><div class="text-[11px] text-stone-500">Valsequillo — CAPU (ramal norte) y Alpha ($7.50 MXN)</div></div></div>
-                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#6d2077] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 4 · Metropolitana (Periférico)</div><div class="text-[11px] text-stone-500">FINSA — Valsequillo · 12 estaciones ($20.00 MXN)</div></div></div>
+            <div id="legend-panel" class="hidden mt-2 w-[min(23rem,calc(100vw-6rem))] max-h-[68dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl p-3.5">
+                <div class="space-y-2">
+                    <div class="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider">Líneas Troncales (Trazo Grueso)</div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-2 rounded-full bg-[#0072ce] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 1 · $7.50</div><div class="text-[10px] text-stone-500">Tlaxcalancingo — Chachapa</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-2 rounded-full bg-[#d50032] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 2 · $7.50</div><div class="text-[10px] text-stone-500">Diagonal 11 Norte — Margaritas</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-2 rounded-full bg-[#009639] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 3 · $7.50</div><div class="text-[10px] text-stone-500">Valsequillo — CAPU / Alpha</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-2 rounded-full bg-[#6d2077] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 4 · $20.00</div><div class="text-[10px] text-stone-500">FINSA — Periférico — Valsequillo</div></div></div>
+
+                    <div class="text-[11px] font-extrabold text-stone-500 uppercase tracking-wider pt-2 border-t border-stone-200">Rutas Alimentadoras (Trazo Delgado)</div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-[3px] rounded-full bg-[#0072ce] shrink-0"></span><div><div class="text-xs font-extrabold">Alimentadoras L1 (A1–A11)</div><div class="text-[10px] text-stone-500">Cholula, Ocoyucan, Angelópolis, Bosques, Amozoc</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-[3px] rounded-full bg-[#d50032] shrink-0"></span><div><div class="text-xs font-extrabold">Alimentadoras L2 (A21–A36)</div><div class="text-[10px] text-stone-500">San Ramón, Balcones del Sur, Los Héroes, CAPU</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-[3px] rounded-full bg-[#009639] shrink-0"></span><div><div class="text-xs font-extrabold">Alimentadoras L3 (A301–A306)</div><div class="text-[10px] text-stone-500">La Paz, 14 Sur, Los Héroes, Tetela</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-[3px] rounded-full bg-[#6d2077] shrink-0"></span><div><div class="text-xs font-extrabold">Integradoras L4 (I41–I44)</div><div class="text-[10px] text-stone-500">Misiones, Cholula, Lomas de Angelópolis, Bugambilias</div></div></div>
                 </div>
-                <div class="mt-3 pt-2.5 border-t border-stone-200 flex items-center gap-4 text-[11px] font-semibold text-stone-700">
-                    <span class="flex items-center gap-1.5"><span class="relative w-6 h-2 rounded bg-stone-500"><i class="absolute left-1/2 -top-1.5 w-[3px] h-2 rounded bg-stone-500"></i></span>Estación</span>
-                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded-full bg-white border-[3px] border-stone-900"></span>Correspondencia</span>
+
+                <div class="mt-3 pt-2.5 border-t border-stone-200 grid grid-cols-2 gap-2 text-[11px] font-semibold text-stone-700">
+                    <span class="flex items-center gap-1.5"><span class="relative w-5 h-2 rounded bg-stone-500"><i class="absolute left-1/2 -top-1.5 w-[3px] h-2 rounded bg-stone-500"></i></span>Estación troncal</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded-full bg-white border-[3px] border-stone-900"></span>Transbordo mayor</span>
+                    <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-white border-2 border-stone-700"></span>Nodo alimentador</span>
+                    <span class="flex items-center gap-1.5"><span class="w-5 h-[2.5px] bg-stone-600"></span>Corredor alimentador</span>
                 </div>
-                <p class="md:hidden mt-2.5 text-[11px] text-stone-500">Pellizca para acercar · arrastra para mover · doble toque para zoom.</p>
+                <p class="mt-2.5 text-[10px] text-stone-500 leading-snug">
+                    Diseño octolineal (0°, 45°, 90°). Los trayectos sin geometría de calle exacta se representan mediante sus <b>nodos de transbordo y conexión directa</b> entre troncales.
+                </p>
             </div>
         </div>
 
-        <!-- Aviso breve (ubicación) -->
         <div id="toast" class="hidden absolute top-16 left-1/2 -translate-x-1/2 max-w-[calc(100vw-9rem)] sm:max-w-md bg-stone-900/95 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-lg z-30 text-center"></div>
 
-        <!-- Tarjeta Flotante de Detalle de Estación Seleccionada -->
-        <div id="station-card" class="hidden absolute left-3 right-3 bottom-3 sm:bottom-5 sm:left-5 sm:right-auto sm:w-96 max-h-[45dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-stone-200 p-4 z-20 transition-all" style="margin-bottom: env(safe-area-inset-bottom)">
+        <!-- Tarjeta de estación / transbordo -->
+        <div id="station-card" class="hidden absolute left-3 right-3 bottom-3 sm:bottom-5 sm:left-5 sm:right-auto sm:w-96 max-h-[48dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-stone-200 p-4 z-20 transition-all" style="margin-bottom: env(safe-area-inset-bottom)">
             <div class="flex items-start justify-between gap-2">
                 <div>
                     <div id="card-badges" class="flex flex-wrap gap-1.5 mb-1.5"></div>
@@ -227,81 +228,71 @@
                     <p id="card-type" class="text-xs font-semibold text-stone-500 mt-0.5">Estación Troncal</p>
                 </div>
                 <button onclick="closeStationCard()" class="p-2 -m-1 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <p id="card-desc" class="text-xs text-stone-600 mt-2.5 leading-relaxed border-t border-stone-100 pt-2.5">
-                Información de conectividad y referencias urbanas.
-            </p>
+            <div id="card-feeders" class="hidden mt-2.5 pt-2 border-t border-stone-100">
+                <div class="text-[10px] font-extrabold uppercase tracking-wider text-stone-400 mb-1">Alimentadoras que conectan aquí</div>
+                <div id="card-feeders-list" class="flex flex-wrap gap-1"></div>
+            </div>
+            <p id="card-desc" class="text-xs text-stone-600 mt-2.5 leading-relaxed border-t border-stone-100 pt-2.5">Información de conectividad.</p>
         </div>
 
-        <!-- Ayuda rápida discreta -->
         <div class="hidden md:flex items-center gap-2 absolute top-4 left-32 bg-white/85 backdrop-blur-xs px-3 py-1.5 rounded-full border border-stone-200/80 text-[11px] font-medium text-stone-600 pointer-events-none">
-            <span>🖱️ Arrastra para mover · Rueda o pellizco para zoom · Clic en una estación</span>
+            <span>🖱️ Arrastra · Rueda/pellizco zoom · Clic en estación o nodo de transbordo</span>
         </div>
     </main>
 
     <script>
         /**
-         * ARQUITECTURA TOPOLÓGICA ESTILO HENRY BECK - RUTA PUEBLA
-         * Reglas aplicadas:
-         * 1. Todos los segmentos siguen estrictamente ángulos de 0° (horizontal), 90° (vertical) o 45° (diagonal).
-         * 2. Las intersecciones entre líneas utilizan círculos blancos con borde negro grueso o conectores de cápsula.
-         * 3. Las estaciones intermedias se dibujan como "ticks" perpendiculares al eje de la línea.
-         * 4. Las escalas geográficas se comprimen en la periferia y se expanden en el Centro Histórico para máxima legibilidad.
+         * RUTA PUEBLA — DIAGRAMA ESQUEMÁTICO ESTILO HARRY BECK (OCTOLINEAL 0° / 45° / 90°)
+         * - Las 4 líneas troncales mantienen trazos gruesos (8.5px).
+         * - Las rutas alimentadoras se dibujan con trazos delgados (2.4px), siguiendo estricto rigor
+         *   octolineal (horizontales, verticales y diagonales a 45°) y cruzándose entre sí y con las
+         *   líneas troncales en los puntos reales de transbordo (CAPU, Angelópolis, Los Héroes,
+         *   Ciudad Judicial, Periférico, Centro, etc.).
+         * - Para rutas con trazado callejero poco documentado, el diagrama enfatiza sus estaciones
+         *   de transbordo y conexión directa.
          */
 
         const LINE_CONFIG = {
-            L1: { id: 'L1', name: 'Línea 1', color: '#0072ce', fare: '$7.50 MXN', route: 'Terminal Tlaxcalancingo ↔ Terminal Chachapa' },
-            L2: { id: 'L2', name: 'Línea 2', color: '#d50032', fare: '$7.50 MXN', route: 'Diagonal Poniente ↔ Terminal Margaritas' },
-            L3: { id: 'L3', name: 'Línea 3', color: '#009639', fare: '$7.50 MXN', route: 'Terminal Valsequillo ↔ Terminal CAPU / Alpha' },
-            L4: { id: 'L4', name: 'Línea 4', color: '#6d2077', fare: '$20.00 MXN', route: 'Terminal FINSA ↔ Terminal Valsequillo' }
+            L1: { id: 'L1', name: 'Línea 1', color: '#0072ce', fare: '$7.50 MXN', feederFare: '$6.00 MXN' },
+            L2: { id: 'L2', name: 'Línea 2', color: '#d50032', fare: '$7.50 MXN', feederFare: '$6.00 MXN' },
+            L3: { id: 'L3', name: 'Línea 3', color: '#009639', fare: '$7.50 MXN', feederFare: '$6.00 MXN' },
+            L4: { id: 'L4', name: 'Línea 4', color: '#6d2077', fare: '$20.00 MXN', feederFare: '$16.00 MXN' }
         };
 
-        /**
-         * COORDENADAS GEOGRÁFICAS (lat, lon) — APROXIMADAS.
-         * Cada estación lleva `geo: [lat, lon]` sólo en algunos puntos de referencia; el resto se interpola
-         * por orden a lo largo del corredor. Para afinar una estación con su coordenada exacta (p. ej. copiada
-         * de Google Maps) basta añadirla aquí por nombre, y la detección de "estación más cercana" la usará:
-         *   'Paseo Bravo': [19.04xx, -98.21xx]
-         */
         const GEO_OVERRIDES = {};
-
-        /** Radio (metros) dentro del cual se considera que "estás en" una estación */
         const NEAR_RADIUS_M = 1500;
 
-        // ---- Estaciones compartidas entre líneas (un solo nodo, `at` = posición esquemática) ----
         const S = (name, o = {}) => ({ name, ...o });
-        const K_DIAG = S('Constitución 11 Norte', { at: [720, 250], geo: [19.0603, -98.2120], lp: 'tr',
-            note: 'Correspondencia entre la Línea 1 (Constitución de 1917 – 11 Norte) y el extremo norte de la Línea 2 (Diagonal Poniente).' });
-        const K_CHINA = S('China Poblana', { at: [960, 250], geo: [19.0640, -98.1925], lp: 'br',
-            note: 'Correspondencia entre la Línea 1 y el ramal CAPU de la Línea 3.' });
-        const K_ALPHA = S('Alpha', { at: [720, 588], geo: [19.0230, -98.2240], lp: 'l',
-            note: 'Correspondencia entre la Línea 2 y el ramal Alpha de la Línea 3.' });
-        const K_CAMACHO = S('C.C. Camacho Espíritu', { at: [960, 588], geo: [19.0195, -98.2015], lp: 'r', type: 'interchange',
-            note: 'Bifurcación de la Línea 3: ramal CAPU al norte, ramal Alpha al oeste y troncal hacia Valsequillo.' });
-        const K_VALSE = S('Terminal Valsequillo', { at: [1240, 1180], geo: [18.9780, -98.1670], type: 'terminal', lp: 'b',
-            note: 'Terminal sur compartida entre la Línea 3 y la Línea 4.' });
+
+        // ---- Nodos de correspondencia troncal ----
+        const K_DIAG = S('Constitución 11 Norte', { at: [720, 260], geo: [19.0603, -98.2120], lp: 'tr',
+            note: 'Correspondencia L1 ↔ L2 y enlace alimentador hacia CAPU y Central de Abastos.' });
+        const K_CHINA = S('China Poblana', { at: [960, 260], geo: [19.0640, -98.1925], lp: 'br',
+            note: 'Correspondencia L1 ↔ ramal CAPU de L3.' });
+        const K_ALPHA = S('Alpha', { at: [720, 598], geo: [19.0230, -98.2240], lp: 'l',
+            note: 'Correspondencia L2 ↔ ramal Alpha de L3.' });
+        const K_CAMACHO = S('C.C. Camacho Espíritu', { at: [960, 598], geo: [19.0195, -98.2015], lp: 'r', type: 'interchange',
+            note: 'Bifurcación L3: ramal CAPU / Alpha / Valsequillo.' });
+        const K_VALSE = S('Terminal Valsequillo', { at: [1240, 1190], geo: [18.9780, -98.1670], type: 'terminal', lp: 'r',
+            note: 'Terminal sur compartida L3 / L4 y nodo alimentador hacia Los Héroes y San Baltazar Tetela.' });
 
         const names = (list) => list.map(n => S(n));
         const flipAll = (list) => list.map(n => S(n, { flip: true }));
         const alt = (list, start = 0) => list.map((n, i) => S(n, (i + start) % 2 ? { flip: true } : {}));
 
-        /**
-         * Trazados octolineales (0°/45°/90°) y secuencia de estaciones de cada recorrido.
-         * `side`: lado del trazo donde van las marcas y etiquetas (+1 / -1).
-         * Las estaciones sin `at` se reparten uniformemente entre las que sí lo tienen.
-         */
-        const ROUTES = [
+        // ================= TRONCALES (OCTOLINEAL) =================
+        const TRONCAL_ROUTES = [
             {
                 line: 'L1', side: 1,
-                path: [[160, 930], [500, 590], [500, 380], [630, 250], [1560, 250]],
+                path: [[180, 940], [520, 600], [520, 390], [650, 260], [1580, 260]],
                 seq: [
-                    S('Terminal Tlaxcalancingo', { lp: 'b', geo: [19.0210, -98.2700] }),
+                    S('Terminal Tlaxcalancingo', { lp: 'l', geo: [19.0210, -98.2700],
+                        note: 'Hub alimentador poniente: salen rutas A1, A2, A3, A4 y A11.' }),
                     ...flipAll(['Emiliano Zapata', 'Casa de Ángeles', 'Carmen Serdán']),
-                    S('Hospital Niño Poblano', { at: [262, 828], geo: [19.0190, -98.2430], flip: true }),
+                    S('Hospital Niño Poblano', { at: [282, 838], geo: [19.0190, -98.2430], flip: true }),
                     ...flipAll(['Estrellas del Sur', 'Las Ánimas', '25 Poniente']),
                     S('Matamoros'),
                     S('Juárez Serdán', { geo: [19.0447, -98.2158] }),
@@ -317,12 +308,13 @@
                     ...alt(['La Ciénega', 'La Rosa', '18 de Noviembre', 'La Resurrección', 'Universidad Tecnológica']),
                     S('Rivera Anaya', { geo: [19.0815, -98.1420] }),
                     ...alt(['Amalucan', 'Bosques', 'Galaxia', 'El Pilar', 'Mixatlac', 'Santa Mago', 'Chachapa'], 1),
-                    S('Terminal Chachapa', { lp: 'r', geo: [19.0700, -98.1110] })
+                    S('Terminal Chachapa', { lp: 'r', geo: [19.0700, -98.1110],
+                        note: 'Terminal oriente L1. Conexión con alimentadora A10 hacia el Centro y Amozoc.' })
                 ]
             },
             {
                 line: 'L2', side: -1,
-                path: [[720, 250], [720, 1230]],
+                path: [[720, 260], [720, 1240]],
                 seq: [
                     K_DIAG,
                     ...names(['Esperanza', 'Museo del Ferrocarril', 'Mercado de Sabores']),
@@ -332,15 +324,16 @@
                     ...names(['Juan Pablo II', 'Niño Poblano', 'Río Atoyac', 'IMSS']),
                     S('Cúmulo de Virgo', { geo: [19.0035, -98.2320] }),
                     ...names(['Club de Golf', 'Tecamachalco', 'Torrecillas', 'Tarascos', 'Yucatán', 'San Bartolo']),
-                    S('Periférico', { at: [720, 993], geo: [18.9790, -98.2400], lp: 'bl',
-                        note: 'La Línea 4 cruza este punto sobre el Periférico Ecológico (no hay correspondencia confirmada).' }),
+                    S('Periférico', { at: [720, 1003], geo: [18.9790, -98.2400], lp: 'bl',
+                        note: 'Cruce con L4 en Periférico Ecológico.' }),
                     ...names(['C.C. Centro Sur', 'Olivos', 'Independencia', 'Pino Suárez', 'Azaleas', 'Tabachines']),
-                    S('Terminal Margaritas', { lp: 'b', geo: [18.9550, -98.2455] })
+                    S('Terminal Margaritas', { lp: 'b', geo: [18.9550, -98.2455],
+                        note: 'Hub alimentador sur: rutas A21, A22 y A23 hacia San Ramón y Colosio.' })
                 ]
             },
             {
                 line: 'L3', side: 1, label: 'Troncal Valsequillo',
-                path: [[960, 588], [960, 760], [1240, 1040], [1240, 1180]],
+                path: [[960, 598], [960, 770], [1240, 1050], [1240, 1190]],
                 seq: [
                     K_CAMACHO,
                     ...names(['Crystal', 'Bomberos', 'San Baltazar', 'Margaritas']),
@@ -351,9 +344,10 @@
             },
             {
                 line: 'L3', side: 1, label: 'Ramal CAPU',
-                path: [[560, 150], [860, 150], [960, 250], [960, 588]],
+                path: [[560, 160], [860, 160], [960, 260], [960, 598]],
                 seq: [
-                    S('Terminal CAPU', { lp: 'l', geo: [19.0720, -98.2150] }),
+                    S('Terminal CAPU', { lp: 'l', geo: [19.0720, -98.2150],
+                        note: 'Hub intermodal norte: L3 Ramal CAPU + alimentadoras A33 (L2) y A301 (L3).' }),
                     ...names(['Boulevard Norte', 'Hidalgo', 'Unión']), S('Guadalupe Victoria', { flip: true }),
                     K_CHINA,
                     ...names(['Santa María', 'San Antonio', 'Xanenetla', 'San Francisco']),
@@ -364,27 +358,408 @@
             },
             {
                 line: 'L3', side: -1, label: 'Ramal Alpha',
-                path: [[720, 588], [960, 588]],
+                path: [[720, 598], [960, 598]],
                 seq: [K_ALPHA, S('Camacho 708', { lp: 'br', note: 'Blvd. Capitán Carlos Camacho Espíritu 708.' }), K_CAMACHO]
             },
             {
                 line: 'L4', side: -1,
-                path: [[500, 70], [400, 70], [300, 170], [300, 723], [570, 993], [900, 993], [1087, 1180], [1240, 1180]],
+                path: [[500, 80], [400, 80], [300, 180], [300, 733], [570, 1003], [900, 1003], [1087, 1190], [1240, 1190]],
                 seq: [
-                    S('Terminal FINSA', { lp: 'b', geo: [19.1030, -98.2870] }),
-                    S('Cuautlancingo', { at: [300, 240], geo: [19.0830, -98.2670] }),
-                    S('Huejotzingo', { at: [300, 340] }),
-                    S('Forjadores', { at: [300, 440], geo: [19.0620, -98.2690] }),
-                    S('Recta a Cholula', { at: [300, 530], geo: [19.0450, -98.2700] }),
-                    S('Camino Real (Atlixco)', { at: [300, 620] }),
-                    S('Ciudad Judicial', { at: [380, 803], flip: true, geo: [19.0210, -98.2670] }),
-                    S('Vía Atlixcáyotl', { at: [570, 993], geo: [19.0140, -98.2610] }),
-                    S('Hospital de la Mujer', { at: [840, 993], geo: [18.9930, -98.2420] }),
-                    S('16 de Septiembre', { at: [960, 1053], flip: true, geo: [18.9860, -98.2250],
-                        note: 'Estación cerrada temporalmente según Carreteras de Cuota Puebla (abr. 2025).' }),
-                    S('Héroes', { at: [1130, 1180], flip: true, geo: [18.9800, -98.1900] }),
+                    S('Terminal FINSA', { lp: 'r', geo: [19.1030, -98.2870],
+                        note: 'Terminal norte L4 · Corredor Industrial FINSA / VW.' }),
+                    S('Cuautlancingo', { at: [300, 250], geo: [19.0830, -98.2670] }),
+                    S('Huejotzingo', { at: [300, 350] }),
+                    S('Forjadores', { at: [300, 450], geo: [19.0620, -98.2690] }),
+                    S('Recta a Cholula', { at: [300, 540], geo: [19.0450, -98.2700] }),
+                    S('Camino Real (Atlixco)', { at: [300, 630] }),
+                    S('Ciudad Judicial', { at: [380, 813], flip: true, geo: [19.0210, -98.2670] }),
+                    S('Vía Atlixcáyotl', { at: [570, 1003], geo: [19.0140, -98.2610] }),
+                    S('Hospital de la Mujer', { at: [840, 1003], geo: [18.9930, -98.2420] }),
+                    S('16 de Septiembre', { at: [960, 1063], flip: true, geo: [18.9860, -98.2250] }),
+                    S('Héroes', { at: [1130, 1190], flip: true, geo: [18.9800, -98.1900] }),
                     K_VALSE
                 ]
+            }
+        ];
+
+        /**
+         * RUTAS ALIMENTADORAS E INTEGRADORAS (DISEÑO BECK OCTOLINEAL)
+         * Reglas geométricas aplicadas:
+         * 1. Todos los segmentos tienen ángulos estrictos de 0°, 45° o 90° (dx === 0, dy === 0, o |dx| === |dy|).
+         * 2. Se trazan con líneas delgadas (2.4px) y corredores paralelos separados por 6px cuando comparten avenida.
+         * 3. Cruces y transbordos explícitos:
+         *    - Hub CAPU [560, 160]: convergen L3, A33 (desde L2 Const. 11 Norte) y A301 (desde La Paz).
+         *    - Hub Angelópolis / Cúmulo de Virgo: cruzan A6 (L1), A36 (L2) e I43 (L4).
+         *    - Hub Los Héroes (14 Sur / Periférico): cruzan A32 (L2), A302 (L3 BUAP) y A303 (L3 Valsequillo).
+         *    - Hub Centro Histórico (Paseo Bravo / Analco): cruzan A10 (desde Chachapa) y A11 (desde Tlaxcalancingo).
+         *    - Hub Balcones del Sur: convergen A26, A29 y A31 (L2).
+         *    - Hub San Ramón: convergen A21 y A23 (L2).
+         * 4. Para alimentadoras sin trayectoria callejera exacta (ej. A8, A9, A24, A25, A28, A30, A35, I41-I44),
+         *    se enfocan en su estación troncal de transbordo y nodo destino/correspondencia.
+         */
+        const FEEDER_ROUTES = [
+            // ================= ALIMENTADORAS LÍNEA 1 (AZUL #0072ce) =================
+            {
+                id: 'A1', line: 'L1', name: 'A1 · San Bernabé Temoxtitla',
+                // Sale de Tlaxcalancingo [180,940] -> 45° SW [120,1000] -> S [120,1110]
+                path: [[180, 940], [120, 1000], [120, 1110]],
+                stops: [
+                    { name: 'Terminal Tlaxcalancingo', at: [180, 940], hub: true },
+                    { name: 'San Bernabé Temoxtitla', at: [120, 1110], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Terminal Tlaxcalancingo (L1). Enlace directo hacia San Bernabé Temoxtitla.'
+            },
+            {
+                id: 'A2', line: 'L1', name: 'A2 · Santa Clara Ocoyucan',
+                // Sale de Tlaxcalancingo [180,940] -> W [70,940] -> 45° SW [40,970]
+                path: [[180, 940], [70, 940], [40, 970]],
+                stops: [
+                    { name: 'Terminal Tlaxcalancingo', at: [180, 940], hub: true },
+                    { name: 'Santa Clara Ocoyucan', at: [40, 970], terminal: true, lp: 'l' }
+                ],
+                note: 'Transbordo en Terminal Tlaxcalancingo (L1) hacia cabecera de Ocoyucan.'
+            },
+            {
+                id: 'A3', line: 'L1', name: 'A3 · Tonantzintla / Chipilo',
+                // Sale de Tlaxcalancingo [180,940] -> 45° NW [110,870] -> W [50,870]
+                path: [[180, 940], [110, 870], [50, 870]],
+                stops: [
+                    { name: 'Terminal Tlaxcalancingo', at: [180, 940], hub: true },
+                    { name: 'Santa María Tonantzintla', at: [110, 870], lp: 't' },
+                    { name: 'San Francisco Acatepec', at: [50, 870], terminal: true, lp: 'l' }
+                ],
+                note: 'Transbordo en Terminal Tlaxcalancingo (L1) por carretera federal a Atlixco.'
+            },
+            {
+                id: 'A4', line: 'L1', name: 'A4 · San Antonio Cacalotepec',
+                // Sale de Tlaxcalancingo [180,940] -> S [180,1040] -> 45° SE [210,1070]
+                path: [[180, 940], [180, 1040], [210, 1070]],
+                stops: [
+                    { name: 'Terminal Tlaxcalancingo', at: [180, 940], hub: true },
+                    { name: 'San Antonio Cacalotepec', at: [210, 1070], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Terminal Tlaxcalancingo (L1).'
+            },
+            {
+                id: 'A6', line: 'L1', name: 'A6 · Lomas de Angelópolis / Cúmulo',
+                // Cruza L1 (Estrellas del Sur [330,790]), L4 (Vía Atlixcáyotl [570,1003] vía nodo Angelópolis) y L2 (Cúmulo de Virgo)
+                // Trazado octolineal: [330,790] -> 45° SE [430,890] -> E [540,890] -> 45° SE [570,920] -> E [720,920] (Cúmulo/Tecamachalco)
+                path: [[330, 790], [430, 890], [540, 890], [570, 920], [720, 920]],
+                stops: [
+                    { name: 'Estrellas del Sur', at: [330, 790], hub: true },
+                    { name: 'Zona Angelópolis', at: [540, 890], hub: true, lp: 't' },
+                    { name: 'Cúmulo de Virgo (L2)', at: [720, 920], hub: true }
+                ],
+                note: 'Corredor transversal clave: une L1 (Estrellas del Sur) con Zona Angelópolis (cruza con A36 e I43) y transborda con L2.'
+            },
+            {
+                id: 'A6A', line: 'L1', name: 'A6A · Ciudad Judicial / Recta',
+                // Une L1 (Casa de Ángeles [248,872]) con L4 (Ciudad Judicial [380,813]) y Recta a Cholula [300,540]
+                // Octolineal: [248,872] -> E [321,872] -> 45° NE [380,813] -> 45° NW [300,733] -> N [300,540]
+                path: [[248, 872], [321, 872], [380, 813], [300, 733], [300, 540]],
+                stops: [
+                    { name: 'Casa de Ángeles', at: [248, 872], hub: true },
+                    { name: 'Ciudad Judicial', at: [380, 813], hub: true },
+                    { name: 'Recta a Cholula', at: [300, 540], hub: true }
+                ],
+                note: 'Enlace transversal entre L1 y L4 (Ciudad Judicial y Recta a Cholula).'
+            },
+            {
+                id: 'A8', line: 'L1', name: 'A8 · Bosques — Camino Real',
+                // Transbordo en Bosques (L1 [1360,260]) -> N [1360,170] -> 45° NE [1410,120]
+                path: [[1360, 260], [1360, 170], [1410, 120]],
+                stops: [
+                    { name: 'Bosques', at: [1360, 260], hub: true },
+                    { name: 'Bosques de San Sebastián / Camino Real', at: [1410, 120], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: conecta estación Bosques (L1) con sector norte de Bosques de San Sebastián.'
+            },
+            {
+                id: 'A9', line: 'L1', name: 'A9 · Bosques — Reforma / Amalucan',
+                // Transbordo en Amalucan (L1 [1325,260]) -> 45° NE [1385,200] -> E [1460,200]
+                path: [[1325, 260], [1385, 200], [1460, 200]],
+                stops: [
+                    { name: 'Amalucan', at: [1325, 260], hub: true },
+                    { name: 'Col. Reforma / Cerro Amalucan', at: [1460, 200], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: conecta estación Amalucan (L1) con colonias periféricas del nororiente.'
+            },
+            {
+                id: 'A10', line: 'L1', name: 'A10 · Chachapa — Centro / Analco',
+                // Sale de Chachapa [1580,260] -> S [1580,450] -> W [960,450] (Analco L3) -> W [720,450] (Paseo Bravo L2)
+                path: [[1580, 260], [1580, 450], [960, 450], [720, 450]],
+                stops: [
+                    { name: 'Terminal Chachapa', at: [1580, 260], hub: true },
+                    { name: 'Analco (L3)', at: [960, 450], hub: true },
+                    { name: 'Paseo Bravo (L2)', at: [720, 450], hub: true }
+                ],
+                note: 'Corredor oriente-centro: conecta Terminal Chachapa (L1) con L3 (Analco) y L2 (Paseo Bravo) cruzando con A11.'
+            },
+            {
+                id: 'A11', line: 'L1', name: 'A11 · Tlaxcalancingo — Centro',
+                // Sale de Tlaxcalancingo [180,940] -> E [440,940] -> 45° NE [720,660] -> N [720,450] (Paseo Bravo L2) -> E [960,450] (Analco L3)
+                path: [[180, 940], [440, 940], [720, 660], [720, 456], [960, 456]],
+                stops: [
+                    { name: 'Terminal Tlaxcalancingo', at: [180, 940], hub: true },
+                    { name: 'Paseo Bravo (L2)', at: [720, 450], hub: true },
+                    { name: 'Analco (L3)', at: [960, 450], hub: true }
+                ],
+                note: 'Corredor poniente-centro: conecta Terminal Tlaxcalancingo (L1) con el Centro Histórico (L2 y L3).'
+            },
+
+            // ================= ALIMENTADORAS LÍNEA 2 (ROJO #d50032) =================
+            {
+                id: 'A21', line: 'L2', name: 'A21 · San Ramón 4ta Sección',
+                // Margaritas [720,1240] -> 45° SW [630,1330] -> S [630,1390]
+                path: [[720, 1240], [630, 1330], [630, 1390]],
+                stops: [
+                    { name: 'Terminal Margaritas', at: [720, 1240], hub: true },
+                    { name: 'San Ramón (Hub Sur)', at: [630, 1330], hub: true, lp: 'l' },
+                    { name: 'San Ramón 4ta Sección', at: [630, 1390], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Terminal Margaritas (L2). Comparte nodo San Ramón con A23.'
+            },
+            {
+                id: 'A22', line: 'L2', name: 'A22 · Colosio / Guadalupe Hidalgo',
+                // Margaritas [720,1240] -> S [720,1360] -> 45° SE [750,1390]
+                path: [[720, 1240], [720, 1360], [750, 1390]],
+                stops: [
+                    { name: 'Terminal Margaritas', at: [720, 1240], hub: true },
+                    { name: 'Col. Luis Donaldo Colosio', at: [750, 1390], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Terminal Margaritas (L2) hacia el extremo sur.'
+            },
+            {
+                id: 'A23', line: 'L2', name: 'A23 · San Ramón 3ra Sección',
+                // Margaritas [720,1240] -> W [630,1240] -> S [630,1330] -> 45° SW [570,1390]
+                path: [[720, 1240], [630, 1240], [630, 1330], [570, 1390]],
+                stops: [
+                    { name: 'Terminal Margaritas', at: [720, 1240], hub: true },
+                    { name: 'San Ramón (Hub Sur)', at: [630, 1330], hub: true },
+                    { name: 'San Ramón 3ra Sección', at: [570, 1390], terminal: true, lp: 'l' }
+                ],
+                note: 'Transbordo en Terminal Margaritas (L2), se cruza con A21 en San Ramón.'
+            },
+            {
+                id: 'A24', line: 'L2', name: 'A24 · Hacienda Santa Clara / Valle Paraíso',
+                // Tabachines [720,1200] -> W [580,1200] -> 45° NW [530,1150]
+                path: [[720, 1200], [580, 1200], [530, 1150]],
+                stops: [
+                    { name: 'Tabachines', at: [720, 1200], hub: true },
+                    { name: 'Hacienda Santa Clara / Valle Paraíso', at: [530, 1150], terminal: true, lp: 'l' }
+                ],
+                note: 'Enfoque en transbordo: conecta estación Tabachines (L2) hacia el poniente de la 11 Sur.'
+            },
+            {
+                id: 'A25', line: 'L2', name: 'A25 · Santa Lucía',
+                // Pino Suárez [720,1125] -> W [570,1125] -> 45° SW [530,1165]
+                path: [[720, 1125], [570, 1125], [530, 1165]],
+                stops: [
+                    { name: 'Pino Suárez', at: [720, 1125], hub: true },
+                    { name: 'Santa Lucía', at: [530, 1165], terminal: true, lp: 'l' }
+                ],
+                note: 'Enfoque en transbordo: conecta estación Pino Suárez (L2) con Santa Lucía.'
+            },
+            {
+                id: 'A26', line: 'L2', name: 'A26 · Balcones del Sur / Minerales',
+                // Independencia [720,1088] -> E [840,1088] -> 45° SE [930,1178] (Balcones del Sur Hub) -> S [930,1260]
+                path: [[720, 1088], [840, 1088], [930, 1178], [930, 1260]],
+                stops: [
+                    { name: 'Independencia', at: [720, 1088], hub: true },
+                    { name: 'Balcones del Sur (Hub)', at: [930, 1178], hub: true, lp: 'r' },
+                    { name: 'Minerales del Sur', at: [930, 1260], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Independencia (L2). Converge en Balcones del Sur con rutas A29 y A31.'
+            },
+            {
+                id: 'A28', line: 'L2', name: 'A28 · Castillotla',
+                // C.C. Centro Sur [720,1040] -> W [560,1040] -> 45° NW [520,1000]
+                path: [[720, 1040], [560, 1040], [520, 1000]],
+                stops: [
+                    { name: 'C.C. Centro Sur', at: [720, 1040], hub: true },
+                    { name: 'Castillotla', at: [520, 1000], terminal: true, lp: 'l' }
+                ],
+                note: 'Enfoque en transbordo: conecta C.C. Centro Sur (L2) con Castillotla.'
+            },
+            {
+                id: 'A29', line: 'L2', name: 'A29 · Balcones del Sur (vía 16 Sept.)',
+                // Yucatán [720,942] -> E [870,942] -> 45° SE [960,1032] -> S [960,1148] -> 45° SW [930,1178] (Balcones Hub)
+                path: [[720, 942], [870, 942], [960, 1032], [960, 1148], [930, 1178]],
+                stops: [
+                    { name: 'Yucatán', at: [720, 942], hub: true },
+                    { name: '16 de Septiembre (L4)', at: [960, 1063], hub: true },
+                    { name: 'Balcones del Sur (Hub)', at: [930, 1178], hub: true }
+                ],
+                note: 'Transbordo en Yucatán (L2) y cruce con L4 en 16 de Septiembre rumbo a Balcones del Sur.'
+            },
+            {
+                id: 'A30', line: 'L2', name: 'A30 · Hacienda del Cobre',
+                // Yucatán [720,942] -> 45° SE [810,1032] -> E [880,1032]
+                path: [[720, 942], [810, 1032], [880, 1032]],
+                stops: [
+                    { name: 'Yucatán', at: [720, 942], hub: true },
+                    { name: 'Hacienda del Cobre', at: [880, 1032], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: salida desde estación Yucatán (L2).'
+            },
+            {
+                id: 'A31', line: 'L2', name: 'A31 · Balcones del Sur (vía 3 Sur)',
+                // Yucatán [720,942] -> S [726,1130] -> E [882,1130] -> 45° SE [930,1178]
+                path: [[726, 942], [726, 1130], [882, 1130], [930, 1178]],
+                stops: [
+                    { name: 'Yucatán', at: [720, 942], hub: true },
+                    { name: 'Balcones del Sur (Hub)', at: [930, 1178], hub: true }
+                ],
+                note: 'Corredor paralelo por 3 Sur desde Yucatán (L2) hasta Balcones del Sur.'
+            },
+            {
+                id: 'A32', line: 'L2', name: 'A32 · Torrecillas — Los Héroes',
+                // Torrecillas [720,894] -> E [960,894] -> 45° SE [1130,1064] (Hub Los Héroes) -> S [1130,1190] (Héroes L4)
+                path: [[720, 894], [960, 894], [1130, 1064], [1130, 1190]],
+                stops: [
+                    { name: 'Torrecillas', at: [720, 894], hub: true },
+                    { name: 'Las Torres (L3)', at: [1072, 882], hub: true },
+                    { name: 'Los Héroes (Hub Suroriente)', at: [1130, 1064], hub: true, lp: 'r' },
+                    { name: 'Héroes (L4)', at: [1130, 1190], hub: true }
+                ],
+                note: 'Gran eje transversal sur: une L2 (Torrecillas), L3 (Las Torres) y L4 (Héroes), cruzando con A302 y A303.'
+            },
+            {
+                id: 'A33', line: 'L2', name: 'A33 · Diagonal — CAPU',
+                // Constitución 11 Norte [720,260] -> N [720,220] -> 45° NW [660,160] -> W [560,160] (CAPU)
+                path: [[720, 260], [720, 220], [660, 160], [560, 160]],
+                stops: [
+                    { name: 'Constitución 11 Norte', at: [720, 260], hub: true },
+                    { name: 'Terminal CAPU', at: [560, 160], hub: true }
+                ],
+                note: 'Enlace directo L1/L2 (Constitución 11 Norte) ↔ L3 (Terminal CAPU).'
+            },
+            {
+                id: 'A35', line: 'L2', name: 'A35 · Diagonal — Central de Abastos',
+                // Constitución 11 Norte [720,260] -> N [720,100] -> E [840,100]
+                path: [[720, 260], [720, 100], [840, 100]],
+                stops: [
+                    { name: 'Constitución 11 Norte', at: [720, 260], hub: true },
+                    { name: 'Central de Abastos', at: [840, 100], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: conecta extremo norte de L2 / L1 con Central de Abastos.'
+            },
+            {
+                id: 'A36', line: 'L2', name: 'A36 · Torrecillas — Angelópolis',
+                // Torrecillas [720,894] -> W [544,894] -> 45° NW [540,890] (Zona Angelópolis) -> W [440,890] -> 45° NW [380,830]
+                path: [[720, 894], [544, 894], [540, 890], [440, 890], [380, 830]],
+                stops: [
+                    { name: 'Torrecillas', at: [720, 894], hub: true },
+                    { name: 'Zona Angelópolis', at: [540, 890], hub: true },
+                    { name: 'Auditorio Metropolitano', at: [380, 830], terminal: true, lp: 'l' }
+                ],
+                note: 'Une L2 (Torrecillas) con Zona Angelópolis, cruzando con A6 (L1) e I43 (L4).'
+            },
+
+            // ================= ALIMENTADORAS LÍNEA 3 (VERDE #009639) =================
+            {
+                id: 'A301', line: 'L3', name: 'A301 · CAPU — La Paz',
+                // CAPU [560,160] -> 45° SW [470,250] -> S [470,380] (Col. La Paz)
+                path: [[560, 160], [470, 250], [470, 380]],
+                stops: [
+                    { name: 'Terminal CAPU', at: [560, 160], hub: true },
+                    { name: 'Col. La Paz / Juárez', at: [470, 380], terminal: true, lp: 'l' }
+                ],
+                note: 'Transbordo en Terminal CAPU (L3) hacia Avenida Juárez y Colonia La Paz.'
+            },
+            {
+                id: 'A302', line: 'L3', name: 'A302 · C.U. BUAP — Los Héroes (14 Sur)',
+                // C.U. BUAP [1036,846] -> E [1130,846] -> S [1130,1064] (Hub Los Héroes) -> 45° SE [1180,1114]
+                path: [[1036, 846], [1130, 846], [1130, 1064], [1180, 1114]],
+                stops: [
+                    { name: 'C.U. BUAP', at: [1036, 846], hub: true },
+                    { name: 'Los Héroes (Hub Suroriente)', at: [1130, 1064], hub: true },
+                    { name: 'Los Héroes 2da Sección', at: [1180, 1114], terminal: true, lp: 'r' }
+                ],
+                note: 'Transbordo en C.U. BUAP (L3). Cruza con A32 y A303 en el nodo Los Héroes.'
+            },
+            {
+                id: 'A303', line: 'L3', name: 'A303 · Valsequillo — Los Héroes / Periférico',
+                // Terminal Valsequillo [1240,1190] -> N [1240,1120] -> 45° NW [1130,1010] -> S [1130,1064] (Hub Los Héroes)
+                path: [[1240, 1190], [1240, 1120], [1130, 1010], [1130, 1064]],
+                stops: [
+                    { name: 'Terminal Valsequillo', at: [1240, 1190], hub: true },
+                    { name: 'Los Héroes (Hub Suroriente)', at: [1130, 1064], hub: true }
+                ],
+                note: 'Enlace entre Terminal Valsequillo (L3/L4) y Fraccionamiento Los Héroes.'
+            },
+            {
+                id: 'A304', line: 'L3', name: 'A304 · Las Torres — Municipio Libre',
+                // Las Torres [1072,882] -> 45° NE [1142,812] -> E [1220,812]
+                path: [[1072, 882], [1142, 812], [1220, 812]],
+                stops: [
+                    { name: 'Las Torres', at: [1072, 882], hub: true },
+                    { name: 'Blvd. Municipio Libre / Ejido', at: [1220, 812], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: salida desde estación Las Torres (L3).'
+            },
+            {
+                id: 'A305', line: 'L3', name: 'A305 · Xilotzingo — C.U. / 24 Sur',
+                // Xilotzingo [1110,920] -> 45° NE [1170,860] -> N [1170,780]
+                path: [[1110, 920], [1170, 860], [1170, 780]],
+                stops: [
+                    { name: 'Xilotzingo', at: [1110, 920], hub: true },
+                    { name: '24 Sur / Tres Cruces', at: [1170, 780], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: conecta estación Xilotzingo (L3) con corredor 24 Sur.'
+            },
+            {
+                id: 'A306', line: 'L3', name: 'A306 · Valsequillo — San Baltazar Tetela',
+                // Terminal Valsequillo [1240,1190] -> 45° SE [1340,1290] -> S [1340,1360]
+                path: [[1240, 1190], [1340, 1290], [1340, 1360]],
+                stops: [
+                    { name: 'Terminal Valsequillo', at: [1240, 1190], hub: true },
+                    { name: 'San Baltazar Tetela', at: [1340, 1360], terminal: true, lp: 'b' }
+                ],
+                note: 'Transbordo en Terminal Valsequillo (L3/L4) rumbo a la presa de Valsequillo y Tetela.'
+            },
+
+            // ================= INTEGRADORAS LÍNEA 4 (MORADO #6d2077) =================
+            {
+                id: 'I41', line: 'L4', name: 'I41 · FINSA — Misiones de San Francisco',
+                // Terminal FINSA [500,80] -> N [500,35] -> W [410,35]
+                path: [[500, 80], [500, 35], [410, 35]],
+                stops: [
+                    { name: 'Terminal FINSA', at: [500, 80], hub: true },
+                    { name: 'Misiones de San Francisco', at: [410, 35], terminal: true, lp: 'l' }
+                ],
+                note: 'Enfoque en transbordo: conecta Terminal FINSA (L4) con Misiones de San Francisco.'
+            },
+            {
+                id: 'I42', line: 'L4', name: 'I42 · Recta a Cholula — San Pedro Cholula',
+                // Recta a Cholula [300,540] -> W [180,540] -> 45° NW [140,500]
+                path: [[300, 540], [180, 540], [140, 500]],
+                stops: [
+                    { name: 'Recta a Cholula', at: [300, 540], hub: true },
+                    { name: 'Centro San Pedro Cholula', at: [140, 500], terminal: true, lp: 'l' }
+                ],
+                note: 'Enfoque en transbordo: enlaza paradero Recta a Cholula (L4) con San Pedro Cholula.'
+            },
+            {
+                id: 'I43', line: 'L4', name: 'I43 · Vía Atlixcáyotl — Lomas / Angelópolis',
+                // Vía Atlixcáyotl [570,1003] -> 45° SW [470,1103] (Lomas) y hacia Zona Angelópolis [540,890]
+                path: [[470, 1103], [570, 1003], [570, 920], [540, 890]],
+                stops: [
+                    { name: 'Lomas de Angelópolis', at: [470, 1103], terminal: true, lp: 'b' },
+                    { name: 'Vía Atlixcáyotl', at: [570, 1003], hub: true },
+                    { name: 'Zona Angelópolis', at: [540, 890], hub: true }
+                ],
+                note: 'Integra L4 (Vía Atlixcáyotl) con Lomas de Angelópolis y el hub Zona Angelópolis (cruza con A6 y A36).'
+            },
+            {
+                id: 'I44', line: 'L4', name: 'I44 · Hospital de la Mujer — Bugambilias',
+                // Hospital de la Mujer [840,1003] -> N [840,960] -> 45° NE [870,930]
+                path: [[840, 1003], [840, 960], [870, 930]],
+                stops: [
+                    { name: 'Hospital de la Mujer', at: [840, 1003], hub: true },
+                    { name: 'Bugambilias / Mayorazgo', at: [870, 930], terminal: true, lp: 'r' }
+                ],
+                note: 'Enfoque en transbordo: conecta paradero Hospital de la Mujer (L4) con Bugambilias.'
             }
         ];
 
@@ -402,15 +777,15 @@
             if (!atEnd) { for (let i = 0; i < pts.length - 1; i++) { if (s < cum[i + 1] - 0.001) { k = i; break; } } }
             const [x0, y0] = pts[k], [x1, y1] = pts[k + 1];
             const len = cum[k + 1] - cum[k];
-            const t = Math.min(Math.max((s - cum[k]) / len, 0), 1);
-            return { x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, dx: (x1 - x0) / len, dy: (y1 - y0) / len };
+            const t = len === 0 ? 0 : Math.min(Math.max((s - cum[k]) / len, 0), 1);
+            return { x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, dx: len === 0 ? 1 : (x1 - x0) / len, dy: len === 0 ? 0 : (y1 - y0) / len };
         }
         function projectOnPath(info, x, y) {
             let best = Infinity, bestS = 0;
             for (let i = 0; i < info.pts.length - 1; i++) {
                 const [x0, y0] = info.pts[i], [x1, y1] = info.pts[i + 1];
                 const vx = x1 - x0, vy = y1 - y0, len2 = vx * vx + vy * vy;
-                const t = Math.min(Math.max(((x - x0) * vx + (y - y0) * vy) / len2, 0), 1);
+                const t = len2 === 0 ? 0 : Math.min(Math.max(((x - x0) * vx + (y - y0) * vy) / len2, 0), 1);
                 const d = Math.hypot(x - (x0 + vx * t), y - (y0 + vy * t));
                 if (d < best) { best = d; bestS = info.cum[i] + Math.sqrt(len2) * t; }
             }
@@ -419,13 +794,17 @@
 
         // ---------- Construcción de la red ----------
         let STATIONS = [];
+        let showFeeders = true;
+
         function buildNetwork() {
             const all = [];
-            ROUTES.forEach((r, ri) => {
+            const coordMap = new Map();
+            const coordKey = (x, y) => `${Math.round(x)},${Math.round(y)}`;
+
+            // 1. Procesar Troncales
+            TRONCAL_ROUTES.forEach((r) => {
                 const info = polyInfo(r.path);
                 const n = r.seq.length;
-
-                // posición a lo largo del trazo
                 const sArr = new Array(n).fill(null);
                 r.seq.forEach((e, i) => { if (e.at) sArr[i] = projectOnPath(info, e.at[0], e.at[1]); });
                 if (sArr[0] === null) sArr[0] = 0;
@@ -436,8 +815,6 @@
                     for (let j = prev + 1; j < i; j++) sArr[j] = sArr[prev] + (sArr[i] - sArr[prev]) * (j - prev) / (i - prev);
                     prev = i;
                 }
-
-                // coordenadas geográficas: interpolación entre puntos de referencia
                 const gIdx = r.seq.map((e, i) => (e.geo ? i : -1)).filter(i => i >= 0);
                 const geoArr = r.seq.map(e => e.geo || null);
                 for (let g = 0; g < gIdx.length - 1; g++) {
@@ -450,7 +827,6 @@
                         ];
                     }
                 }
-
                 r.seq.forEach((e, i) => {
                     const p = pointAt(info, sArr[i], i === n - 1);
                     let node = e.node;
@@ -460,25 +836,78 @@
                             id: `st-${all.length}`, name: e.name, x: p.x, y: p.y,
                             dir: [p.dx, p.dy], side: r.side * (e.flip ? -1 : 1),
                             type: e.type || (isEnd ? 'terminal' : 'regular'),
-                            lp: e.lp, note: e.note, lines: [], info: [],
+                            lp: e.lp, note: e.note, lines: [], info: [], feeders: [],
                             geo: GEO_OVERRIDES[e.name] || geoArr[i]
                         };
                         all.push(node);
+                        coordMap.set(coordKey(p.x, p.y), node);
                     }
                     if (!node.lines.includes(r.line)) node.lines.push(r.line);
-                    const tag = `${LINE_CONFIG[r.line].name}${r.label ? ' · ' + r.label : ''}`;
-                    node.info.push(`${tag}: parada ${i + 1} de ${n}`);
+                    node.info.push(`${LINE_CONFIG[r.line].name}${r.label ? ' · ' + r.label : ''}: parada ${i + 1} de ${n}`);
                 });
             });
-            all.forEach(st => {
-                if (st.lines.length > 1 && st.type === 'regular') st.type = 'interchange';
+
+            // 2. Procesar Alimentadoras y vincular transbordos
+            FEEDER_ROUTES.forEach((fr) => {
+                fr.stops.forEach((stStop) => {
+                    const [sx, sy] = stStop.at;
+                    // Buscar si coincide con una estación troncal o un hub alimentador ya existente
+                    let existing = coordMap.get(coordKey(sx, sy));
+                    if (!existing) {
+                        existing = all.find(n => Math.hypot(n.x - sx, n.y - sy) < 12);
+                    }
+
+                    if (existing) {
+                        if (!existing.feeders.some(f => f.id === fr.id)) {
+                            existing.feeders.push({ id: fr.id, line: fr.line, name: fr.name });
+                        }
+                        if (!existing.lines.includes(fr.line)) {
+                            existing.lines.push(fr.line);
+                        }
+                        // Si era una estación troncal regular y ahora recibe alimentadoras, promover a transbordo
+                        if (existing.type === 'regular') {
+                            existing.type = 'feeder-transfer';
+                        }
+                        // Si es un hub alimentador con 2 o más rutas, promover a intercambio alimentador
+                        if (existing.isFeederNode && existing.feeders.length > 1) {
+                            existing.type = 'feeder-hub';
+                        }
+                    } else {
+                        const node = {
+                            id: `fd-node-${all.length}`,
+                            name: stStop.terminal ? `${fr.id} · ${stStop.name}` : stStop.name,
+                            rawName: stStop.name,
+                            x: sx,
+                            y: sy,
+                            dir: [1, 0],
+                            side: 1,
+                            type: stStop.terminal ? 'feeder-terminal' : 'feeder-hub',
+                            lp: stStop.lp || 'r',
+                            note: fr.note,
+                            lines: [fr.line],
+                            info: [`Ruta ${fr.name}`],
+                            feeders: [{ id: fr.id, line: fr.line, name: fr.name }],
+                            isFeederNode: true
+                        };
+                        all.push(node);
+                        coordMap.set(coordKey(sx, sy), node);
+                    }
+                });
             });
+
+            // Marcar correspondencias entre múltiples troncales
+            all.forEach(st => {
+                if (!st.isFeederNode && st.lines.length > 1 && st.type === 'regular') {
+                    st.type = 'interchange';
+                }
+            });
+
             STATIONS = all;
         }
 
         // Inicialización de capas SVG
+        const feederLinesLayer = document.getElementById('feeder-lines-layer');
         const linesLayer = document.getElementById('lines-layer');
-        const connectorsLayer = document.getElementById('interchange-connectors-layer');
         const stationsLayer = document.getElementById('stations-layer');
         const labelsLayer = document.getElementById('labels-layer');
         const userLayer = document.getElementById('user-layer');
@@ -492,87 +921,137 @@
             return points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
         }
 
-        // 1. Líneas
+        // 1. Renderizado de líneas (Troncales gruesas + Alimentadoras delgadas)
         function renderLines() {
-            const groups = {};
+            const troncalGroups = {};
+            const feederGroups = {};
+
             Object.values(LINE_CONFIG).forEach(line => {
-                groups[line.id] = createSVGElement('g', { class: 'route-group', 'data-line': line.id });
-                linesLayer.appendChild(groups[line.id]);
+                troncalGroups[line.id] = createSVGElement('g', { class: 'route-group', 'data-line': line.id });
+                linesLayer.appendChild(troncalGroups[line.id]);
+
+                feederGroups[line.id] = createSVGElement('g', { class: 'route-group feeder-group', 'data-line': line.id });
+                feederLinesLayer.appendChild(feederGroups[line.id]);
             });
-            ROUTES.forEach(r => {
+
+            // Alimentadoras (trazo delgado de 2.4px con halo blanco para cruces limpios estilo Beck)
+            FEEDER_ROUTES.forEach(r => {
+                const line = LINE_CONFIG[r.line];
+                const d = pointsToPath(r.path);
+                // Halo blanco para que cuando dos alimentadoras se crucen se distingan nítidamente
+                feederGroups[r.line].appendChild(createSVGElement('path', {
+                    d, fill: 'none', stroke: '#faf9f5', 'stroke-width': 4.8,
+                    'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+                }));
+                const mainPath = createSVGElement('path', {
+                    d, fill: 'none', stroke: line.color, 'stroke-width': 2.4,
+                    'stroke-linecap': 'round', 'stroke-linejoin': 'round',
+                    class: 'feeder-line cursor-pointer'
+                });
+                mainPath.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openFeederRouteCard(r);
+                });
+                feederGroups[r.line].appendChild(mainPath);
+            });
+
+            // Troncales (trazo grueso sólido de 8.5px)
+            TRONCAL_ROUTES.forEach(r => {
                 const line = LINE_CONFIG[r.line];
                 const d = pointsToPath(r.path);
                 const w = r.label === 'Ramal Alpha' ? 7.5 : 8.5;
-                groups[r.line].appendChild(createSVGElement('path', {
+                troncalGroups[r.line].appendChild(createSVGElement('path', {
                     d, fill: 'none', stroke: '#faf9f5', 'stroke-width': w + 4.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
                 }));
-                groups[r.line].appendChild(createSVGElement('path', {
+                troncalGroups[r.line].appendChild(createSVGElement('path', {
                     d, fill: 'none', stroke: line.color, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
                 }));
             });
         }
 
-        // 2. Estaciones
+        // 2. Renderizado de estaciones y nodos de transbordo
         function renderStations() {
             STATIONS.forEach(st => {
                 const primaryLine = LINE_CONFIG[st.lines[0]];
+                const extraClass = st.isFeederNode ? ' feeder-group' : '';
                 const group = createSVGElement('g', {
-                    class: 'station-node route-group',
+                    class: `station-node route-group${extraClass}`,
                     'data-lines': st.lines.join(','),
                     'data-station-id': st.id
                 });
                 group.addEventListener('click', (e) => { e.stopPropagation(); openStationCard(st); });
 
                 if (st.type === 'interchange') {
+                    // Correspondencia troncal mayor (doble anillo estilo Beck)
                     group.appendChild(createSVGElement('circle', {
                         cx: st.x, cy: st.y, r: 9.5, fill: '#ffffff', stroke: '#18181b', 'stroke-width': 4, class: 'station-interchange'
                     }));
                 } else if (st.type === 'terminal') {
+                    // Terminal troncal
                     group.appendChild(createSVGElement('circle', {
-                        cx: st.x, cy: st.y, r: 7.5, fill: '#ffffff', stroke: primaryLine.color, 'stroke-width': 4.5
+                        cx: st.x, cy: st.y, r: 8, fill: '#ffffff', stroke: st.lines.length > 1 ? '#18181b' : primaryLine.color, 'stroke-width': 4.5
+                    }));
+                } else if (st.type === 'feeder-transfer') {
+                    // Estación troncal con transbordo a alimentadora (círculo blanco con borde del color de la troncal)
+                    group.appendChild(createSVGElement('circle', {
+                        cx: st.x, cy: st.y, r: 6.2, fill: '#ffffff', stroke: primaryLine.color, 'stroke-width': 3.2, class: 'station-interchange'
+                    }));
+                } else if (st.type === 'feeder-hub') {
+                    // Nodo de cruce entre varias alimentadoras
+                    group.appendChild(createSVGElement('circle', {
+                        cx: st.x, cy: st.y, r: 5.2, fill: '#ffffff', stroke: '#18181b', 'stroke-width': 2.5, class: 'feeder-dot'
+                    }));
+                } else if (st.type === 'feeder-terminal') {
+                    // Terminal de alimentadora (punto pequeño relleno)
+                    group.appendChild(createSVGElement('circle', {
+                        cx: st.x, cy: st.y, r: 3.8, fill: '#ffffff', stroke: primaryLine.color, 'stroke-width': 2.4, class: 'feeder-dot'
                     }));
                 } else {
+                    // Estación troncal regular (muesca perpendicular estilo Beck)
                     const nx = st.dir[1] * st.side, ny = -st.dir[0] * st.side;
                     group.appendChild(createSVGElement('line', {
                         x1: st.x, y1: st.y, x2: st.x + nx * 10, y2: st.y + ny * 10,
                         stroke: primaryLine.color, 'stroke-width': 4.5, 'stroke-linecap': 'round', class: 'station-tick'
                     }));
                 }
-                group.appendChild(createSVGElement('circle', { cx: st.x, cy: st.y, r: 14, fill: 'transparent' }));
+
+                // Área táctil invisible amplia
+                group.appendChild(createSVGElement('circle', { cx: st.x, cy: st.y, r: st.isFeederNode ? 11 : 14, fill: 'transparent' }));
                 stationsLayer.appendChild(group);
                 renderLabel(st, primaryLine);
             });
         }
 
         const NAMED_POS = {
-            top: [0, -16, 'middle'], t: [0, -16, 'middle'],
-            bottom: [0, 22, 'middle'], b: [0, 22, 'middle'],
-            left: [-15, 4, 'end'], l: [-15, 4, 'end'],
-            right: [15, 4, 'start'], r: [15, 4, 'start'],
-            tl: [-13, -12, 'end'], tr: [13, -12, 'start'],
-            bl: [-13, 18, 'end'], br: [13, 18, 'start']
+            top: [0, -16, 'middle'], t: [0, -14, 'middle'],
+            bottom: [0, 22, 'middle'], b: [0, 20, 'middle'],
+            left: [-15, 4, 'end'], l: [-12, 4, 'end'],
+            right: [15, 4, 'start'], r: [12, 4, 'start'],
+            tl: [-12, -10, 'end'], tr: [12, -10, 'start'],
+            bl: [-12, 16, 'end'], br: [12, 16, 'start']
         };
 
         function autoLabelPos(st) {
             const [dx, dy] = st.dir;
             const nx = dy * st.side, ny = -dx * st.side;
-            if (Math.abs(dy) < 0.3) {                       // tramo horizontal -> texto a 45°
+            if (Math.abs(dy) < 0.3) {
                 return ny < 0 ? { ox: 0, oy: -13, anchor: 'start', rot: -45 } : { ox: 0, oy: 15, anchor: 'start', rot: 45 };
             }
-            if (Math.abs(dx) < 0.3) {                       // tramo vertical -> texto horizontal al costado
+            if (Math.abs(dx) < 0.3) {
                 return nx > 0 ? { ox: 14, oy: 4, anchor: 'start', rot: 0 } : { ox: -14, oy: 4, anchor: 'end', rot: 0 };
             }
-            return nx > 0                                   // diagonal
+            return nx > 0
                 ? { ox: 11, oy: ny < 0 ? -8 : 14, anchor: 'start', rot: 0 }
                 : { ox: -11, oy: ny < 0 ? -8 : 14, anchor: 'end', rot: 0 };
         }
 
         function renderLabel(st, primaryLine) {
-            const labelGroup = createSVGElement('g', { class: 'route-group', 'data-lines': st.lines.join(',') });
+            const extraClass = st.isFeederNode ? ' feeder-group' : '';
+            const labelGroup = createSVGElement('g', { class: `route-group${extraClass}`, 'data-lines': st.lines.join(',') });
 
             if (st.type === 'terminal') {
                 const [ox, oy, anchor] = NAMED_POS[st.lp || 'b'];
-                const textWidth = st.name.length * 7.2 + 18;
+                const textWidth = st.name.length * 7.1 + 18;
                 let rectX = st.x + ox - textWidth / 2;
                 if (anchor === 'start') rectX = st.x + ox - 4;
                 if (anchor === 'end') rectX = st.x + ox - textWidth + 4;
@@ -586,12 +1065,24 @@
                 });
                 text.textContent = st.name;
                 labelGroup.appendChild(text);
+            } else if (st.isFeederNode) {
+                const [ox, oy, anchor] = NAMED_POS[st.lp || 'r'];
+                const x = st.x + ox, y = st.y + oy;
+                const cls = st.type === 'feeder-hub' ? 'feeder-label font-extrabold' : 'feeder-label';
+                const common = { x, y, 'text-anchor': anchor };
+                const bg = createSVGElement('text', { ...common, stroke: '#faf9f5', 'stroke-width': 3.5, 'stroke-linejoin': 'round', class: cls });
+                bg.textContent = st.name;
+                const text = createSVGElement('text', { ...common, class: cls });
+                text.textContent = st.name;
+                labelGroup.appendChild(bg);
+                labelGroup.appendChild(text);
             } else {
                 let pos;
                 if (st.lp) { const [ox, oy, anchor] = NAMED_POS[st.lp]; pos = { ox, oy, anchor, rot: 0 }; }
                 else pos = autoLabelPos(st);
                 const x = st.x + pos.ox, y = st.y + pos.oy;
-                const cls = st.type === 'interchange' ? 'station-label station-label-major' : 'station-label';
+                const isMajor = st.type === 'interchange' || st.type === 'feeder-transfer';
+                const cls = isMajor ? 'station-label station-label-major' : 'station-label';
                 const common = { x, y, 'text-anchor': pos.anchor };
                 if (pos.rot) common.transform = `rotate(${pos.rot} ${x} ${y})`;
                 const bg = createSVGElement('text', { ...common, stroke: '#faf9f5', 'stroke-width': 4, 'stroke-linejoin': 'round', class: cls });
@@ -602,13 +1093,15 @@
                 labelGroup.appendChild(text);
             }
 
-            labelRecords.push({ g: labelGroup, x: st.x, y: st.y, type: st.type });
+            labelRecords.push({ g: labelGroup, x: st.x, y: st.y, type: st.type, isFeederNode: st.isFeederNode });
             labelsLayer.appendChild(labelGroup);
         }
 
-        // ================= INTERACTIVIDAD: FILTROS POR LÍNEA =================
+        // ================= FILTROS Y TOGGLE DE ALIMENTADORAS =================
+        let currentFilter = 'all';
+
         function filterLine(selectedLine) {
-            // Actualizar estilo de botones
+            currentFilter = selectedLine;
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 const isTarget = btn.getAttribute('data-line') === selectedLine;
                 if (isTarget) {
@@ -620,25 +1113,48 @@
                 }
             });
 
-            // Atenuar líneas y estaciones no seleccionadas
+            applyVisibility();
+        }
+
+        function toggleFeeders() {
+            showFeeders = !showFeeders;
+            const btn = document.getElementById('btn-feeders');
+            if (showFeeders) {
+                btn.textContent = 'Alimentadoras: ON';
+                btn.className = 'px-3.5 py-2 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200 flex items-center gap-1.5 transition cursor-pointer shrink-0';
+            } else {
+                btn.textContent = 'Alimentadoras: OFF';
+                btn.className = 'px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-500 border border-stone-300 hover:bg-stone-100 flex items-center gap-1.5 transition cursor-pointer shrink-0';
+            }
+            applyVisibility();
+        }
+
+        function applyVisibility() {
             document.querySelectorAll('.route-group').forEach(el => {
-                if (selectedLine === 'all') {
+                const isFeederEl = el.classList.contains('feeder-group');
+                if (isFeederEl && !showFeeders) {
+                    el.style.display = 'none';
+                    return;
+                } else {
+                    el.style.display = '';
+                }
+
+                if (currentFilter === 'all') {
                     el.style.opacity = '1';
                     return;
                 }
                 const singleLine = el.getAttribute('data-line');
                 const multiLines = el.getAttribute('data-lines');
-
-                if (singleLine === selectedLine || (multiLines && multiLines.split(',').includes(selectedLine))) {
+                if (singleLine === currentFilter || (multiLines && multiLines.split(',').includes(currentFilter))) {
                     el.style.opacity = '1';
                 } else {
-                    el.style.opacity = '0.14';
+                    el.style.opacity = '0.12';
                 }
             });
+            updateLabels();
         }
 
-
-        // ================= GEOLOCALIZACIÓN: ESTACIÓN MÁS CERCANA =================
+        // ================= GEOLOCALIZACIÓN =================
         let toastTimer = 0;
         function showToast(msg, ms = 3500) {
             const t = document.getElementById('toast');
@@ -682,53 +1198,46 @@
                 .sort((a, b) => a.d - b.d);
             if (!ranked.length) { showToast('No hay coordenadas de estaciones disponibles'); return; }
             const best = ranked[0];
-
             if (best.d > 40000) {
                 clearUserMarker();
-                showToast(`Parece que estás fuera de Puebla (la estación más cercana está a ${fmtDist(best.d)}).`, 6000);
+                showToast(`Parece que estás fuera de Puebla (${fmtDist(best.d)} a la estación más cercana).`, 6000);
                 return;
             }
-
             const inRadius = best.d <= NEAR_RADIUS_M;
             const walk = Math.max(1, Math.ceil(best.d / 80));
             const headline = inRadius
                 ? `Estación más cercana · ${fmtDist(best.d)} · ≈${walk} min a pie`
-                : `La más cercana está a ${fmtDist(best.d)} (fuera de tu radio de ${fmtDist(NEAR_RADIUS_M)})`;
+                : `La más cercana está a ${fmtDist(best.d)} (fuera del radio de ${fmtDist(NEAR_RADIUS_M)})`;
             const others = ranked.slice(1, 4).map(o => `• ${o.s.name} — ${fmtDist(o.d)}`).join('\n');
-            const extra = `Precisión de tu ubicación: ±${Math.round(accuracy)} m.\n` +
+            const extra = `Precisión: ±${Math.round(accuracy)} m.\n` +
                 (others ? `Otras cercanas:\n${others}\n` : '') +
-                'Las posiciones de las estaciones son aproximadas.';
-
+                'Posiciones de estaciones aproximadas.';
             drawUserMarker(best.s);
             focusStation(best.s);
             openStationCard(best.s, headline, extra);
-            showToast(inRadius ? `Estás cerca de ${best.s.name}` : 'No hay estaciones dentro de tu radio', 3000);
+            showToast(inRadius ? `Estás cerca de ${best.s.name}` : 'Sin estaciones dentro del radio', 3000);
         }
 
-        function onPositionError(err, silent) {
-            const msgs = {
-                1: 'Permite el acceso a tu ubicación para encontrar la estación más cercana.',
-                2: 'No se pudo determinar tu ubicación.',
-                3: 'La ubicación tardó demasiado. Inténtalo de nuevo.'
-            };
-            showToast(msgs[err.code] || 'No se pudo obtener tu ubicación.', 5000);
+        function onPositionError(err) {
+            const msgs = { 1: 'Permite el acceso a tu ubicación.', 2: 'No se pudo determinar la ubicación.', 3: 'La ubicación tardó demasiado.' };
+            showToast(msgs[err.code] || 'No se pudo obtener la ubicación.', 5000);
         }
 
-        function locateMe(silent = false) {
-            if (!('geolocation' in navigator)) { showToast('Tu navegador no admite geolocalización.'); return; }
+        function locateMe() {
+            if (!('geolocation' in navigator)) { showToast('Navegador sin geolocalización.'); return; }
             showToast('Buscando tu ubicación…', 0);
-            navigator.geolocation.getCurrentPosition(onPosition, (e) => onPositionError(e, silent), {
-                enableHighAccuracy: true, timeout: 15000, maximumAge: 30000
-            });
+            navigator.geolocation.getCurrentPosition(onPosition, onPositionError, { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 });
         }
 
-        // ================= TARJETA DE DETALLE DE ESTACIÓN =================
+        // ================= TARJETAS DE INFORMACIÓN =================
         function openStationCard(station, headline, extra) {
             const card = document.getElementById('station-card');
             const badgesContainer = document.getElementById('card-badges');
             const title = document.getElementById('card-title');
             const type = document.getElementById('card-type');
             const desc = document.getElementById('card-desc');
+            const feedersWrap = document.getElementById('card-feeders');
+            const feedersList = document.getElementById('card-feeders-list');
 
             badgesContainer.innerHTML = '';
             station.lines.forEach(lineId => {
@@ -741,13 +1250,61 @@
             });
 
             title.textContent = station.name;
-            type.textContent = headline || (station.type === 'terminal'
-                ? 'Estación Terminal'
-                : station.type === 'interchange'
-                    ? 'Estación de Correspondencia / Transbordo'
-                    : 'Estación');
+            const typeMap = {
+                'terminal': 'Estación Terminal Troncal',
+                'interchange': 'Correspondencia Troncal Mayor',
+                'feeder-transfer': 'Estación Troncal con Transbordo a Alimentadora',
+                'feeder-hub': 'Nodo de Cruce / Transbordo Alimentador',
+                'feeder-terminal': 'Terminal de Ruta Alimentadora',
+                'regular': 'Estación Troncal'
+            };
+            type.textContent = headline || typeMap[station.type] || 'Estación';
+
+            if (station.feeders && station.feeders.length > 0) {
+                feedersWrap.classList.remove('hidden');
+                feedersList.innerHTML = '';
+                station.feeders.forEach(f => {
+                    const cfg = LINE_CONFIG[f.line];
+                    const pill = document.createElement('span');
+                    pill.className = 'px-2 py-0.5 rounded-md text-[10.5px] font-bold border';
+                    pill.style.borderColor = cfg.color;
+                    pill.style.color = cfg.color;
+                    pill.style.backgroundColor = '#ffffff';
+                    pill.textContent = f.name;
+                    feedersList.appendChild(pill);
+                });
+            } else {
+                feedersWrap.classList.add('hidden');
+            }
+
             desc.style.whiteSpace = 'pre-line';
             desc.textContent = [extra, station.note, station.info.join('\n')].filter(Boolean).join('\n\n');
+            card.classList.remove('hidden');
+        }
+
+        function openFeederRouteCard(route) {
+            const card = document.getElementById('station-card');
+            const badgesContainer = document.getElementById('card-badges');
+            const title = document.getElementById('card-title');
+            const type = document.getElementById('card-type');
+            const desc = document.getElementById('card-desc');
+            const feedersWrap = document.getElementById('card-feeders');
+
+            const cfg = LINE_CONFIG[route.line];
+            badgesContainer.innerHTML = '';
+            const badge = document.createElement('span');
+            badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold text-white shadow-2xs';
+            badge.style.backgroundColor = cfg.color;
+            badge.textContent = `Alimentadora ${cfg.name} (${cfg.feederFare})`;
+            badgesContainer.appendChild(badge);
+
+            title.textContent = route.name;
+            type.textContent = 'Ruta Alimentadora · Trazado Esquemático Beck';
+            feedersWrap.classList.add('hidden');
+
+            const stopsText = 'Puntos de transbordo clave:\n' + route.stops.map(s => `• ${s.name}${s.hub ? ' (Transbordo)' : ''}`).join('\n');
+            desc.style.whiteSpace = 'pre-line';
+            desc.textContent = [route.note, stopsText].filter(Boolean).join('\n\n');
             card.classList.remove('hidden');
         }
 
@@ -755,18 +1312,17 @@
             document.getElementById('station-card').classList.add('hidden');
         }
 
-        // ================= PAN & ZOOM (Pointer Events: ratón, táctil, pellizco) =================
+        // ================= PAN & ZOOM =================
         const svg = document.getElementById('beck-svg');
         const world = document.getElementById('map-world');
         const labelRecords = [];
-        const MAP_W = 1750, MAP_H = 1320;
-        const MIN_SCALE = 0.6, MAX_SCALE = 9;
+        const MAP_W = 1920, MAP_H = 1480;
+        const MIN_SCALE = 0.55, MAX_SCALE = 9;
         const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
 
         let transform = { x: 0, y: 0, scale: 1 };
         let rafId = 0, animId = 0;
 
-        // Pantalla (px) -> coordenadas del viewBox
         function svgPoint(clientX, clientY) {
             const m = svg.getScreenCTM();
             if (!m) return { x: clientX, y: clientY };
@@ -782,7 +1338,6 @@
             return svgPoint(r.left + r.width / 2, r.top + r.height / 2);
         }
 
-        // Mantiene el centro de la vista dentro del mapa y limita el zoom
         function clampTransform() {
             transform.scale = clamp(transform.scale, MIN_SCALE, MAX_SCALE);
             const c = viewCenter();
@@ -792,15 +1347,25 @@
             transform.y = c.y - wy * transform.scale;
         }
 
-        // Etiquetas: tamaño legible en pantalla y menos ruido al alejar
         function updateLabels() {
             rafId = 0;
-            const ppu = basePxPerUnit() * transform.scale;     // px de pantalla por unidad del mapa
+            const ppu = basePxPerUnit() * transform.scale;
             const k = clamp(0.95 / ppu, 1, 2);
             const hideMinor = ppu < 0.45;
+            const hideFeederLabels = ppu < 0.55;
             labelRecords.forEach(r => {
+                if (r.isFeederNode && !showFeeders) {
+                    r.g.style.display = 'none';
+                    return;
+                }
                 r.g.setAttribute('transform', k === 1 ? '' : `translate(${r.x} ${r.y}) scale(${k}) translate(${-r.x} ${-r.y})`);
-                r.g.style.display = (hideMinor && r.type === 'regular') ? 'none' : '';
+                if (hideMinor && r.type === 'regular') {
+                    r.g.style.display = 'none';
+                } else if (hideFeederLabels && r.type === 'feeder-terminal') {
+                    r.g.style.display = 'none';
+                } else {
+                    r.g.style.display = '';
+                }
             });
         }
 
@@ -826,42 +1391,29 @@
             animId = requestAnimationFrame(step);
         }
 
-        // Zoom anclado a un punto (coordenadas del viewBox)
         function zoomAt(factor, sx, sy, animate = true) {
             const newScale = clamp(transform.scale * factor, MIN_SCALE, MAX_SCALE);
             const ratio = newScale / transform.scale;
-            const target = {
-                scale: newScale,
-                x: sx - (sx - transform.x) * ratio,
-                y: sy - (sy - transform.y) * ratio
-            };
+            const target = { scale: newScale, x: sx - (sx - transform.x) * ratio, y: sy - (sy - transform.y) * ratio };
             if (animate) animateTo(target);
             else { Object.assign(transform, target); applyTransform(); }
         }
 
-        function zoomMap(factor) {
-            const c = viewCenter();
-            zoomAt(factor, c.x, c.y);
-        }
+        function zoomMap(factor) { const c = viewCenter(); zoomAt(factor, c.x, c.y); }
+        function resetView() { animateTo({ x: 0, y: 0, scale: 1 }); }
 
-        // Vista completa
-        function resetView() {
-            animateTo({ x: 0, y: 0, scale: 1 });
-        }
-
-        // Vista inicial: en pantallas estrechas se abre sobre el centro de la red
         function initialView() {
             const r = svg.getBoundingClientRect();
             if (r.width >= 768) { transform = { x: 0, y: 0, scale: 1 }; applyTransform(); return; }
-            const visibleUnits = Math.max(360, Math.min(520, r.width * 1.2));
+            const visibleUnits = Math.max(380, Math.min(560, r.width * 1.25));
             const scale = (r.width / visibleUnits) / basePxPerUnit();
             const c = viewCenter();
-            const cx = 820, cy = 520;
+            const cx = 840, cy = 560;
             transform = { scale, x: c.x - cx * scale, y: c.y - cy * scale };
             applyTransform();
         }
 
-        // ---- Gestos ----
+        // ---- Gestos táctiles y ratón ----
         const pointers = new Map();
         let gesture = null;
         let moved = false;
@@ -877,31 +1429,21 @@
             return { mx, my, dist };
         }
 
-        // Fija el estado base del gesto (al cambiar el número de dedos)
         function startGesture() {
             if (!pointers.size) { gesture = null; return; }
             const { mx, my, dist } = pointerStats();
             const s = svgPoint(mx, my);
-            gesture = {
-                dist,
-                scale: transform.scale,
-                anchor: { x: (s.x - transform.x) / transform.scale, y: (s.y - transform.y) / transform.scale }
-            };
+            gesture = { dist, scale: transform.scale, anchor: { x: (s.x - transform.x) / transform.scale, y: (s.y - transform.y) / transform.scale } };
         }
 
-        function capture(id) {
-            try { svg.setPointerCapture(id); } catch (_) {}
-        }
+        function capture(id) { try { svg.setPointerCapture(id); } catch (_) {} }
 
         svg.addEventListener('pointerdown', (e) => {
             if (e.pointerType === 'mouse' && e.button !== 0) return;
             cancelAnimationFrame(animId);
             if (pointers.size === 0) { moved = false; suppressClick = false; }
             pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY });
-            if (pointers.size > 1) {
-                moved = true;
-                pointers.forEach((_, id) => capture(id));
-            }
+            if (pointers.size > 1) { moved = true; pointers.forEach((_, id) => capture(id)); }
             startGesture();
         });
 
@@ -930,12 +1472,9 @@
             if (!pointers.has(e.pointerId)) return;
             pointers.delete(e.pointerId);
             try { svg.releasePointerCapture(e.pointerId); } catch (_) {}
-
             if (pointers.size === 0) {
                 suppressClick = moved;
-                // Doble toque (táctil) sobre el fondo -> acercar
-                if (!moved && e.type === 'pointerup' && e.pointerType !== 'mouse' &&
-                    !(e.target.closest && e.target.closest('.station-node'))) {
+                if (!moved && e.type === 'pointerup' && e.pointerType !== 'mouse' && !(e.target.closest && e.target.closest('.station-node'))) {
                     const now = performance.now();
                     if (now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30) {
                         const s = svgPoint(e.clientX, e.clientY);
@@ -947,13 +1486,12 @@
                     }
                 }
             }
-            startGesture(); // re-ancla los dedos restantes para evitar saltos
+            startGesture();
         }
         svg.addEventListener('pointerup', endPointer);
         svg.addEventListener('pointercancel', endPointer);
         svg.addEventListener('lostpointercapture', endPointer);
 
-        // Rueda del ratón / pellizco en trackpad (ctrl+rueda)
         svg.addEventListener('wheel', (e) => {
             e.preventDefault();
             cancelAnimationFrame(animId);
@@ -963,39 +1501,31 @@
             zoomAt(factor, s.x, s.y, false);
         }, { passive: false });
 
-        // Doble clic con ratón
         svg.addEventListener('dblclick', (e) => {
             if (e.target.closest && e.target.closest('.station-node')) return;
             const s = svgPoint(e.clientX, e.clientY);
             zoomAt(2, s.x, s.y);
         });
 
-        // Evita el zoom nativo de página en Safari iOS
         ['gesturestart', 'gesturechange', 'gestureend'].forEach(ev =>
             document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
 
-        // Tocar el fondo cierra la tarjeta (salvo tras arrastrar/pellizcar)
         svg.addEventListener('click', () => {
             if (suppressClick) { suppressClick = false; return; }
             closeStationCard();
         });
 
-        // Leyenda plegable
-        function toggleLegend() {
-            document.getElementById('legend-panel').classList.toggle('hidden');
-        }
+        function toggleLegend() { document.getElementById('legend-panel').classList.toggle('hidden'); }
         if (window.innerWidth >= 768) toggleLegend();
 
         window.addEventListener('resize', () => applyTransform());
         window.addEventListener('orientationchange', () => setTimeout(initialView, 250));
 
-        // Renderizado inicial
+        // ================= RENDERIZADO INICIAL =================
         buildNetwork();
         renderLines();
         renderStations();
         requestAnimationFrame(initialView);
-        // Pide la ubicación al cargar (el navegador mostrará su aviso de permiso)
-        setTimeout(() => locateMe(true), 1200);
     </script>
 </body>
 </html>
