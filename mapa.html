@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>RUTA Puebla — Mapa Esquemático Estilo Henry Beck</title>
+    <!-- Tailwind CSS para interfaz limpia y responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuente geométrica clásica inspirada en Johnston Sans / Gill Sans de Beck -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f4f3ef; /* Tono papel cartográfico clásico */
+            color: #18181b;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+            overscroll-behavior: none;
+        }
+        html, body { height: 100%; }
+        body.h-screen { height: 100vh; height: 100dvh; }
+
+        #beck-svg { touch-action: none; }
+        #line-filters { scrollbar-width: none; }
+        #line-filters::-webkit-scrollbar { display: none; }
+        .safe-top { padding-top: max(0.5rem, env(safe-area-inset-top)); padding-left: max(0.75rem, env(safe-area-inset-left)); padding-right: max(0.75rem, env(safe-area-inset-right)); }
+
+        /* Patrón de cuadrícula sutil tipo plano técnico */
+        .map-canvas-bg {
+            background-color: #faf9f5;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Transiciones suaves para resaltar líneas y estaciones */
+        .route-group {
+            transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .station-node {
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.35s ease;
+        }
+
+        @media (hover: hover) {
+            .station-node:hover .station-tick,
+            .station-node:hover .station-interchange {
+                stroke-width: 6px;
+            }
+        }
+
+        .station-label {
+            font-size: 11px;
+            font-weight: 600;
+            fill: #1f2937;
+            letter-spacing: -0.01em;
+            pointer-events: none;
+        }
+
+        .station-label-major {
+            font-size: 12.5px;
+            font-weight: 800;
+            fill: #09090b;
+        }
+
+        .terminal-badge {
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.03em;
+        }
+
+        /* Estilo personalizado para barras de desplazamiento */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.2);
+            border-radius: 999px;
+        }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col">
+
+    <!-- Barra Superior Estilo Señalética Metropolitana -->
+    <header class="safe-top bg-white/95 backdrop-blur-md border-b border-stone-200 sm:px-4 pb-2 sm:py-3 flex flex-wrap items-center justify-between gap-2 sm:gap-3 z-20 shadow-sm">
+        <div class="flex items-center gap-3">
+            <!-- Emblema Circular Inspirado en Roundel de Londres / RUTA -->
+            <div class="relative w-10 h-10 flex items-center justify-center shrink-0">
+                <div class="w-9 h-9 rounded-full border-[5px] border-[#005eb8]"></div>
+                <div class="absolute w-11 h-3.5 bg-[#e4002b] rounded-sm flex items-center justify-center shadow-xs">
+                    <span class="text-[9px] font-extrabold text-white tracking-widest">RUTA</span>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-[15px] sm:text-lg font-extrabold tracking-tight text-stone-900 leading-tight">
+                    <span class="sm:hidden">RUTA Puebla</span>
+                    <span class="hidden sm:inline">Red Urbana de Transporte Articulado</span>
+                </h1>
+                <p class="hidden sm:block text-xs text-stone-500 font-medium">
+                    Diagrama Esquemático Topológico · Puebla (Líneas 1, 2, 3 y 4)
+                </p>
+            </div>
+        </div>
+
+        <!-- Filtros Interactivos por Línea -->
+        <div class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto w-full sm:w-auto" id="line-filters">
+            <button onclick="filterLine('all')" data-line="all" class="filter-btn active px-3.5 py-2 rounded-full text-xs font-bold bg-stone-900 text-white shadow-xs transition cursor-pointer shrink-0">
+                Todas
+            </button>
+            <button onclick="filterLine('L1')" data-line="L1" class="filter-btn px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-700 border border-stone-300 hover:border-[#0072ce] flex items-center gap-1.5 transition cursor-pointer shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#0072ce]"></span> Línea 1
+            </button>
+            <button onclick="filterLine('L2')" data-line="L2" class="filter-btn px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-700 border border-stone-300 hover:border-[#d50032] flex items-center gap-1.5 transition cursor-pointer shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#d50032]"></span> Línea 2
+            </button>
+            <button onclick="filterLine('L3')" data-line="L3" class="filter-btn px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-700 border border-stone-300 hover:border-[#009639] flex items-center gap-1.5 transition cursor-pointer shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#009639]"></span> Línea 3
+            </button>
+            <button onclick="filterLine('L4')" data-line="L4" class="filter-btn px-3.5 py-2 rounded-full text-xs font-bold bg-white text-stone-700 border border-stone-300 hover:border-[#6d2077] flex items-center gap-1.5 transition cursor-pointer shrink-0">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#6d2077]"></span> Línea 4
+            </button>
+        </div>
+    </header>
+
+    <!-- Lienzo Principal Interactivo (Pan & Zoom) -->
+    <main class="relative flex-1 w-full h-full overflow-hidden map-canvas-bg" id="map-viewport">
+        
+        <!-- SVG Esquemático (Generado dinámicamente con precisión geométrica de 45°/90°) -->
+        <svg id="beck-svg" class="w-full h-full touch-none cursor-grab active:cursor-grabbing" viewBox="0 0 1750 1320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Sombra suave para etiquetas terminales y cuadro de leyenda -->
+                <filter id="badge-shadow" x="-10%" y="-10%" width="120%" height="120%">
+                    <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.14"/>
+                </filter>
+                <!-- Patrón rayado para tramos integradores/ramales -->
+                <pattern id="branch-stripe" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                    <line x1="0" y1="0" x2="0" y2="8" stroke="#ffffff" stroke-width="2.5" opacity="0.45" />
+                </pattern>
+            </defs>
+
+            <!-- Grupo transformable para Zoom y Arrastre -->
+            <g id="map-world">
+                <!-- Capa 0: Elementos Geográficos Esquemáticos (Río Atoyac / Río San Francisco muy estilizados al estilo Támesis de Beck) -->
+                <g id="geographic-layer" opacity="0.55">
+                    <rect x="745" y="330" width="205" height="225" rx="16" fill="#fef3c7" opacity="0.35" stroke="#fcd34d" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <text x="848" y="548" text-anchor="middle" fill="#b45309" font-size="10" font-weight="800" letter-spacing="1.5">CENTRO HISTÓRICO</text>
+                </g>
+
+                <!-- Capa 1: Trazos de las Líneas (Octolineales: 0°, 45°, 90°) -->
+                <g id="lines-layer"></g>
+
+                <!-- Capa 2: Conectores de Correspondencia / Transbordo -->
+                <g id="interchange-connectors-layer"></g>
+
+                <!-- Capa 3: Nodos de Estaciones (Ticks y Círculos de Transbordo) -->
+                <g id="stations-layer"></g>
+
+                <!-- Capa 4: Etiquetas de Estaciones y Terminales -->
+                <g id="labels-layer"></g>
+
+                <!-- Capa 5: marcador de ubicación del usuario -->
+                <g id="user-layer"></g>
+            </g>
+        </svg>
+
+        <!-- Controles Flotantes de Zoom y Centrado -->
+        <div class="absolute top-3 right-3 md:top-auto md:bottom-5 md:right-5 flex flex-col gap-1 bg-white/95 backdrop-blur-md p-1 rounded-2xl shadow-lg border border-stone-200 z-10" style="margin-right: env(safe-area-inset-right)">
+            <button onclick="zoomMap(1.25)" title="Acercar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">
+                +
+            </button>
+            <button onclick="zoomMap(0.8)" title="Alejar" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 font-bold text-lg transition cursor-pointer">
+                −
+            </button>
+            <div class="h-px bg-stone-200 mx-1"></div>
+            <button onclick="locateMe()" title="Mi estación más cercana" class="w-11 h-11 rounded-xl flex items-center justify-center text-[#2563eb] hover:bg-blue-50 active:bg-blue-100 transition cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/><path stroke-linecap="round" d="M12 2v3m0 14v3M2 12h3m14 0h3"/><circle cx="12" cy="12" r="8"/></svg>
+            </button>
+            <button onclick="resetView()" title="Ver mapa completo" class="w-11 h-11 rounded-xl flex items-center justify-center text-stone-700 hover:bg-stone-100 active:bg-stone-200 transition cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+            </button>
+        </div>
+
+
+        <!-- Leyenda plegable (HTML, legible en móvil) -->
+        <div id="legend-wrap" class="absolute top-3 left-3 z-10" style="margin-left: env(safe-area-inset-left)">
+            <button onclick="toggleLegend()" class="h-10 px-3.5 rounded-full bg-white/95 backdrop-blur-md border border-stone-200 shadow-md text-xs font-extrabold text-stone-800 flex items-center gap-1.5 cursor-pointer">
+                <span class="flex gap-0.5"><i class="w-1.5 h-3.5 rounded-sm bg-[#0072ce]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#d50032]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#009639]"></i><i class="w-1.5 h-3.5 rounded-sm bg-[#6d2077]"></i></span>
+                Leyenda
+            </button>
+            <div id="legend-panel" class="hidden mt-2 w-[min(21rem,calc(100vw-6rem))] max-h-[60dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl border border-stone-200 shadow-xl p-3">
+                <div class="space-y-2.5">
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#0072ce] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 1 · Troncal Oriente - Poniente</div><div class="text-[11px] text-stone-500">Tlaxcalancingo — Chachapa · 38 estaciones ($7.50 MXN)</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#d50032] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 2 · Troncal 11 Norte - Sur</div><div class="text-[11px] text-stone-500">Diagonal Poniente — Margaritas · 30 estaciones ($7.50 MXN)</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#009639] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 3 · Valsequillo — CAPU / Alpha</div><div class="text-[11px] text-stone-500">Valsequillo — CAPU (ramal norte) y Alpha ($7.50 MXN)</div></div></div>
+                    <div class="flex items-start gap-2.5"><span class="mt-1.5 w-8 h-1.5 rounded-full bg-[#6d2077] shrink-0"></span><div><div class="text-xs font-extrabold">Línea 4 · Metropolitana (Periférico)</div><div class="text-[11px] text-stone-500">FINSA — Valsequillo · 12 estaciones ($20.00 MXN)</div></div></div>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-stone-200 flex items-center gap-4 text-[11px] font-semibold text-stone-700">
+                    <span class="flex items-center gap-1.5"><span class="relative w-6 h-2 rounded bg-stone-500"><i class="absolute left-1/2 -top-1.5 w-[3px] h-2 rounded bg-stone-500"></i></span>Estación</span>
+                    <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 rounded-full bg-white border-[3px] border-stone-900"></span>Correspondencia</span>
+                </div>
+                <p class="md:hidden mt-2.5 text-[11px] text-stone-500">Pellizca para acercar · arrastra para mover · doble toque para zoom.</p>
+            </div>
+        </div>
+
+        <!-- Aviso breve (ubicación) -->
+        <div id="toast" class="hidden absolute top-16 left-1/2 -translate-x-1/2 max-w-[calc(100vw-9rem)] sm:max-w-md bg-stone-900/95 text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-lg z-30 text-center"></div>
+
+        <!-- Tarjeta Flotante de Detalle de Estación Seleccionada -->
+        <div id="station-card" class="hidden absolute left-3 right-3 bottom-3 sm:bottom-5 sm:left-5 sm:right-auto sm:w-96 max-h-[45dvh] overflow-y-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl border border-stone-200 p-4 z-20 transition-all" style="margin-bottom: env(safe-area-inset-bottom)">
+            <div class="flex items-start justify-between gap-2">
+                <div>
+                    <div id="card-badges" class="flex flex-wrap gap-1.5 mb-1.5"></div>
+                    <h2 id="card-title" class="text-base font-extrabold text-stone-900 leading-snug">Nombre de Estación</h2>
+                    <p id="card-type" class="text-xs font-semibold text-stone-500 mt-0.5">Estación Troncal</p>
+                </div>
+                <button onclick="closeStationCard()" class="p-2 -m-1 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <p id="card-desc" class="text-xs text-stone-600 mt-2.5 leading-relaxed border-t border-stone-100 pt-2.5">
+                Información de conectividad y referencias urbanas.
+            </p>
+        </div>
+
+        <!-- Ayuda rápida discreta -->
+        <div class="hidden md:flex items-center gap-2 absolute top-4 left-32 bg-white/85 backdrop-blur-xs px-3 py-1.5 rounded-full border border-stone-200/80 text-[11px] font-medium text-stone-600 pointer-events-none">
+            <span>🖱️ Arrastra para mover · Rueda o pellizco para zoom · Clic en una estación</span>
+        </div>
+    </main>
+
+    <script>
+        /**
+         * ARQUITECTURA TOPOLÓGICA ESTILO HENRY BECK - RUTA PUEBLA
+         * Reglas aplicadas:
+         * 1. Todos los segmentos siguen estrictamente ángulos de 0° (horizontal), 90° (vertical) o 45° (diagonal).
+         * 2. Las intersecciones entre líneas utilizan círculos blancos con borde negro grueso o conectores de cápsula.
+         * 3. Las estaciones intermedias se dibujan como "ticks" perpendiculares al eje de la línea.
+         * 4. Las escalas geográficas se comprimen en la periferia y se expanden en el Centro Histórico para máxima legibilidad.
+         */
+
+        const LINE_CONFIG = {
+            L1: { id: 'L1', name: 'Línea 1', color: '#0072ce', fare: '$7.50 MXN', route: 'Terminal Tlaxcalancingo ↔ Terminal Chachapa' },
+            L2: { id: 'L2', name: 'Línea 2', color: '#d50032', fare: '$7.50 MXN', route: 'Diagonal Poniente ↔ Terminal Margaritas' },
+            L3: { id: 'L3', name: 'Línea 3', color: '#009639', fare: '$7.50 MXN', route: 'Terminal Valsequillo ↔ Terminal CAPU / Alpha' },
+            L4: { id: 'L4', name: 'Línea 4', color: '#6d2077', fare: '$20.00 MXN', route: 'Terminal FINSA ↔ Terminal Valsequillo' }
+        };
+
+        /**
+         * COORDENADAS GEOGRÁFICAS (lat, lon) — APROXIMADAS.
+         * Cada estación lleva `geo: [lat, lon]` sólo en algunos puntos de referencia; el resto se interpola
+         * por orden a lo largo del corredor. Para afinar una estación con su coordenada exacta (p. ej. copiada
+         * de Google Maps) basta añadirla aquí por nombre, y la detección de "estación más cercana" la usará:
+         *   'Paseo Bravo': [19.04xx, -98.21xx]
+         */
+        const GEO_OVERRIDES = {};
+
+        /** Radio (metros) dentro del cual se considera que "estás en" una estación */
+        const NEAR_RADIUS_M = 1500;
+
+        // ---- Estaciones compartidas entre líneas (un solo nodo, `at` = posición esquemática) ----
+        const S = (name, o = {}) => ({ name, ...o });
+        const K_DIAG = S('Constitución 11 Norte', { at: [720, 250], geo: [19.0603, -98.2120], lp: 'tr',
+            note: 'Correspondencia entre la Línea 1 (Constitución de 1917 – 11 Norte) y el extremo norte de la Línea 2 (Diagonal Poniente).' });
+        const K_CHINA = S('China Poblana', { at: [960, 250], geo: [19.0640, -98.1925], lp: 'br',
+            note: 'Correspondencia entre la Línea 1 y el ramal CAPU de la Línea 3.' });
+        const K_ALPHA = S('Alpha', { at: [720, 588], geo: [19.0230, -98.2240], lp: 'l',
+            note: 'Correspondencia entre la Línea 2 y el ramal Alpha de la Línea 3.' });
+        const K_CAMACHO = S('C.C. Camacho Espíritu', { at: [960, 588], geo: [19.0195, -98.2015], lp: 'r', type: 'interchange',
+            note: 'Bifurcación de la Línea 3: ramal CAPU al norte, ramal Alpha al oeste y troncal hacia Valsequillo.' });
+        const K_VALSE = S('Terminal Valsequillo', { at: [1240, 1180], geo: [18.9780, -98.1670], type: 'terminal', lp: 'b',
+            note: 'Terminal sur compartida entre la Línea 3 y la Línea 4.' });
+
+        const names = (list) => list.map(n => S(n));
+        const flipAll = (list) => list.map(n => S(n, { flip: true }));
+        const alt = (list, start = 0) => list.map((n, i) => S(n, (i + start) % 2 ? { flip: true } : {}));
+
+        /**
+         * Trazados octolineales (0°/45°/90°) y secuencia de estaciones de cada recorrido.
+         * `side`: lado del trazo donde van las marcas y etiquetas (+1 / -1).
+         * Las estaciones sin `at` se reparten uniformemente entre las que sí lo tienen.
+         */
+        const ROUTES = [
+            {
+                line: 'L1', side: 1,
+                path: [[160, 930], [500, 590], [500, 380], [630, 250], [1560, 250]],
+                seq: [
+                    S('Terminal Tlaxcalancingo', { lp: 'b', geo: [19.0210, -98.2700] }),
+                    ...flipAll(['Emiliano Zapata', 'Casa de Ángeles', 'Carmen Serdán']),
+                    S('Hospital Niño Poblano', { at: [262, 828], geo: [19.0190, -98.2430], flip: true }),
+                    ...flipAll(['Estrellas del Sur', 'Las Ánimas', '25 Poniente']),
+                    S('Matamoros'),
+                    S('Juárez Serdán', { geo: [19.0447, -98.2158] }),
+                    S('Hermanos Serdán'), S('San Alejandro'),
+                    S('Defensores de la República', { geo: [19.0565, -98.2185] }),
+                    ...names(['18 Poniente', 'Pestalozzi', 'Santa Anita']),
+                    K_DIAG,
+                    S('El Rayito', { lp: 'b' }),
+                    K_CHINA,
+                    ...names(['Los Lavaderos', 'Puente Zaragoza', 'Ignacio Zaragoza']),
+                    S('Los Fuertes', { geo: [19.0715, -98.1850] }),
+                    S('Tecnológico', { geo: [19.0745, -98.1790], flip: true }),
+                    ...alt(['La Ciénega', 'La Rosa', '18 de Noviembre', 'La Resurrección', 'Universidad Tecnológica']),
+                    S('Rivera Anaya', { geo: [19.0815, -98.1420] }),
+                    ...alt(['Amalucan', 'Bosques', 'Galaxia', 'El Pilar', 'Mixatlac', 'Santa Mago', 'Chachapa'], 1),
+                    S('Terminal Chachapa', { lp: 'r', geo: [19.0700, -98.1110] })
+                ]
+            },
+            {
+                line: 'L2', side: -1,
+                path: [[720, 250], [720, 1230]],
+                seq: [
+                    K_DIAG,
+                    ...names(['Esperanza', 'Museo del Ferrocarril', 'Mercado de Sabores']),
+                    S('Paseo Bravo', { geo: [19.0425, -98.2110] }),
+                    ...names(['Héroes de la Reforma', 'Santiago', 'Revolución', 'Espinosa Yglesias', 'Panteones']),
+                    K_ALPHA,
+                    ...names(['Juan Pablo II', 'Niño Poblano', 'Río Atoyac', 'IMSS']),
+                    S('Cúmulo de Virgo', { geo: [19.0035, -98.2320] }),
+                    ...names(['Club de Golf', 'Tecamachalco', 'Torrecillas', 'Tarascos', 'Yucatán', 'San Bartolo']),
+                    S('Periférico', { at: [720, 993], geo: [18.9790, -98.2400], lp: 'bl',
+                        note: 'La Línea 4 cruza este punto sobre el Periférico Ecológico (no hay correspondencia confirmada).' }),
+                    ...names(['C.C. Centro Sur', 'Olivos', 'Independencia', 'Pino Suárez', 'Azaleas', 'Tabachines']),
+                    S('Terminal Margaritas', { lp: 'b', geo: [18.9550, -98.2455] })
+                ]
+            },
+            {
+                line: 'L3', side: 1, label: 'Troncal Valsequillo',
+                path: [[960, 588], [960, 760], [1240, 1040], [1240, 1180]],
+                seq: [
+                    K_CAMACHO,
+                    ...names(['Crystal', 'Bomberos', 'San Baltazar', 'Margaritas']),
+                    S('C.U. BUAP', { geo: [18.9995, -98.2030] }),
+                    ...names(['Biblioteca Central', 'Las Torres', 'Xilotzingo', 'Arboledas', 'Camacho 2404']),
+                    K_VALSE
+                ]
+            },
+            {
+                line: 'L3', side: 1, label: 'Ramal CAPU',
+                path: [[560, 150], [860, 150], [960, 250], [960, 588]],
+                seq: [
+                    S('Terminal CAPU', { lp: 'l', geo: [19.0720, -98.2150] }),
+                    ...names(['Boulevard Norte', 'Hidalgo', 'Unión']), S('Guadalupe Victoria', { flip: true }),
+                    K_CHINA,
+                    ...names(['Santa María', 'San Antonio', 'Xanenetla', 'San Francisco']),
+                    S('Analco', { geo: [19.0395, -98.1925] }),
+                    ...names(['Clínica 2', 'Niños Héroes', 'Fiscalía', 'Parque Juárez', '16 de Septiembre']),
+                    K_CAMACHO
+                ]
+            },
+            {
+                line: 'L3', side: -1, label: 'Ramal Alpha',
+                path: [[720, 588], [960, 588]],
+                seq: [K_ALPHA, S('Camacho 708', { lp: 'br', note: 'Blvd. Capitán Carlos Camacho Espíritu 708.' }), K_CAMACHO]
+            },
+            {
+                line: 'L4', side: -1,
+                path: [[500, 70], [400, 70], [300, 170], [300, 723], [570, 993], [900, 993], [1087, 1180], [1240, 1180]],
+                seq: [
+                    S('Terminal FINSA', { lp: 'b', geo: [19.1030, -98.2870] }),
+                    S('Cuautlancingo', { at: [300, 240], geo: [19.0830, -98.2670] }),
+                    S('Huejotzingo', { at: [300, 340] }),
+                    S('Forjadores', { at: [300, 440], geo: [19.0620, -98.2690] }),
+                    S('Recta a Cholula', { at: [300, 530], geo: [19.0450, -98.2700] }),
+                    S('Camino Real (Atlixco)', { at: [300, 620] }),
+                    S('Ciudad Judicial', { at: [380, 803], flip: true, geo: [19.0210, -98.2670] }),
+                    S('Vía Atlixcáyotl', { at: [570, 993], geo: [19.0140, -98.2610] }),
+                    S('Hospital de la Mujer', { at: [840, 993], geo: [18.9930, -98.2420] }),
+                    S('16 de Septiembre', { at: [960, 1053], flip: true, geo: [18.9860, -98.2250],
+                        note: 'Estación cerrada temporalmente según Carreteras de Cuota Puebla (abr. 2025).' }),
+                    S('Héroes', { at: [1130, 1180], flip: true, geo: [18.9800, -98.1900] }),
+                    K_VALSE
+                ]
+            }
+        ];
+
+        // ---------- Geometría ----------
+        function polyInfo(pts) {
+            const cum = [0];
+            for (let i = 1; i < pts.length; i++) {
+                cum.push(cum[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]));
+            }
+            return { pts, cum, total: cum[cum.length - 1] };
+        }
+        function pointAt(info, s, atEnd) {
+            const { pts, cum } = info;
+            let k = pts.length - 2;
+            if (!atEnd) { for (let i = 0; i < pts.length - 1; i++) { if (s < cum[i + 1] - 0.001) { k = i; break; } } }
+            const [x0, y0] = pts[k], [x1, y1] = pts[k + 1];
+            const len = cum[k + 1] - cum[k];
+            const t = Math.min(Math.max((s - cum[k]) / len, 0), 1);
+            return { x: x0 + (x1 - x0) * t, y: y0 + (y1 - y0) * t, dx: (x1 - x0) / len, dy: (y1 - y0) / len };
+        }
+        function projectOnPath(info, x, y) {
+            let best = Infinity, bestS = 0;
+            for (let i = 0; i < info.pts.length - 1; i++) {
+                const [x0, y0] = info.pts[i], [x1, y1] = info.pts[i + 1];
+                const vx = x1 - x0, vy = y1 - y0, len2 = vx * vx + vy * vy;
+                const t = Math.min(Math.max(((x - x0) * vx + (y - y0) * vy) / len2, 0), 1);
+                const d = Math.hypot(x - (x0 + vx * t), y - (y0 + vy * t));
+                if (d < best) { best = d; bestS = info.cum[i] + Math.sqrt(len2) * t; }
+            }
+            return bestS;
+        }
+
+        // ---------- Construcción de la red ----------
+        let STATIONS = [];
+        function buildNetwork() {
+            const all = [];
+            ROUTES.forEach((r, ri) => {
+                const info = polyInfo(r.path);
+                const n = r.seq.length;
+
+                // posición a lo largo del trazo
+                const sArr = new Array(n).fill(null);
+                r.seq.forEach((e, i) => { if (e.at) sArr[i] = projectOnPath(info, e.at[0], e.at[1]); });
+                if (sArr[0] === null) sArr[0] = 0;
+                if (sArr[n - 1] === null) sArr[n - 1] = info.total;
+                let prev = 0;
+                for (let i = 1; i < n; i++) {
+                    if (sArr[i] === null) continue;
+                    for (let j = prev + 1; j < i; j++) sArr[j] = sArr[prev] + (sArr[i] - sArr[prev]) * (j - prev) / (i - prev);
+                    prev = i;
+                }
+
+                // coordenadas geográficas: interpolación entre puntos de referencia
+                const gIdx = r.seq.map((e, i) => (e.geo ? i : -1)).filter(i => i >= 0);
+                const geoArr = r.seq.map(e => e.geo || null);
+                for (let g = 0; g < gIdx.length - 1; g++) {
+                    const a = gIdx[g], b = gIdx[g + 1];
+                    for (let j = a + 1; j < b; j++) {
+                        const t = (j - a) / (b - a);
+                        geoArr[j] = [
+                            r.seq[a].geo[0] + (r.seq[b].geo[0] - r.seq[a].geo[0]) * t,
+                            r.seq[a].geo[1] + (r.seq[b].geo[1] - r.seq[a].geo[1]) * t
+                        ];
+                    }
+                }
+
+                r.seq.forEach((e, i) => {
+                    const p = pointAt(info, sArr[i], i === n - 1);
+                    let node = e.node;
+                    if (!node) {
+                        const isEnd = (i === 0 || i === n - 1);
+                        node = e.node = {
+                            id: `st-${all.length}`, name: e.name, x: p.x, y: p.y,
+                            dir: [p.dx, p.dy], side: r.side * (e.flip ? -1 : 1),
+                            type: e.type || (isEnd ? 'terminal' : 'regular'),
+                            lp: e.lp, note: e.note, lines: [], info: [],
+                            geo: GEO_OVERRIDES[e.name] || geoArr[i]
+                        };
+                        all.push(node);
+                    }
+                    if (!node.lines.includes(r.line)) node.lines.push(r.line);
+                    const tag = `${LINE_CONFIG[r.line].name}${r.label ? ' · ' + r.label : ''}`;
+                    node.info.push(`${tag}: parada ${i + 1} de ${n}`);
+                });
+            });
+            all.forEach(st => {
+                if (st.lines.length > 1 && st.type === 'regular') st.type = 'interchange';
+            });
+            STATIONS = all;
+        }
+
+        // Inicialización de capas SVG
+        const linesLayer = document.getElementById('lines-layer');
+        const connectorsLayer = document.getElementById('interchange-connectors-layer');
+        const stationsLayer = document.getElementById('stations-layer');
+        const labelsLayer = document.getElementById('labels-layer');
+        const userLayer = document.getElementById('user-layer');
+
+        function createSVGElement(tag, attrs = {}) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            for (const [key, val] of Object.entries(attrs)) el.setAttribute(key, val);
+            return el;
+        }
+        function pointsToPath(points) {
+            return points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt[0]} ${pt[1]}`).join(' ');
+        }
+
+        // 1. Líneas
+        function renderLines() {
+            const groups = {};
+            Object.values(LINE_CONFIG).forEach(line => {
+                groups[line.id] = createSVGElement('g', { class: 'route-group', 'data-line': line.id });
+                linesLayer.appendChild(groups[line.id]);
+            });
+            ROUTES.forEach(r => {
+                const line = LINE_CONFIG[r.line];
+                const d = pointsToPath(r.path);
+                const w = r.label === 'Ramal Alpha' ? 7.5 : 8.5;
+                groups[r.line].appendChild(createSVGElement('path', {
+                    d, fill: 'none', stroke: '#faf9f5', 'stroke-width': w + 4.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+                }));
+                groups[r.line].appendChild(createSVGElement('path', {
+                    d, fill: 'none', stroke: line.color, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+                }));
+            });
+        }
+
+        // 2. Estaciones
+        function renderStations() {
+            STATIONS.forEach(st => {
+                const primaryLine = LINE_CONFIG[st.lines[0]];
+                const group = createSVGElement('g', {
+                    class: 'station-node route-group',
+                    'data-lines': st.lines.join(','),
+                    'data-station-id': st.id
+                });
+                group.addEventListener('click', (e) => { e.stopPropagation(); openStationCard(st); });
+
+                if (st.type === 'interchange') {
+                    group.appendChild(createSVGElement('circle', {
+                        cx: st.x, cy: st.y, r: 9.5, fill: '#ffffff', stroke: '#18181b', 'stroke-width': 4, class: 'station-interchange'
+                    }));
+                } else if (st.type === 'terminal') {
+                    group.appendChild(createSVGElement('circle', {
+                        cx: st.x, cy: st.y, r: 7.5, fill: '#ffffff', stroke: primaryLine.color, 'stroke-width': 4.5
+                    }));
+                } else {
+                    const nx = st.dir[1] * st.side, ny = -st.dir[0] * st.side;
+                    group.appendChild(createSVGElement('line', {
+                        x1: st.x, y1: st.y, x2: st.x + nx * 10, y2: st.y + ny * 10,
+                        stroke: primaryLine.color, 'stroke-width': 4.5, 'stroke-linecap': 'round', class: 'station-tick'
+                    }));
+                }
+                group.appendChild(createSVGElement('circle', { cx: st.x, cy: st.y, r: 14, fill: 'transparent' }));
+                stationsLayer.appendChild(group);
+                renderLabel(st, primaryLine);
+            });
+        }
+
+        const NAMED_POS = {
+            top: [0, -16, 'middle'], t: [0, -16, 'middle'],
+            bottom: [0, 22, 'middle'], b: [0, 22, 'middle'],
+            left: [-15, 4, 'end'], l: [-15, 4, 'end'],
+            right: [15, 4, 'start'], r: [15, 4, 'start'],
+            tl: [-13, -12, 'end'], tr: [13, -12, 'start'],
+            bl: [-13, 18, 'end'], br: [13, 18, 'start']
+        };
+
+        function autoLabelPos(st) {
+            const [dx, dy] = st.dir;
+            const nx = dy * st.side, ny = -dx * st.side;
+            if (Math.abs(dy) < 0.3) {                       // tramo horizontal -> texto a 45°
+                return ny < 0 ? { ox: 0, oy: -13, anchor: 'start', rot: -45 } : { ox: 0, oy: 15, anchor: 'start', rot: 45 };
+            }
+            if (Math.abs(dx) < 0.3) {                       // tramo vertical -> texto horizontal al costado
+                return nx > 0 ? { ox: 14, oy: 4, anchor: 'start', rot: 0 } : { ox: -14, oy: 4, anchor: 'end', rot: 0 };
+            }
+            return nx > 0                                   // diagonal
+                ? { ox: 11, oy: ny < 0 ? -8 : 14, anchor: 'start', rot: 0 }
+                : { ox: -11, oy: ny < 0 ? -8 : 14, anchor: 'end', rot: 0 };
+        }
+
+        function renderLabel(st, primaryLine) {
+            const labelGroup = createSVGElement('g', { class: 'route-group', 'data-lines': st.lines.join(',') });
+
+            if (st.type === 'terminal') {
+                const [ox, oy, anchor] = NAMED_POS[st.lp || 'b'];
+                const textWidth = st.name.length * 7.2 + 18;
+                let rectX = st.x + ox - textWidth / 2;
+                if (anchor === 'start') rectX = st.x + ox - 4;
+                if (anchor === 'end') rectX = st.x + ox - textWidth + 4;
+                const rectY = st.y + oy - 13;
+                labelGroup.appendChild(createSVGElement('rect', {
+                    x: rectX, y: rectY, width: textWidth, height: 20, rx: 5,
+                    fill: st.lines.length > 1 ? '#18181b' : primaryLine.color, filter: 'url(#badge-shadow)'
+                }));
+                const text = createSVGElement('text', {
+                    x: rectX + textWidth / 2, y: rectY + 14, 'text-anchor': 'middle', fill: '#ffffff', class: 'terminal-badge'
+                });
+                text.textContent = st.name;
+                labelGroup.appendChild(text);
+            } else {
+                let pos;
+                if (st.lp) { const [ox, oy, anchor] = NAMED_POS[st.lp]; pos = { ox, oy, anchor, rot: 0 }; }
+                else pos = autoLabelPos(st);
+                const x = st.x + pos.ox, y = st.y + pos.oy;
+                const cls = st.type === 'interchange' ? 'station-label station-label-major' : 'station-label';
+                const common = { x, y, 'text-anchor': pos.anchor };
+                if (pos.rot) common.transform = `rotate(${pos.rot} ${x} ${y})`;
+                const bg = createSVGElement('text', { ...common, stroke: '#faf9f5', 'stroke-width': 4, 'stroke-linejoin': 'round', class: cls });
+                bg.textContent = st.name;
+                const text = createSVGElement('text', { ...common, class: cls });
+                text.textContent = st.name;
+                labelGroup.appendChild(bg);
+                labelGroup.appendChild(text);
+            }
+
+            labelRecords.push({ g: labelGroup, x: st.x, y: st.y, type: st.type });
+            labelsLayer.appendChild(labelGroup);
+        }
+
+        // ================= INTERACTIVIDAD: FILTROS POR LÍNEA =================
+        function filterLine(selectedLine) {
+            // Actualizar estilo de botones
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                const isTarget = btn.getAttribute('data-line') === selectedLine;
+                if (isTarget) {
+                    btn.classList.add('bg-stone-900', 'text-white');
+                    btn.classList.remove('bg-white', 'text-stone-700');
+                } else {
+                    btn.classList.remove('bg-stone-900', 'text-white');
+                    btn.classList.add('bg-white', 'text-stone-700');
+                }
+            });
+
+            // Atenuar líneas y estaciones no seleccionadas
+            document.querySelectorAll('.route-group').forEach(el => {
+                if (selectedLine === 'all') {
+                    el.style.opacity = '1';
+                    return;
+                }
+                const singleLine = el.getAttribute('data-line');
+                const multiLines = el.getAttribute('data-lines');
+
+                if (singleLine === selectedLine || (multiLines && multiLines.split(',').includes(selectedLine))) {
+                    el.style.opacity = '1';
+                } else {
+                    el.style.opacity = '0.14';
+                }
+            });
+        }
+
+
+        // ================= GEOLOCALIZACIÓN: ESTACIÓN MÁS CERCANA =================
+        let toastTimer = 0;
+        function showToast(msg, ms = 3500) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.remove('hidden');
+            clearTimeout(toastTimer);
+            if (ms) toastTimer = setTimeout(() => t.classList.add('hidden'), ms);
+        }
+
+        function haversine(lat1, lon1, lat2, lon2) {
+            const R = 6371000, rad = Math.PI / 180;
+            const dLat = (lat2 - lat1) * rad, dLon = (lon2 - lon1) * rad;
+            const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * rad) * Math.cos(lat2 * rad) * Math.sin(dLon / 2) ** 2;
+            return 2 * R * Math.asin(Math.sqrt(a));
+        }
+        const fmtDist = (m) => m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1)} km`;
+
+        function clearUserMarker() { userLayer.innerHTML = ''; }
+        function drawUserMarker(st) {
+            clearUserMarker();
+            const g = createSVGElement('g', { transform: `translate(${st.x} ${st.y})`, 'pointer-events': 'none' });
+            g.innerHTML = `
+                <circle r="16" fill="#2563eb" opacity="0.25"><animate attributeName="r" values="14;34;14" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0;0.4" dur="2.2s" repeatCount="indefinite"/></circle>
+                <circle r="15" fill="none" stroke="#2563eb" stroke-width="4"/>
+                <g transform="translate(0 -34)"><rect x="-36" y="-13" width="72" height="22" rx="11" fill="#2563eb" filter="url(#badge-shadow)"/>
+                <text y="3" text-anchor="middle" fill="#fff" font-size="11" font-weight="800">Estás aquí</text></g>`;
+            userLayer.appendChild(g);
+        }
+
+        function focusStation(st) {
+            const r = svg.getBoundingClientRect();
+            const target = svgPoint(r.left + r.width / 2, r.top + r.height * 0.38);
+            const scale = Math.max(transform.scale, r.width < 768 ? 3.2 : 1.8);
+            animateTo({ scale, x: target.x - st.x * scale, y: target.y - st.y * scale }, 500);
+        }
+
+        function onPosition(pos) {
+            const { latitude, longitude, accuracy } = pos.coords;
+            const ranked = STATIONS.filter(s => s.geo)
+                .map(s => ({ s, d: haversine(latitude, longitude, s.geo[0], s.geo[1]) }))
+                .sort((a, b) => a.d - b.d);
+            if (!ranked.length) { showToast('No hay coordenadas de estaciones disponibles'); return; }
+            const best = ranked[0];
+
+            if (best.d > 40000) {
+                clearUserMarker();
+                showToast(`Parece que estás fuera de Puebla (la estación más cercana está a ${fmtDist(best.d)}).`, 6000);
+                return;
+            }
+
+            const inRadius = best.d <= NEAR_RADIUS_M;
+            const walk = Math.max(1, Math.ceil(best.d / 80));
+            const headline = inRadius
+                ? `Estación más cercana · ${fmtDist(best.d)} · ≈${walk} min a pie`
+                : `La más cercana está a ${fmtDist(best.d)} (fuera de tu radio de ${fmtDist(NEAR_RADIUS_M)})`;
+            const others = ranked.slice(1, 4).map(o => `• ${o.s.name} — ${fmtDist(o.d)}`).join('\n');
+            const extra = `Precisión de tu ubicación: ±${Math.round(accuracy)} m.\n` +
+                (others ? `Otras cercanas:\n${others}\n` : '') +
+                'Las posiciones de las estaciones son aproximadas.';
+
+            drawUserMarker(best.s);
+            focusStation(best.s);
+            openStationCard(best.s, headline, extra);
+            showToast(inRadius ? `Estás cerca de ${best.s.name}` : 'No hay estaciones dentro de tu radio', 3000);
+        }
+
+        function onPositionError(err, silent) {
+            const msgs = {
+                1: 'Permite el acceso a tu ubicación para encontrar la estación más cercana.',
+                2: 'No se pudo determinar tu ubicación.',
+                3: 'La ubicación tardó demasiado. Inténtalo de nuevo.'
+            };
+            showToast(msgs[err.code] || 'No se pudo obtener tu ubicación.', 5000);
+        }
+
+        function locateMe(silent = false) {
+            if (!('geolocation' in navigator)) { showToast('Tu navegador no admite geolocalización.'); return; }
+            showToast('Buscando tu ubicación…', 0);
+            navigator.geolocation.getCurrentPosition(onPosition, (e) => onPositionError(e, silent), {
+                enableHighAccuracy: true, timeout: 15000, maximumAge: 30000
+            });
+        }
+
+        // ================= TARJETA DE DETALLE DE ESTACIÓN =================
+        function openStationCard(station, headline, extra) {
+            const card = document.getElementById('station-card');
+            const badgesContainer = document.getElementById('card-badges');
+            const title = document.getElementById('card-title');
+            const type = document.getElementById('card-type');
+            const desc = document.getElementById('card-desc');
+
+            badgesContainer.innerHTML = '';
+            station.lines.forEach(lineId => {
+                const cfg = LINE_CONFIG[lineId];
+                const badge = document.createElement('span');
+                badge.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold text-white shadow-2xs';
+                badge.style.backgroundColor = cfg.color;
+                badge.textContent = `${cfg.name} (${cfg.fare})`;
+                badgesContainer.appendChild(badge);
+            });
+
+            title.textContent = station.name;
+            type.textContent = headline || (station.type === 'terminal'
+                ? 'Estación Terminal'
+                : station.type === 'interchange'
+                    ? 'Estación de Correspondencia / Transbordo'
+                    : 'Estación');
+            desc.style.whiteSpace = 'pre-line';
+            desc.textContent = [extra, station.note, station.info.join('\n')].filter(Boolean).join('\n\n');
+            card.classList.remove('hidden');
+        }
+
+        function closeStationCard() {
+            document.getElementById('station-card').classList.add('hidden');
+        }
+
+        // ================= PAN & ZOOM (Pointer Events: ratón, táctil, pellizco) =================
+        const svg = document.getElementById('beck-svg');
+        const world = document.getElementById('map-world');
+        const labelRecords = [];
+        const MAP_W = 1750, MAP_H = 1320;
+        const MIN_SCALE = 0.6, MAX_SCALE = 9;
+        const clamp = (v, lo, hi) => Math.min(Math.max(v, lo), hi);
+
+        let transform = { x: 0, y: 0, scale: 1 };
+        let rafId = 0, animId = 0;
+
+        // Pantalla (px) -> coordenadas del viewBox
+        function svgPoint(clientX, clientY) {
+            const m = svg.getScreenCTM();
+            if (!m) return { x: clientX, y: clientY };
+            const p = new DOMPoint(clientX, clientY).matrixTransform(m.inverse());
+            return { x: p.x, y: p.y };
+        }
+        function basePxPerUnit() {
+            const m = svg.getScreenCTM();
+            return m ? m.a : 1;
+        }
+        function viewCenter() {
+            const r = svg.getBoundingClientRect();
+            return svgPoint(r.left + r.width / 2, r.top + r.height / 2);
+        }
+
+        // Mantiene el centro de la vista dentro del mapa y limita el zoom
+        function clampTransform() {
+            transform.scale = clamp(transform.scale, MIN_SCALE, MAX_SCALE);
+            const c = viewCenter();
+            const wx = clamp((c.x - transform.x) / transform.scale, 0, MAP_W);
+            const wy = clamp((c.y - transform.y) / transform.scale, 0, MAP_H);
+            transform.x = c.x - wx * transform.scale;
+            transform.y = c.y - wy * transform.scale;
+        }
+
+        // Etiquetas: tamaño legible en pantalla y menos ruido al alejar
+        function updateLabels() {
+            rafId = 0;
+            const ppu = basePxPerUnit() * transform.scale;     // px de pantalla por unidad del mapa
+            const k = clamp(0.95 / ppu, 1, 2);
+            const hideMinor = ppu < 0.45;
+            labelRecords.forEach(r => {
+                r.g.setAttribute('transform', k === 1 ? '' : `translate(${r.x} ${r.y}) scale(${k}) translate(${-r.x} ${-r.y})`);
+                r.g.style.display = (hideMinor && r.type === 'regular') ? 'none' : '';
+            });
+        }
+
+        function applyTransform() {
+            clampTransform();
+            world.setAttribute('transform', `translate(${transform.x}, ${transform.y}) scale(${transform.scale})`);
+            if (!rafId) rafId = requestAnimationFrame(updateLabels);
+        }
+
+        function animateTo(target, dur = 240) {
+            cancelAnimationFrame(animId);
+            const from = { ...transform };
+            const t0 = performance.now();
+            const step = (now) => {
+                const p = Math.min(1, (now - t0) / dur);
+                const e = 1 - Math.pow(1 - p, 3);
+                transform.x = from.x + (target.x - from.x) * e;
+                transform.y = from.y + (target.y - from.y) * e;
+                transform.scale = from.scale + (target.scale - from.scale) * e;
+                applyTransform();
+                if (p < 1) animId = requestAnimationFrame(step);
+            };
+            animId = requestAnimationFrame(step);
+        }
+
+        // Zoom anclado a un punto (coordenadas del viewBox)
+        function zoomAt(factor, sx, sy, animate = true) {
+            const newScale = clamp(transform.scale * factor, MIN_SCALE, MAX_SCALE);
+            const ratio = newScale / transform.scale;
+            const target = {
+                scale: newScale,
+                x: sx - (sx - transform.x) * ratio,
+                y: sy - (sy - transform.y) * ratio
+            };
+            if (animate) animateTo(target);
+            else { Object.assign(transform, target); applyTransform(); }
+        }
+
+        function zoomMap(factor) {
+            const c = viewCenter();
+            zoomAt(factor, c.x, c.y);
+        }
+
+        // Vista completa
+        function resetView() {
+            animateTo({ x: 0, y: 0, scale: 1 });
+        }
+
+        // Vista inicial: en pantallas estrechas se abre sobre el centro de la red
+        function initialView() {
+            const r = svg.getBoundingClientRect();
+            if (r.width >= 768) { transform = { x: 0, y: 0, scale: 1 }; applyTransform(); return; }
+            const visibleUnits = Math.max(360, Math.min(520, r.width * 1.2));
+            const scale = (r.width / visibleUnits) / basePxPerUnit();
+            const c = viewCenter();
+            const cx = 820, cy = 520;
+            transform = { scale, x: c.x - cx * scale, y: c.y - cy * scale };
+            applyTransform();
+        }
+
+        // ---- Gestos ----
+        const pointers = new Map();
+        let gesture = null;
+        let moved = false;
+        let suppressClick = false;
+        let lastTap = { t: 0, x: 0, y: 0 };
+        const MOVE_THRESHOLD = 8;
+
+        function pointerStats() {
+            const pts = [...pointers.values()];
+            const mx = pts.reduce((a, p) => a + p.x, 0) / pts.length;
+            const my = pts.reduce((a, p) => a + p.y, 0) / pts.length;
+            const dist = pts.length > 1 ? Math.hypot(pts[1].x - pts[0].x, pts[1].y - pts[0].y) : 0;
+            return { mx, my, dist };
+        }
+
+        // Fija el estado base del gesto (al cambiar el número de dedos)
+        function startGesture() {
+            if (!pointers.size) { gesture = null; return; }
+            const { mx, my, dist } = pointerStats();
+            const s = svgPoint(mx, my);
+            gesture = {
+                dist,
+                scale: transform.scale,
+                anchor: { x: (s.x - transform.x) / transform.scale, y: (s.y - transform.y) / transform.scale }
+            };
+        }
+
+        function capture(id) {
+            try { svg.setPointerCapture(id); } catch (_) {}
+        }
+
+        svg.addEventListener('pointerdown', (e) => {
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            cancelAnimationFrame(animId);
+            if (pointers.size === 0) { moved = false; suppressClick = false; }
+            pointers.set(e.pointerId, { x: e.clientX, y: e.clientY, sx: e.clientX, sy: e.clientY });
+            if (pointers.size > 1) {
+                moved = true;
+                pointers.forEach((_, id) => capture(id));
+            }
+            startGesture();
+        });
+
+        svg.addEventListener('pointermove', (e) => {
+            const p = pointers.get(e.pointerId);
+            if (!p) return;
+            p.x = e.clientX; p.y = e.clientY;
+            if (!moved) {
+                if (Math.hypot(p.x - p.sx, p.y - p.sy) < MOVE_THRESHOLD) return;
+                moved = true;
+                capture(e.pointerId);
+            }
+            if (!gesture) return;
+            const { mx, my, dist } = pointerStats();
+            const s = svgPoint(mx, my);
+            let newScale = gesture.scale;
+            if (pointers.size > 1 && gesture.dist > 0) newScale = gesture.scale * (dist / gesture.dist);
+            newScale = clamp(newScale, MIN_SCALE, MAX_SCALE);
+            transform.scale = newScale;
+            transform.x = s.x - gesture.anchor.x * newScale;
+            transform.y = s.y - gesture.anchor.y * newScale;
+            applyTransform();
+        });
+
+        function endPointer(e) {
+            if (!pointers.has(e.pointerId)) return;
+            pointers.delete(e.pointerId);
+            try { svg.releasePointerCapture(e.pointerId); } catch (_) {}
+
+            if (pointers.size === 0) {
+                suppressClick = moved;
+                // Doble toque (táctil) sobre el fondo -> acercar
+                if (!moved && e.type === 'pointerup' && e.pointerType !== 'mouse' &&
+                    !(e.target.closest && e.target.closest('.station-node'))) {
+                    const now = performance.now();
+                    if (now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30) {
+                        const s = svgPoint(e.clientX, e.clientY);
+                        zoomAt(transform.scale > 3 ? 1 / 2.4 : 2.4, s.x, s.y);
+                        suppressClick = true;
+                        lastTap.t = 0;
+                    } else {
+                        lastTap = { t: now, x: e.clientX, y: e.clientY };
+                    }
+                }
+            }
+            startGesture(); // re-ancla los dedos restantes para evitar saltos
+        }
+        svg.addEventListener('pointerup', endPointer);
+        svg.addEventListener('pointercancel', endPointer);
+        svg.addEventListener('lostpointercapture', endPointer);
+
+        // Rueda del ratón / pellizco en trackpad (ctrl+rueda)
+        svg.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            cancelAnimationFrame(animId);
+            const k = e.ctrlKey ? 0.01 : 0.0018;
+            const factor = Math.exp(-e.deltaY * k);
+            const s = svgPoint(e.clientX, e.clientY);
+            zoomAt(factor, s.x, s.y, false);
+        }, { passive: false });
+
+        // Doble clic con ratón
+        svg.addEventListener('dblclick', (e) => {
+            if (e.target.closest && e.target.closest('.station-node')) return;
+            const s = svgPoint(e.clientX, e.clientY);
+            zoomAt(2, s.x, s.y);
+        });
+
+        // Evita el zoom nativo de página en Safari iOS
+        ['gesturestart', 'gesturechange', 'gestureend'].forEach(ev =>
+            document.addEventListener(ev, (e) => e.preventDefault(), { passive: false }));
+
+        // Tocar el fondo cierra la tarjeta (salvo tras arrastrar/pellizcar)
+        svg.addEventListener('click', () => {
+            if (suppressClick) { suppressClick = false; return; }
+            closeStationCard();
+        });
+
+        // Leyenda plegable
+        function toggleLegend() {
+            document.getElementById('legend-panel').classList.toggle('hidden');
+        }
+        if (window.innerWidth >= 768) toggleLegend();
+
+        window.addEventListener('resize', () => applyTransform());
+        window.addEventListener('orientationchange', () => setTimeout(initialView, 250));
+
+        // Renderizado inicial
+        buildNetwork();
+        renderLines();
+        renderStations();
+        requestAnimationFrame(initialView);
+        // Pide la ubicación al cargar (el navegador mostrará su aviso de permiso)
+        setTimeout(() => locateMe(true), 1200);
+    </script>
+</body>
+</html>
